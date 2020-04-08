@@ -38,13 +38,13 @@
 			var params = {
 
 				animate: true,
-				planeX: {
-
-					constant: 1000,
-					negated: false,
-					displayHelper: false
-
-				},
+				// planeX: {
+				//
+				// 	constant: 1000,
+				// 	negated: false,
+				// 	displayHelper: false
+				//
+				// },
 				planeY: {
 
 					constant: 100,
@@ -52,13 +52,13 @@
 					displayHelper: false
 
 				},
-				planeZ: {
-
-					constant: 1000,
-					negated: false,
-					displayHelper: false
-
-				}
+				// planeZ: {
+				//
+				// 	constant: 1000,
+				// 	negated: false,
+				// 	displayHelper: false
+				//
+				// }
 
 
 			};
@@ -123,7 +123,8 @@
 				// scene.background = new THREE.Color(1,1,1);
 
 				camera = new THREE.PerspectiveCamera( 36, window.innerWidth / window.innerHeight, 1, 3000 );
-				camera.position.set( 2, 2, 2 );
+				// camera.position.set( 2, 2, 2 );
+				camera.position.set( 400, 200, 0 );
 
 				scene.add( new THREE.AmbientLight( 0xffffff, 0.5 ) );
 
@@ -141,12 +142,12 @@
 				// scene
 
 
-				//
-				// var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+				// 
+				// var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.1 );
 				// scene.add( ambientLight );
-				//
-				// var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
-				// camera.add( pointLight );
+
+				var pointLight = new THREE.PointLight( 0xffffff, 0.3 );
+				camera.add( pointLight );
 				scene.add( camera );
 
 var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, flatShading: true } );
@@ -192,9 +193,9 @@ var geometry;
 
 
 				planes = [
-					new THREE.Plane( new THREE.Vector3( - 1, 0, 0 ), 0 ),
+					// new THREE.Plane( new THREE.Vector3( - 1, 0, 0 ), 0 ),
 					new THREE.Plane( new THREE.Vector3( 0, - 1, 0 ), 0 ),
-					new THREE.Plane( new THREE.Vector3( 0, 0, - 1 ), 0 )
+					// new THREE.Plane( new THREE.Vector3( 0, 0, - 1 ), 0 )
 				];
 
 				planeHelpers = planes.map( p => new THREE.PlaneHelper( p, 2, 0xffffff ) );
@@ -212,7 +213,7 @@ var geometry;
 				// Set up clip plane rendering
 				planeObjects = [];
 				var planeGeom = new THREE.PlaneBufferGeometry( 4, 4 );
-				for ( var i = 0; i < 3; i ++ ) {
+				for ( var i = 0; i < 1; i ++ ) {
 
 					var poGroup = new THREE.Group();
 					var plane = planes[ i ];
@@ -285,38 +286,40 @@ var geometry;
 				var gui = new GUI();
 				gui.add( params, 'animate' );
 
-				var planeX = gui.addFolder( 'planeX' );
-				planeX.add( params.planeX, 'displayHelper' ).onChange( v => planeHelpers[ 0 ].visible = v );
-				planeX.add( params.planeX, 'constant' ).min( - 1000 ).max( 1000 ).onChange( d => planes[ 0 ].constant = d );
-				planeX.add( params.planeX, 'negated' ).onChange( () => {
-
-					planes[ 0 ].negate();
-					params.planeX.constant = planes[ 0 ].constant;
-
-				} );
-				planeX.open();
+				// var planeX = gui.addFolder( 'planeX' );
+				// planeX.add( params.planeX, 'displayHelper' ).onChange( v => planeHelpers[ 0 ].visible = v );
+				// planeX.add( params.planeX, 'constant' ).min( - 1000 ).max( 1000 ).onChange( d => planes[ 0 ].constant = d );
+				// planeX.add( params.planeX, 'negated' ).onChange( () => {
+				//
+				// 	planes[ 0 ].negate();
+				// 	params.planeX.constant = planes[ 0 ].constant;
+				//
+				// } );
+				// planeX.open();
 
 				var planeY = gui.addFolder( 'planeY' );
-				planeY.add( params.planeY, 'displayHelper' ).onChange( v => planeHelpers[ 1 ].visible = v );
-				planeY.add( params.planeY, 'constant' ).min( 2 ).max( 100 ).onChange( d => planes[ 1 ].constant = d );
+				planeY.add( params.planeY, 'displayHelper' ).onChange( v => planeHelpers[ 0 ].visible = v );
+				planeY.add( params.planeY, 'constant' ).min( 2 ).max( 100 ).onChange( d => planes[ 0 ].constant = d );
 				planeY.add( params.planeY, 'negated' ).onChange( () => {
 
 					planes[ 1 ].negate();
-					params.planeY.constant = planes[ 1 ].constant;
+					params.planeY.constant = planes[ 0 ].constant;
 
 				} );
 				planeY.open();
 
-				var planeZ = gui.addFolder( 'planeZ' );
-				planeZ.add( params.planeZ, 'displayHelper' ).onChange( v => planeHelpers[ 2 ].visible = v );
-				planeZ.add( params.planeZ, 'constant' ).min( - 1000 ).max( 1000 ).onChange( d => planes[ 2 ].constant = d );
-				planeZ.add( params.planeZ, 'negated' ).onChange( () => {
 
-					planes[ 2 ].negate();
-					params.planeZ.constant = planes[ 2 ].constant;
 
-				} );
-				planeZ.open();
+				// var planeZ = gui.addFolder( 'planeZ' );
+				// planeZ.add( params.planeZ, 'displayHelper' ).onChange( v => planeHelpers[ 2 ].visible = v );
+				// planeZ.add( params.planeZ, 'constant' ).min( - 1000 ).max( 1000 ).onChange( d => planes[ 2 ].constant = d );
+				// planeZ.add( params.planeZ, 'negated' ).onChange( () => {
+				//
+				// 	planes[ 2 ].negate();
+				// 	params.planeZ.constant = planes[ 2 ].constant;
+				//
+				// } );
+				// planeZ.open();
 
 				// texture
 
@@ -409,9 +412,12 @@ var geometry;
 
 				// camera.lookAt( scene.position );
 
+
+
 				renderer.render( scene, camera );
 
 			}
+
 
 		</script>
 	<!-- <script type="text/javascript" src="https://threejs.org/examples/js/controls/OrbitControls.js"></script> -->

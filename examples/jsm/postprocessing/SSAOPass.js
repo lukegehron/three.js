@@ -267,7 +267,8 @@ SSAOPass.prototype = Object.assign( Object.create( Pass.prototype ), {
 				this.copyMaterial.blending = NoBlending;
 				this.renderPass( renderer, this.copyMaterial, this.renderToScreen ? null : writeBuffer );
 
-				this.copyMaterial.uniforms[ 'tDiffuse' ].value = this.blurRenderTarget.texture;
+				this.copyMaterial.uniforms[ 'tDiffuse' ].value = this.ssaoRenderTarget.texture;
+				// this.copyMaterial.uniforms[ 'tDiffuse' ].value = this.blurRenderTarget.texture;
 				this.copyMaterial.blending = CustomBlending;
 				this.renderPass( renderer, this.copyMaterial, this.renderToScreen ? null : writeBuffer );
 

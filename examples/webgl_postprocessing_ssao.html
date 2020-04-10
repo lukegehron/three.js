@@ -25,28 +25,97 @@
 
 			import * as THREE from '../build/three.module.js';
 
+			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+			import { MTLLoader } from './jsm/loaders/MTLLoader.js';
+
 			import Stats from './jsm/libs/stats.module.js';
 			import { GUI } from './jsm/libs/dat.gui.module.js';
 
 			import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 			import { SSAOPass } from './jsm/postprocessing/SSAOPass.js';
 
-			var container, stats;
+			import { MapControls } from './jsm/controls/OrbitControls.js';
+
+			import { Sky } from './jsm/objects/Sky.js';
+
+			import {OutlineEffect} from './jsm/effects/OutlineEffect.js';
+
+			var SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
+
+			var container, stats, controls;
 			var camera, scene, renderer;
 			var composer;
 			var group;
 
+			var effect;
+
+			var sky, sunSphere;
+
+			var object1, object2;
+
+			var light;
+			var lightShadowMapViewer;
+
+			var effectController = {
+				turbidity: 10,
+				rayleigh: 2,
+				mieCoefficient: 0.005,
+				mieDirectionalG: 0.8,
+				luminance: 1,
+				inclination: 0.49, // elevation / inclination
+				azimuth: 0.25, // Facing front,
+				sun: ! true
+			};
+
 			init();
 			animate();
+
+			function initSky() {
+
+				// Add Sky
+				sky = new Sky();
+				sky.scale.setScalar( 450000 );
+				scene.add( sky );
+
+				// Add Sun Helper
+				sunSphere = new THREE.Mesh(
+					new THREE.SphereBufferGeometry( 20000, 16, 8 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+				);
+				sunSphere.position.y = - 700000;
+				sunSphere.visible = false;
+				scene.add( sunSphere );
+
+				// light = new THREE.SpotLight( 0xffffff, 1, 0, Math.PI / 5, 0.3 );
+				// light.position.set( 0, 1500, 1000 );
+				// light.target.position.set( 0, 0, 0 );
+				//
+				// light.castShadow = true;
+				// light.shadow.camera.near = 1200;
+				// light.shadow.camera.far = 2500;
+				// light.shadow.bias = 0.0001;
+				//
+				// light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+				// light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+				//
+				// scene.add( light );
+
+				/// GUI
+
+
+
+			}
 
 			function init() {
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer({antialias: true});
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
+
+				effect = new OutlineEffect(renderer);
 
 				if ( ! renderer.extensions.get( 'WEBGL_depth_texture' ) ) {
 
@@ -55,41 +124,174 @@
 
 				}
 
-				camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 100, 700 );
+				// renderer.outputEncoding = THREE.sRGBEncoding;
+				// renderer.autoClear = false;
+				//
+				// //
+				//
+				// renderer.shadowMap.enabled = true;
+				// renderer.shadowMap.type = THREE.PCFShadowMap;
+
+				camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 1700 );
 				camera.position.z = 500;
 
+				controls = new MapControls(camera, renderer.domElement);
+				// controls = new OrbitControls(camera, renderer.domElement);
+
+
+				controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+				controls.dampingFactor = 0.05;
+
+				controls.screenSpacePanning = false;
+
+				controls.minDistance = 100;
+				controls.maxDistance = 500;
+
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xaaaaaa );
+				// scene.background = new THREE.Color( 0xaaaaaa );
 
-				scene.add( new THREE.DirectionalLight() );
-				scene.add( new THREE.HemisphereLight() );
+				scene.add( new THREE.AmbientLight( 0xffffff, 0.3 ) );
 
-				group = new THREE.Group();
-				scene.add( group );
+				var dirLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
+				dirLight.position.set( -50, 100, -75 );
+				dirLight.castShadow = true;
 
-				var geometry = new THREE.BoxBufferGeometry( 10, 10, 10 );
+				scene.add( dirLight );
 
-				for ( var i = 0; i < 100; i ++ ) {
+				// scene.add( new THREE.DirectionalLight() );
+				scene.add( new THREE.HemisphereLight( 0xffffff, 0.3) );
 
-					var material = new THREE.MeshLambertMaterial( {
-						color: Math.random() * 0xffffff
+				initSky();
+
+				var material = new THREE.MeshPhongMaterial( {
+				color: 0x9999aa,
+				shininess: 0.6} );
+
+				function loadModel() {
+
+					object1.traverse( function ( child ) {
+
+						//if ( child.isMesh ) child.material.map = texture;
+						if ( child.isMesh ) child.material = material;
+
 					} );
 
-					var mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = Math.random() * 400 - 200;
-					mesh.position.y = Math.random() * 400 - 200;
-					mesh.position.z = Math.random() * 400 - 200;
-					mesh.rotation.x = Math.random();
-					mesh.rotation.y = Math.random();
-					mesh.rotation.z = Math.random();
+					// object.position.y = - 95;
+					// object.position.y= - 195;
+					object1.rotation.x = -3.1415926787/2;
 
-					mesh.scale.setScalar( Math.random() * 10 + 2 );
-					group.add( mesh );
+					object1.castShadow = true;
+					object1.receiveShadow = true;
+
+					// geometry = object1;
+					scene.add( object1 );
 
 				}
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+				var manager = new THREE.LoadingManager( loadModel );
+
+				manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+
+				var loader = new OBJLoader( manager );
+
+				loader.load( 'models/obj/Site2.obj', function ( obj ) {
+
+					object1 = obj;
+
+
+				}, onProgress, onError );
+
+
+
+				// function loadModel2() {
+				//
+				// 	object2.traverse( function ( child ) {
+				//
+				// 		//if ( child.isMesh ) child.material.map = texture;
+				// 		if ( child.isMesh ) child.material = material;
+				//
+				// 	} );
+				//
+				// 	// object.position.y = - 95;
+				// 	// object.position.y= - 195;
+				// 	object2.rotation.x = -3.1415926787/2;
+				//
+				// 	object2.castShadow = true;
+				// 	object2.receiveShadow = true;
+				//
+				// 	// geometry = object1;
+				// 	scene.add( object2 );
+				//
+				// }
+				//
+				// var manager2 = new THREE.LoadingManager( loadModel2 );
+				//
+				// manager2.onProgress = function ( item, loaded, total ) {
+				//
+				// 	console.log( item, loaded, total );
+				//
+				// };
+				//
+				// var loader2 = new OBJLoader( manager2 );
+				//
+				// loader2.load( 'models/obj/Site2-1.obj', function ( obj ) {
+				//
+				// 	object2 = obj;
+				//
+				//
+				// }, onProgress, onError );
+
+				new MTLLoader( manager )
+					.setPath( 'models/obj/' )
+					.load( 'Site2-3.mtl', function ( materials ) {
+
+						materials.preload();
+
+						new OBJLoader( manager )
+							.setMaterials( materials )
+							.setPath( 'models/obj/' )
+							.load( 'Site2-3.obj', function ( object ) {
+
+								object.rotation.x = -3.1415926787/2;
+								scene.add( object );
+
+							}, onProgress, onError );
+
+					} );
+
+				//
+
+
+				// group = new THREE.Group();
+				// scene.add( group );
+				//
+				// var geometry = new THREE.BoxBufferGeometry( 10, 10, 10 );
+				//
+				// for ( var i = 0; i < 100; i ++ ) {
+				//
+				// 	var material = new THREE.MeshLambertMaterial( {
+				// 		color: Math.random() * 0xffffff
+				// 	} );
+				//
+				// 	var mesh = new THREE.Mesh( geometry, material );
+				// 	mesh.position.x = Math.random() * 400 - 200;
+				// 	mesh.position.y = Math.random() * 400 - 200;
+				// 	mesh.position.z = Math.random() * 400 - 200;
+				// 	mesh.rotation.x = Math.random();
+				// 	mesh.rotation.y = Math.random();
+				// 	mesh.rotation.z = Math.random();
+				//
+				// 	mesh.scale.setScalar( Math.random() * 10 + 2 );
+				// 	group.add( mesh );
+				//
+				// }
+
+				// stats = new Stats();
+				// container.appendChild( stats.dom );
 
 				var width = window.innerWidth;
 				var height = window.innerHeight;
@@ -98,6 +300,7 @@
 
 				var ssaoPass = new SSAOPass( scene, camera, width, height );
 				ssaoPass.kernelRadius = 16;
+				ssaoPass.blur = false;
 				composer.addPass( ssaoPass );
 
 				// Init gui
@@ -116,8 +319,46 @@
 
 				} );
 				gui.add( ssaoPass, 'kernelRadius' ).min( 0 ).max( 32 );
-				gui.add( ssaoPass, 'minDistance' ).min( 0.001 ).max( 0.02 );
-				gui.add( ssaoPass, 'maxDistance' ).min( 0.01 ).max( 0.3 );
+				gui.add( ssaoPass, 'minDistance' ).min( 0.001 ).max( 0.05 );
+				gui.add( ssaoPass, 'maxDistance' ).min( 0.01 ).max( 0.9 );
+
+				gui.add( effectController, "turbidity", 1.0, 20.0, 0.1 ).onChange( guiChanged );
+				gui.add( effectController, "rayleigh", 0.0, 4, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "mieCoefficient", 0.0, 0.1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "mieDirectionalG", 0.0, 1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "luminance", 0.0, 2 ).onChange( guiChanged );
+				gui.add( effectController, "inclination", 0, 1, 0.0001 ).onChange( guiChanged );
+				gui.add( effectController, "azimuth", 0, 1, 0.0001 ).onChange( guiChanged );
+				gui.add( effectController, "sun" ).onChange( guiChanged );
+
+				guiChanged();
+
+				function guiChanged() {
+
+					var uniforms = sky.material.uniforms;
+					uniforms[ "turbidity" ].value = effectController.turbidity;
+					uniforms[ "rayleigh" ].value = effectController.rayleigh;
+					uniforms[ "mieCoefficient" ].value = effectController.mieCoefficient;
+					uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
+					uniforms[ "luminance" ].value = effectController.luminance;
+
+					var theta = Math.PI * ( effectController.inclination - 0.5 );
+					var phi = 2 * Math.PI * ( effectController.azimuth - 0.5 );
+
+					var distance = 400000;
+
+					sunSphere.position.x = distance * Math.cos( phi );
+					sunSphere.position.y = distance * Math.sin( phi ) * Math.sin( theta );
+					sunSphere.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+
+					sunSphere.visible = effectController.sun;
+
+					uniforms[ "sunPosition" ].value.copy( sunSphere.position );
+
+					// renderer.render( scene, camera );
+
+				}
+
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
@@ -140,21 +381,36 @@
 
 				requestAnimationFrame( animate );
 
-				stats.begin();
+				// stats.begin();
 				render();
-				stats.end();
+				// stats.end();
 
 			}
 
 			function render() {
 
-				var timer = performance.now();
-				group.rotation.x = timer * 0.0002;
-				group.rotation.y = timer * 0.0001;
+				// var timer = performance.now();
+				// group.rotation.x = timer * 0.0002;
+				// group.rotation.y = timer * 0.0001;
 
+				// effect.render( scene, camera);
 				composer.render();
 
+
 			}
+
+			function onProgress( xhr ) {
+
+				if ( xhr.lengthComputable ) {
+
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+
+				}
+
+			}
+
+			function onError() {}
 
 		</script>
 	</body>

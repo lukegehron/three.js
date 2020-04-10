@@ -50,11 +50,16 @@
 
 			import { OrbitControls } from './jsm/controls/OrbitControls.js';
 
+			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+			import { MTLLoader } from './jsm/loaders/MTLLoader.js';
+
 			var SCREEN_WIDTH = window.innerWidth;
 			var SCREEN_HEIGHT = window.innerHeight;
 
 			var container, stats;
 			var camera, scene, renderer;
+
+			var object1, object2;
 
 			init();
 			animate();
@@ -125,12 +130,75 @@
 
 				// MODEL
 
-				var loader = new THREE.ObjectLoader();
-				loader.load( "models/json/lightmap/lightmap.json", function ( object ) {
+				// var loader = new THREE.ObjectLoader();
+				// loader.load( "models/json/lightmap/lightmap.json", function ( object ) {
+				//
+				// 	scene.add( object );
+				//
+				// } );
 
-					scene.add( object );
+				var material = new THREE.MeshPhongMaterial( {
+				color: 0x888899,
+				metalness: 0.1,
+				roughness: 0.75 } );
 
-				} );
+				function loadModel() {
+
+					object1.traverse( function ( child ) {
+
+						//if ( child.isMesh ) child.material.map = texture;
+						if ( child.isMesh ) child.material = material;
+
+					} );
+
+					// object.position.y = - 95;
+					// object.position.y= - 195;
+					object1.rotation.x = -3.1415926787/2;
+
+					object1.castShadow = true;
+					object1.receiveShadow = true;
+
+					// geometry = object1;
+					scene.add( object1 );
+
+				}
+
+				var manager = new THREE.LoadingManager( loadModel );
+
+				manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+
+				var loader = new OBJLoader( manager );
+
+				loader.load( 'models/obj/Site2.obj', function ( obj ) {
+
+					object1 = obj;
+
+
+				}, onProgress, onError );
+
+
+
+				new MTLLoader( manager )
+					.setPath( 'models/obj/' )
+					.load( 'Site2-3.mtl', function ( materials ) {
+
+						materials.preload();
+
+						new OBJLoader( manager )
+							.setMaterials( materials )
+							.setPath( 'models/obj/' )
+							.load( 'Site2-3.obj', function ( object ) {
+
+								object.rotation.x = -3.1415926787/2;
+								scene.add( object );
+
+							}, onProgress, onError );
+
+					} );
 
 				//
 
@@ -157,6 +225,19 @@
 				stats.update();
 
 			}
+
+			function onProgress( xhr ) {
+
+				if ( xhr.lengthComputable ) {
+
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+
+				}
+
+			}
+
+			function onError() {}
 
 		</script>
 

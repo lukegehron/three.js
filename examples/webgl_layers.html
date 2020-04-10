@@ -28,70 +28,352 @@
 			import Stats from './jsm/libs/stats.module.js';
 			import { GUI } from './jsm/libs/dat.gui.module.js';
 
-			var container, stats;
+			import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+			import { MTLLoader } from './jsm/loaders/MTLLoader.js';
+
+			import { MapControls } from './jsm/controls/OrbitControls.js';
+
+			import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+			import { SSAOPass } from './jsm/postprocessing/SSAOPass.js';
+
+			import { Sky } from './jsm/objects/Sky.js';
+
+			import { LightProbeGenerator } from './jsm/lights/LightProbeGenerator.js';
+
+			var hasntBeenUpdated = true;
+
+
+			var container, stats, controls;
 			var camera, scene, renderer;
+			var sky, sunSphere;
+
+			var composer;
+
+			var lightProbe, directionalLight;
+
+			var effectController = {
+				turbidity: 1,
+				rayleigh: 4,
+				mieCoefficient: 0.033,
+				mieDirectionalG: 1,
+				luminance: 0.9,
+				inclination: 0.366, // elevation / inclination
+				azimuth: 0.27, // Facing front,
+				sun: ! true
+			};
+
+
+
+
+			var API = {
+				lightProbeIntensity: 1.0,
+				directionalLightIntensity: 0.12,
+				envMapIntensity: 0.8
+			};
 
 			var radius = 100, theta = 0;
+
+			// var object1, object2;
 
 			init();
 			animate();
 
+			function initSky() {
+
+				// Add Sky
+				sky = new Sky();
+				sky.scale.setScalar( 450000 );
+				scene.add( sky );
+
+				// Add Sun Helper
+				sunSphere = new THREE.Mesh(
+					new THREE.SphereBufferGeometry( 20000, 16, 8 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+				);
+				sunSphere.position.y = - 700000;
+				sunSphere.visible = false;
+				scene.add( sunSphere );
+
+			}
+
 			function init() {
+				renderer = new THREE.WebGLRenderer({antialias: true});
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
+				// camera.position.x = -1200;
+				// camera.position.y = 800;
+				// camera.position.z = 1070;
+				camera.useTarget = true;
+					controls = new MapControls(camera, renderer.domElement);
+
+				camera.position.x = -90;
+				camera.position.y = 9.5;
+				camera.position.z = 163;
+				camera.lookAt(new THREE.Vector3(-244.22669491205392, 97.64395410077881,-105.54260795804112));
+				// camera.rotation.x  = -0.04;
+				// camera.rotation.y  = 0.5;
+				// camera.rotation.z  = 0.02;
+
+
 				camera.layers.enable( 0 ); // enabled by default
 				camera.layers.enable( 1 );
 				camera.layers.enable( 2 );
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0xf0f0f0 );
+				// scene.background = new THREE.Color( 0xefd1b5 );
+				// scene.fog = new THREE.FogExp2( 0xffffff, 0.001 );
+				// scene.fog = new THREE.Fog( 0xCCCCCC, 50, 100 );
 
-				var light = new THREE.PointLight( 0xffffff, 1 );
-				light.layers.enable( 0 );
-				light.layers.enable( 1 );
-				light.layers.enable( 2 );
+				// scene.add( new THREE.AmbientLight( 0x444444 ) );
+
+							var	spotLight = new THREE.SpotLight( 0x888888 );
+								spotLight.name = 'Spot Light';
+								spotLight.angle = Math.PI / 5;
+								spotLight.penumbra = 0.3;
+								spotLight.position.set( 80, 200, 50 );
+								spotLight.castShadow = true;
+								spotLight.shadow.camera.near = 80;
+								spotLight.shadow.camera.far = 2000;
+								spotLight.shadow.mapSize.width = 1024;
+								spotLight.shadow.mapSize.height = 1024;
+								spotLight.shadow.bias = -0.002;
+								spotLight.shadow.radius = 12;
+								// scene.add( spotLight );
+				// var light = new THREE.PointLight( 0xffffff, 0.1 );
+				// light.layers.enable( 0 );
+				// light.layers.enable( 1 );
+				// light.layers.enable( 2 );
+
+				var dirLight = new THREE.DirectionalLight( 0xFFFFFF, 0.1 );
+				dirLight.name = 'Dir. Light';
+				dirLight.position.set( 500, 1200, -750 );
+				dirLight.castShadow = true;
+				dirLight.shadow.camera.near = 0.1;
+				dirLight.shadow.camera.far = 5000;
+				dirLight.shadow.camera.right = 1370;
+				dirLight.shadow.camera.left = - 1370;
+				dirLight.shadow.camera.top	= 1370;
+				dirLight.shadow.camera.bottom = - 1370;
+				dirLight.shadow.mapSize.width = 2048;
+				dirLight.shadow.mapSize.height = 2048;
+				dirLight.shadow.radius = 12;
+				dirLight.shadow.bias = -0.0005;
+				scene.add( dirLight );
+
+				var dirGroup = new THREE.Group();
+				dirGroup.add( dirLight );
+				scene.add( dirGroup );
 
 				scene.add( camera );
-				camera.add( light );
 
-				var colors = [ 0xff0000, 0x00ff00, 0x0000ff ];
-				var geometry = new THREE.BoxBufferGeometry( 20, 20, 20 );
+
+				// camera.add( light );
+				scene.add( new THREE.AmbientLight( 0xffffff, 0.7 ) );
+				var dirLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
+				dirLight.position.set( -50, 100, -75 );
+				// dirLight.castShadow = true;
+
+				scene.add( dirLight );
+
+				initSky();
+
+
+				// scene.add( new THREE.HemisphereLight( 0xffffff, 0.3) );
+
+
+
+				// var colors = [ 0xff0000, 0x00ff00, 0x0000ff ];
+				// var geometry = new THREE.BoxBufferGeometry( 20, 20, 20 );
 				var layer;
 
-				for ( var i = 0; i < 300; i ++ ) {
+				// var material = new THREE.MeshPhongMaterial( {
+				// color: 0x9999aa,
+				// shininess: 0.6} );
 
-					layer = ( i % 3 );
+				var genCubeUrls = function ( prefix, postfix ) {
 
-					var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: colors[ layer ] } ) );
+					return [
+						prefix + 'px' + postfix, prefix + 'nx' + postfix,
+						prefix + 'py' + postfix, prefix + 'ny' + postfix,
+						prefix + 'pz' + postfix, prefix + 'nz' + postfix
+					];
 
-					object.position.x = Math.random() * 800 - 400;
-					object.position.y = Math.random() * 800 - 400;
-					object.position.z = Math.random() * 800 - 400;
+				};
 
-					object.rotation.x = Math.random() * 2 * Math.PI;
-					object.rotation.y = Math.random() * 2 * Math.PI;
-					object.rotation.z = Math.random() * 2 * Math.PI;
+				// var urls = genCubeUrls( 'textures/cube/MilkyWay/dark-s_', '.jpg' );
+				var urls = genCubeUrls( 'textures/cube/skyboxsun25deg/', '.jpg' );
 
-					object.scale.x = Math.random() + 0.5;
-					object.scale.y = Math.random() + 0.5;
-					object.scale.z = Math.random() + 0.5;
+				new THREE.CubeTextureLoader().load( urls, function ( cubeTexture ) {
 
+					cubeTexture.encoding = THREE.sRGBEncoding;
+
+					// scene.background = cubeTexture;
+
+					lightProbe.copy( LightProbeGenerator.fromCubeTexture( cubeTexture ) );
+
+					// var geometry = new THREE.SphereBufferGeometry( 5, 64, 32 );
+					//var geometry = new TorusKnotBufferGeometry( 4, 1.5, 256, 32, 2, 3 );
+
+					scene.envionment = cubeTexture;
+
+
+					var material = new THREE.MeshStandardMaterial( {
+						color: 0xcccccf,
+						metalness: 0.3,
+						roughness: 0.7,
+						envMap: cubeTexture,
+						envMapIntensity: API.envMapIntensity
+					} );
+
+				// 	var material = new THREE.MeshPhongMaterial( {
+				// 	color: 0x999999,
+				// 	shininess: 0,
+				// 	specular: 0x222222
+				// } );
+
+					// var mesh;
+					//
+					// // mesh
+					// mesh = new THREE.Mesh( geometry, material );
+					// scene.add( mesh );
+					//
+					render();
+
+
+
+
+				var loader = new OBJLoader();
+			  loader.load( 'models/obj/Site5.obj', function ( obj )
+
+			 {
+				 obj.traverse( function ( child ) {
+
+					 if ( child.isMesh ) child.material = material;
+
+				 } );
+			    var layer = 1
+			    var object = obj.children[ 0 ].clone();
 					object.layers.set( layer );
+					object.rotation.x = -3.1415926787/2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+			    scene.add( object );
 
-					scene.add( object );
+			    });
 
-				}
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness:1,
+						roughness: 0,
+						transparency: 0.7,
+						transparent:true,
+						envMap: cubeTexture,
+						envMapIntensity: API.envMapIntensity
+					})
 
-				renderer = new THREE.WebGLRenderer();
+					var loader = new OBJLoader();
+				  loader.load( 'models/obj/5-4-glass.obj', function ( obj )
+
+				 {
+					 obj.traverse( function ( child ) {
+
+						 if ( child.isMesh ) child.material = material1;
+
+					 } );
+				    var layer = 2
+				    var object = obj.children[ 0 ].clone();
+						object.layers.set( layer );
+						object.rotation.x = -3.1415926787/2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+				    scene.add( object );
+
+				    });
+
+				new MTLLoader( )
+					.setPath( 'models/obj/' )
+					.load( '5-4.mtl', function ( materials ) {
+
+						materials.preload();
+
+						new OBJLoader( )
+							.setMaterials( materials )
+							.setPath( 'models/obj/' )
+							.load( '5-4.obj', function ( obj ) {
+
+								var object = obj.children[ 0 ].clone()
+
+								// object.rotation.x = -3.1415926787/2;
+								object.layers.set( 2 );
+								object.rotation.x = -3.1415926787/2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add( object );
+
+							}, onProgress, onError );
+
+					} );
+
+					} );
+
+
+
+
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.VSMShadowMap;
+				renderer.setClearColor( 0xCCCCCC, 1 );
+				// renderer.outputEncoding = THREE.sRGBEncoding;
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+				// if ( ! renderer.extensions.get( 'WEBGL_depth_texture' ) ) {
+				//
+				// 	document.querySelector( '#error' ).style.display = 'block';
+				// 	return;
+				//
+				// }
+
+				lightProbe = new THREE.LightProbe();
+				scene.add( lightProbe );
+
+				directionalLight = new THREE.DirectionalLight( 0xffffff, API.directionalLightIntensity );
+				// directionalLight.position.set( 10, 10, 10 );
+				directionalLight.position.set( -50, 100, -75 );
+				directionalLight.castShadow = true;
+				scene.add( directionalLight );
+
+
+
+
+
+				controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+				controls.dampingFactor = 0.05;
+
+				controls.screenSpacePanning = false;
+
+				controls.minDistance = 10;
+				controls.maxDistance = 2000;
+
+				// composer = new EffectComposer( renderer );
+
+				var width = window.innerWidth;
+				var height = window.innerHeight;
+
+				// var ssaoPass = new SSAOPass( scene, camera, width, height );
+				// ssaoPass.kernelRadius = 6;
+				// ssaoPass.minDistance = 0.013;
+				// ssaoPass.maxDistance = 0.9;
+				// ssaoPass.blur = false;
+				// composer.addPass( ssaoPass );
+
+
 
 				var layers = {
 
@@ -127,14 +409,102 @@
 
 				};
 
+
+
+
 				//
 				// Init gui
 				var gui = new GUI();
+
+
+
+
+				// gui.add( ssaoPass, 'output', {
+				// 	'Default': SSAOPass.OUTPUT.Default,
+				// 	'SSAO Only': SSAOPass.OUTPUT.SSAO,
+				// 	'SSAO Only + Blur': SSAOPass.OUTPUT.Blur,
+				// 	'Beauty': SSAOPass.OUTPUT.Beauty,
+				// 	'Depth': SSAOPass.OUTPUT.Depth,
+				// 	'Normal': SSAOPass.OUTPUT.Normal
+				// } ).onChange( function ( value ) {
+				//
+				// 	ssaoPass.output = parseInt( value );} );
+				// 	gui.add( ssaoPass, 'kernelRadius' ).min( 0 ).max( 32 );
+				// 	gui.add( ssaoPass, 'minDistance' ).min( 0.001 ).max( 0.05 );
+				// 	gui.add( ssaoPass, 'maxDistance' ).min( 0.01 ).max( 0.9 );
+
+
 				gui.add( layers, 'toggle red' );
 				gui.add( layers, 'toggle green' );
 				gui.add( layers, 'toggle blue' );
 				gui.add( layers, 'enable all' );
 				gui.add( layers, 'disable all' );
+
+				var fl = gui.addFolder( 'Intensity' );
+
+				fl.add( API, 'lightProbeIntensity', 0, 1, 0.02 )
+					.name( 'light probe' )
+					.onChange( function () {
+
+						lightProbe.intensity = API.lightProbeIntensity; render();
+
+					} );
+
+				fl.add( API, 'directionalLightIntensity', 0, 1, 0.02 )
+					.name( 'directional light' )
+					.onChange( function () {
+
+						directionalLight.intensity = API.directionalLightIntensity; render();
+
+					} );
+
+				fl.add( API, 'envMapIntensity', 0, 1, 0.02 )
+					.name( 'envMap' )
+					.onChange( function () {
+
+						// mesh.material.envMapIntensity = API.envMapIntensity; render();
+
+					} );
+
+				fl.open();
+
+				gui.add( effectController, "turbidity", 1.0, 20.0, 0.1 ).onChange( guiChanged );
+				gui.add( effectController, "rayleigh", 0.0, 4, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "mieCoefficient", 0.0, 0.1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "mieDirectionalG", 0.0, 1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, "luminance", 0.0, 2 ).onChange( guiChanged );
+				gui.add( effectController, "inclination", 0, 1, 0.0001 ).onChange( guiChanged );
+				gui.add( effectController, "azimuth", 0, 1, 0.0001 ).onChange( guiChanged );
+				gui.add( effectController, "sun" ).onChange( guiChanged );
+
+				guiChanged();
+
+				function guiChanged() {
+
+					var uniforms = sky.material.uniforms;
+					uniforms[ "turbidity" ].value = effectController.turbidity;
+					uniforms[ "rayleigh" ].value = effectController.rayleigh;
+					uniforms[ "mieCoefficient" ].value = effectController.mieCoefficient;
+					uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
+					uniforms[ "luminance" ].value = effectController.luminance;
+
+					var theta = Math.PI * ( effectController.inclination - 0.5 );
+					var phi = 2 * Math.PI * ( effectController.azimuth - 0.5 );
+
+					var distance = 400000;
+
+					sunSphere.position.x = distance * Math.cos( phi );
+					sunSphere.position.y = distance * Math.sin( phi ) * Math.sin( theta );
+					sunSphere.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+
+					sunSphere.visible = effectController.sun;
+
+					uniforms[ "sunPosition" ].value.copy( sunSphere.position );
+
+					// renderer.render( scene, camera );
+
+				}
+
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
@@ -149,29 +519,57 @@
 
 			}
 
+
 			//
 
 			function animate() {
 
 				requestAnimationFrame( animate );
+				console.log("x: " + camera.position.x + ", y: " + (camera.position.y) + " z: " + (camera.position.z) + " xRot: " + camera.rotation.x + ", yRot: " + (camera.rotation.y) + " zRot: " + (camera.rotation.z));
 
-				render();
-				stats.update();
+				// renderer.render( scene, camera );
+				// stats.update();
+
+				// render();
+				// composer.render();
+				if(hasntBeenUpdated){
+					camera.lookAt(new THREE.Vector3(-244.22669491205392, 97.64395410077881,-105.54260795804112));
+					hasntBeenUpdated = false;
+				}
+
+				renderer.render( scene, camera );
+				// stats.update();
 
 			}
 
+			// render();
+
 			function render() {
+				//
+				// theta += 0.1;
+				//
+				// camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				// camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				// camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
+				// camera.lookAt( scene.position );
 
-				theta += 0.1;
-
-				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
-				camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
-				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
-				camera.lookAt( scene.position );
 
 				renderer.render( scene, camera );
 
 			}
+
+			function onProgress( xhr ) {
+
+				if ( xhr.lengthComputable ) {
+
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+
+				}
+
+			}
+
+			function onError() {}
 
 		</script>
 

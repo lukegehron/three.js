@@ -1287,7 +1287,7 @@ var FBXLoader = ( function () {
 			}, null );
 
 			// FBX does not list materials for Nurbs lines, so we'll just put our own in here.
-			var material = new LineBasicMaterial( { color: 0x3300ff, linewidth: 1 } );
+			var material = new LineBasicMaterial( { color: 0xcccccc, linewidth: 0.5 } );
 			return new Line( geometry, material );
 
 		},

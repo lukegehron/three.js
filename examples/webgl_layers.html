@@ -443,7 +443,12 @@ var counter1 = 0;
 					for(let i = 0; i < 71; i++){
 						b[i] = new THREE.Mesh(
 							new THREE.BoxGeometry(1.5,11,1.5),
-							new THREE.MeshBasicMaterial({color: "#AAAAAA"})
+							new THREE.MeshPhysicalMaterial({
+								color: "#444444",
+								transparency: 0.7,
+								transparent:true
+							})
+							// new THREE.MeshBasicMaterial({color: "#AAAAAA"})
 						);
 
 						b[i].position.y = -100;
@@ -586,16 +591,18 @@ var counter1 = 0;
 						hasntBeenUpdated = false;
 					}
 
+					let multiplier = 3;
+
 					boxyPosIndex++;
 					if(peopleOn){
 
 					for(let j = 0; j < zPaths.length; j++){
 
-							let currentIndex = boxyPosIndex % zPaths[j].length;
+							let currentIndex = boxyPosIndex % ((zPaths[j].length*multiplier)-1);
 							// console.log(zPaths[j].length);
-							b[j].position.x = xPaths[j][currentIndex];
-							b[j].position.y = yPaths[j][currentIndex];
-							b[j].position.z = zPaths[j][currentIndex];
+							b[j].position.x = xPaths[j][parseInt(currentIndex/multiplier)];
+							b[j].position.y = yPaths[j][parseInt(currentIndex/multiplier)];
+							b[j].position.z = zPaths[j][parseInt(currentIndex/multiplier)];
 						// }
 					}
 				}else{

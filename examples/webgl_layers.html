@@ -263,8 +263,8 @@ var counter1 = 0;
 						side: THREE.DoubleSide,
 
 						// ***** Clipping setup (material): *****
-						clippingPlanes: [ localPlane ],
-						clipShadows: true
+						// clippingPlanes: [ localPlane ],
+						// clipShadows: true
 					} );
 
 
@@ -423,7 +423,7 @@ var counter1 = 0;
 				//
 				// }
 
-				renderer.localClippingEnabled = true;
+				renderer.localClippingEnabled = false;
 
 				lightProbe = new THREE.LightProbe();
 				scene.add( lightProbe );

@@ -16,7 +16,7 @@
 			color: #08f;
 		}
 
-		
+
 	</style>
 </head>
 
@@ -49,7 +49,7 @@
 			var hasntBeenUpdated = true;
 
 			var b = []; //box
-			var spline;
+			// var spline;
 			var boxPos;
 			var boxyPosIndex = 0;
 
@@ -222,18 +222,18 @@ var counter1 = 3;
 
 					scene.envionment = cubeTexture;
 
-					var randomPoints = [];
-					for ( var i = 0; i < 100; i ++ ) {
-					    randomPoints.push(
-					        new THREE.Vector3(Math.random() * 200 - 100, Math.random() * 200 - 100, Math.random() * 200 - 100)
-					    );
-					}
-					spline = new THREE.SplineCurve3(randomPoints);
+					// var randomPoints = [];
+					// for ( var i = 0; i < 100; i ++ ) {
+					//     randomPoints.push(
+					//         new THREE.Vector3(Math.random() * 200 - 100, Math.random() * 200 - 100, Math.random() * 200 - 100)
+					//     );
+					// }
+					// spline = new THREE.SplineCurve3(randomPoints);
+					//
+					// boxPos = spline.getPoints(10000);
 
-					boxPos = spline.getPoints(10000);
 
-
-					localPlane = new THREE.Plane( new THREE.Vector3( 0, - 1, 0 ), 0.8 );
+					localPlane = new THREE.Plane( new THREE.Vector3( 0, - 1, 0 ), 35 );
 
 
 					render();
@@ -516,14 +516,24 @@ var counter1 = 3;
 
 						 child.material = material5;
 						 child.layers.set(layer)
-
 					 } );
 
-
-					 // console.log(object);
-					// var object1 = object.children[ 0 ].clone();
 					object.layers.set( layer );
+						scene.add( object );
 
+					} );
+
+					var loader = new FBXLoader();
+					loader.load( 'models/fbx/floorPlan-2.fbx', function ( object ) {
+						var layer = 5;
+
+						object.traverse( function ( child ) {
+
+						 child.material = material5;
+						 child.layers.set(layer)
+					 } );
+
+					object.layers.set( layer );
 						scene.add( object );
 
 					} );
@@ -660,6 +670,9 @@ new MTLLoader( )
 				var width = window.innerWidth;
 				var height = window.innerHeight;
 
+				var opt1 = true;
+				var opt2 = false;
+
 
 				var layers = {
 
@@ -673,6 +686,9 @@ new MTLLoader( )
 
 						camera.layers.toggle( 2 );
 						camera.layers.toggle( 3 );
+						opt1 = !opt1;
+						opt2 = !opt2;
+
 
 					},
 					// 'Building2': function() {
@@ -687,7 +703,21 @@ new MTLLoader( )
 				// var counter1 = 0;
 
 				var btn = { Camera:function(){ hasntBeenUpdated = true }};
-				var btn1 = { Clipping:function(){ renderer.localClippingEnabled = !renderer.localClippingEnabled }};
+				var btn1 = { Clipping:function(){
+					renderer.localClippingEnabled = !renderer.localClippingEnabled;
+					if(opt1){
+					camera.layers.enable( 4 );
+				}else{
+					camera.layers.disable( 4 );
+				}
+
+				if(opt2){
+				camera.layers.enable( 5 );
+			}else{
+				camera.layers.disable( 5 );
+			}
+
+				}};
 				var btn2 = { People:function(){ peopleOn = !peopleOn }};
 
 
@@ -750,6 +780,7 @@ new MTLLoader( )
 
 				requestAnimationFrame( animate );
 				// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+				// console.log(camera.layers);
 
 
 					if(hasntBeenUpdated){

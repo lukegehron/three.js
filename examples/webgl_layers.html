@@ -667,16 +667,18 @@ new MTLLoader( )
 
 					},
 
-					'Building1': function() {
+					'Building': function() {
 
 						camera.layers.toggle( 2 );
-
-					},
-					'Building2': function() {
-
 						camera.layers.toggle( 3 );
 
 					},
+					// 'Building2': function() {
+					//
+					// 	camera.layers.toggle( 3 );
+					// 	camera.layers.toggle(2)
+					//
+					// },
 
 				};
 
@@ -699,8 +701,8 @@ new MTLLoader( )
 				gui.add(btn2,'People');
 
 				gui.add( layers, 'Site' );
-				gui.add( layers, 'Building1' );
-				gui.add( layers, 'Building2' );
+				gui.add( layers, 'Building' );
+				// gui.add( layers, 'Building2' );
 
 
 				guiChanged();

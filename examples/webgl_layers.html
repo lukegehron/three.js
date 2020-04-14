@@ -705,17 +705,25 @@ new MTLLoader( )
 				var btn = { Camera:function(){ hasntBeenUpdated = true }};
 				var btn1 = { Clipping:function(){
 					renderer.localClippingEnabled = !renderer.localClippingEnabled;
-					if(opt1){
-					camera.layers.enable( 4 );
-				}else{
-					camera.layers.disable( 4 );
-				}
 
-				if(opt2){
-				camera.layers.enable( 5 );
+					if (renderer.localClippingEnabled){
+						if(opt1){
+						camera.layers.enable( 4 );
+					}else{
+						camera.layers.disable( 4 );
+					}
+
+					if(opt2){
+					camera.layers.enable( 5 );
+				}else{
+					camera.layers.disable( 5 );
+				}
 			}else{
+				camera.layers.disable( 4 );
 				camera.layers.disable( 5 );
 			}
+
+
 
 				}};
 				var btn2 = { People:function(){ peopleOn = !peopleOn }};

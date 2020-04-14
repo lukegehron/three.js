@@ -15,6 +15,8 @@
 		a {
 			color: #08f;
 		}
+
+		
 	</style>
 </head>
 
@@ -692,7 +694,7 @@ new MTLLoader( )
 
 				//
 				// Init gui
-				var gui = new GUI();
+				var gui = new GUI({  width: 150 });
 
 
 
@@ -747,7 +749,7 @@ new MTLLoader( )
 			function animate() {
 
 				requestAnimationFrame( animate );
-				console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+				// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
 
 
 					if(hasntBeenUpdated){

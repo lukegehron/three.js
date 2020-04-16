@@ -57,9 +57,29 @@
 			var yPaths = [];
 			var zPaths = [];
 
-			var xTreePaths = [];
-			var yTreePaths = [];
-			var zTreePaths = [];
+			var xTreePaths1 = [];
+			var yTreePaths1 = [];
+			var zTreePaths1 = [];
+
+			var xTreePaths2 = [];
+			var yTreePaths2 = [];
+			var zTreePaths2 = [];
+
+			var xTreePaths3 = [];
+			var yTreePaths3 = [];
+			var zTreePaths3 = [];
+
+			var xTreePaths4 = [];
+			var yTreePaths4 = [];
+			var zTreePaths4 = [];
+
+			var xTreePaths5 = [];
+			var yTreePaths5 = [];
+			var zTreePaths5 = [];
+
+			var xTreePaths6 = [];
+			var yTreePaths6 = [];
+			var zTreePaths6 = [];
 
 
 			var xArray = [];
@@ -130,11 +150,11 @@ var counter1 = 3;
 
 						var sprite = new THREE.Texture(image);
 				    sprite.needsUpdate = true;
-				    for (var i = 0; i < zTreePaths.length; i++) {
+				    for (var i = 0; i < zTreePaths1.length; i++) {
 				        var vertex = new THREE.Vector3();
-				        vertex.x = xTreePaths[i];
-				        vertex.y = yTreePaths[i]+20;
-				        vertex.z = zTreePaths[i];
+				        vertex.x = xTreePaths1[i];
+				        vertex.y = yTreePaths1[i]+20;
+				        vertex.z = zTreePaths1[i];
 				        geometry.vertices.push(vertex);
 				    }
 				    material = new THREE.PointsMaterial({
@@ -150,6 +170,171 @@ var counter1 = 3;
 				    scene.add(particles);
 
 					} );
+
+					new THREE.ImageLoader()
+						.setCrossOrigin( '*' )
+						// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+							.load( 'textures/tree/tree2-2.png?' + performance.now(), function ( image ) {
+
+							var texture = new THREE.CanvasTexture( image );
+							var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+							var geometry = new THREE.Geometry();
+
+							var sprite = new THREE.Texture(image);
+					    sprite.needsUpdate = true;
+					    for (var i = 0; i < zTreePaths2.length; i++) {
+					        var vertex = new THREE.Vector3();
+					        vertex.x = xTreePaths2[i];
+					        vertex.y = yTreePaths2[i]+22;
+					        vertex.z = zTreePaths2[i];
+					        geometry.vertices.push(vertex);
+					    }
+					    material = new THREE.PointsMaterial({
+					        size: 120,
+					        sizeAttenuation: true,
+					        map: sprite,
+					        transparent: true,
+					        alphaTest: 0.5
+					    });
+
+					    var particles = new THREE.Points(geometry, material);
+
+					    scene.add(particles);
+
+						} );
+
+						new THREE.ImageLoader()
+							.setCrossOrigin( '*' )
+							// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+								.load( 'textures/tree/tree3-1.png?' + performance.now(), function ( image ) {
+
+								var texture = new THREE.CanvasTexture( image );
+								var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+								var geometry = new THREE.Geometry();
+
+								var sprite = new THREE.Texture(image);
+						    sprite.needsUpdate = true;
+						    for (var i = 0; i < zTreePaths3.length; i++) {
+						        var vertex = new THREE.Vector3();
+						        vertex.x = xTreePaths3[i];
+						        vertex.y = yTreePaths3[i]+10;
+						        vertex.z = zTreePaths3[i];
+						        geometry.vertices.push(vertex);
+						    }
+						    material = new THREE.PointsMaterial({
+						        size: 60,
+						        sizeAttenuation: true,
+						        map: sprite,
+						        transparent: true,
+						        alphaTest: 0.5
+						    });
+
+						    var particles = new THREE.Points(geometry, material);
+
+						    scene.add(particles);
+
+							} );
+
+							new THREE.ImageLoader()
+								.setCrossOrigin( '*' )
+								// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+									.load( 'textures/tree/tree4-1.png?' + performance.now(), function ( image ) {
+
+									var texture = new THREE.CanvasTexture( image );
+									var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+									var geometry = new THREE.Geometry();
+
+									var sprite = new THREE.Texture(image);
+							    sprite.needsUpdate = true;
+							    for (var i = 0; i < zTreePaths4.length; i++) {
+							        var vertex = new THREE.Vector3();
+							        vertex.x = xTreePaths4[i];
+							        vertex.y = yTreePaths4[i]+20;
+							        vertex.z = zTreePaths4[i];
+							        geometry.vertices.push(vertex);
+							    }
+							    material = new THREE.PointsMaterial({
+							        size: 100,
+							        sizeAttenuation: true,
+							        map: sprite,
+							        transparent: true,
+							        alphaTest: 0.5
+							    });
+
+							    var particles = new THREE.Points(geometry, material);
+
+							    scene.add(particles);
+
+								} );
+
+								new THREE.ImageLoader()
+									.setCrossOrigin( '*' )
+									// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+										.load( 'textures/tree/tree5.png?' + performance.now(), function ( image ) {
+
+										var texture = new THREE.CanvasTexture( image );
+										var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+										var geometry = new THREE.Geometry();
+
+										var sprite = new THREE.Texture(image);
+								    sprite.needsUpdate = true;
+								    for (var i = 0; i < zTreePaths5.length; i++) {
+								        var vertex = new THREE.Vector3();
+								        vertex.x = xTreePaths5[i];
+								        vertex.y = yTreePaths5[i]+15;
+								        vertex.z = zTreePaths5[i];
+								        geometry.vertices.push(vertex);
+								    }
+								    material = new THREE.PointsMaterial({
+								        size: 80,
+								        sizeAttenuation: true,
+								        map: sprite,
+								        transparent: true,
+								        alphaTest: 0.5
+								    });
+
+								    var particles = new THREE.Points(geometry, material);
+
+								    scene.add(particles);
+
+									} );
+
+									new THREE.ImageLoader()
+										.setCrossOrigin( '*' )
+										// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+											.load( 'textures/tree/tree6.png?' + performance.now(), function ( image ) {
+
+											var texture = new THREE.CanvasTexture( image );
+											var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+											var geometry = new THREE.Geometry();
+
+											var sprite = new THREE.Texture(image);
+									    sprite.needsUpdate = true;
+									    for (var i = 0; i < zTreePaths6.length; i++) {
+									        var vertex = new THREE.Vector3();
+									        vertex.x = xTreePaths6[i];
+									        vertex.y = yTreePaths6[i]+25;
+									        vertex.z = zTreePaths6[i];
+									        geometry.vertices.push(vertex);
+									    }
+									    material = new THREE.PointsMaterial({
+									        size: 150,
+									        sizeAttenuation: true,
+									        map: sprite,
+									        transparent: true,
+									        alphaTest: 0.5
+									    });
+
+									    var particles = new THREE.Points(geometry, material);
+
+									    scene.add(particles);
+
+										} );
 
 			}
 
@@ -318,24 +503,124 @@ var counter1 = 3;
 					} );
 
 					var loader3 = new THREE.BufferGeometryLoader();
-					loader3.load( 'models/json/trees2.json', function ( geometry ) {
+					loader3.load( 'models/json/trees-1.json', function ( geometry ) {
 
-						console.log(geometry);
+						// console.log(geometry);
 
 							// xArray = [];
 							// yArray = [];
 							// zArray = [];
 							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
 									if(i % 3 == 0){
-										xTreePaths.push(geometry.attributes.position.array[i]);
+										xTreePaths1.push(geometry.attributes.position.array[i]);
 									}else if(i % 3 == 1){
-										zTreePaths.push(geometry.attributes.position.array[i]*-1);
+										zTreePaths1.push(geometry.attributes.position.array[i]*-1);
 									}else{
-										yTreePaths.push(geometry.attributes.position.array[i]);
+										yTreePaths1.push(geometry.attributes.position.array[i]);
 									}
 
 							}
 							});
+
+							var loader3 = new THREE.BufferGeometryLoader();
+							loader3.load( 'models/json/trees-2.json', function ( geometry ) {
+
+								// console.log(geometry);
+
+									// xArray = [];
+									// yArray = [];
+									// zArray = [];
+									for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+											if(i % 3 == 0){
+												xTreePaths2.push(geometry.attributes.position.array[i]);
+											}else if(i % 3 == 1){
+												zTreePaths2.push(geometry.attributes.position.array[i]*-1);
+											}else{
+												yTreePaths2.push(geometry.attributes.position.array[i]);
+											}
+
+									}
+									});
+
+									var loader3 = new THREE.BufferGeometryLoader();
+									loader3.load( 'models/json/trees-3.json', function ( geometry ) {
+
+										// console.log(geometry);
+
+											// xArray = [];
+											// yArray = [];
+											// zArray = [];
+											for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+													if(i % 3 == 0){
+														xTreePaths3.push(geometry.attributes.position.array[i]);
+													}else if(i % 3 == 1){
+														zTreePaths3.push(geometry.attributes.position.array[i]*-1);
+													}else{
+														yTreePaths3.push(geometry.attributes.position.array[i]);
+													}
+
+											}
+											});
+
+											var loader3 = new THREE.BufferGeometryLoader();
+											loader3.load( 'models/json/trees-4.json', function ( geometry ) {
+
+												// console.log(geometry);
+
+													// xArray = [];
+													// yArray = [];
+													// zArray = [];
+													for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+															if(i % 3 == 0){
+																xTreePaths4.push(geometry.attributes.position.array[i]);
+															}else if(i % 3 == 1){
+																zTreePaths4.push(geometry.attributes.position.array[i]*-1);
+															}else{
+																yTreePaths4.push(geometry.attributes.position.array[i]);
+															}
+
+													}
+													});
+
+													var loader3 = new THREE.BufferGeometryLoader();
+													loader3.load( 'models/json/trees-5.json', function ( geometry ) {
+
+														// console.log(geometry);
+
+															// xArray = [];
+															// yArray = [];
+															// zArray = [];
+															for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+																	if(i % 3 == 0){
+																		xTreePaths5.push(geometry.attributes.position.array[i]);
+																	}else if(i % 3 == 1){
+																		zTreePaths5.push(geometry.attributes.position.array[i]*-1);
+																	}else{
+																		yTreePaths5.push(geometry.attributes.position.array[i]);
+																	}
+
+															}
+															});
+
+															var loader3 = new THREE.BufferGeometryLoader();
+															loader3.load( 'models/json/trees-6.json', function ( geometry ) {
+
+																// console.log(geometry);
+
+																	// xArray = [];
+																	// yArray = [];
+																	// zArray = [];
+																	for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+																			if(i % 3 == 0){
+																				xTreePaths6.push(geometry.attributes.position.array[i]);
+																			}else if(i % 3 == 1){
+																				zTreePaths6.push(geometry.attributes.position.array[i]*-1);
+																			}else{
+																				yTreePaths6.push(geometry.attributes.position.array[i]);
+																			}
+
+																	}
+																	});
 						// }
 
 
@@ -832,18 +1117,15 @@ new MTLLoader( )
 				//
 				// Init gui
 				var gui = new GUI({  width: 150 });
-
-				var f2 = gui.addFolder('Clipping');
-				f2.add(mClip,'sixthFloor');
-				f2.add(mClip,'thirdFloor');
-				f2.add(mClip,'section');
-
-				// f2.add(text, 'message');
-			  // f2.add(text, 'speed', -5, 5);
-			  gui.add(text, 'displayOutline');
-			  gui.add(text, 'explode');
-				// Choose from named values
-				gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
+				// 
+				// var f2 = gui.addFolder('Clipping');
+				// f2.add(mClip,'sixthFloor');
+				// f2.add(mClip,'thirdFloor');
+				// f2.add(mClip,'section');
+				//
+			  // gui.add(text, 'displayOutline');
+			  // gui.add(text, 'explode');
+				// gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
 
 
 

@@ -57,6 +57,10 @@
 			var yPaths = [];
 			var zPaths = [];
 
+			var xTreePaths = [];
+			var yTreePaths = [];
+			var zTreePaths = [];
+
 
 			var xArray = [];
 			var yArray = [];
@@ -64,7 +68,7 @@
 
 			var opt1 = true;
 			var opt2 = false;
-			
+
 			var peopleOn = false;
 
 
@@ -77,16 +81,16 @@
 			var lightProbe, directionalLight;
 
 			var effectController = {
-				turbidity: 1,
+				turbidity: 3,
 				rayleigh: 4,
 				mieCoefficient: 0.033,
 				mieDirectionalG: 1,
 				luminance: 0.9,
-				inclination: 0.366, // elevation / inclination
-				azimuth: 0.27, // Facing front,
+				inclination: 0.31, // elevation / inclination
+				azimuth: 0.24, // Facing front,
 				sun: ! true
 			};
-var localPlane;
+var localPlane, localPlane2;
 var counter1 = 3;
 
 
@@ -111,6 +115,43 @@ var counter1 = 3;
 
 			init();
 			animate();
+
+			function addImage() {
+
+				new THREE.ImageLoader()
+					.setCrossOrigin( '*' )
+					// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree1-5.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths[i];
+				        vertex.y = yTreePaths[i]+20;
+				        vertex.z = zTreePaths[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 100,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+			}
 
 			function initSky() {
 
@@ -276,34 +317,83 @@ var counter1 = 3;
 
 					} );
 
-					var material9 = new THREE.MeshStandardMaterial( {
-						color: 0xcfcdcc,
-						metalness: 0.3,
-						roughness: 0.7,
-						envMap: cubeTexture,
-						envMapIntensity: API.envMapIntensity,
-						side: THREE.DoubleSide,
-					} );
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees2.json', function ( geometry ) {
+
+						console.log(geometry);
+
+							// xArray = [];
+							// yArray = [];
+							// zArray = [];
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+						// }
 
 
-				var loader = new OBJLoader();
-			  loader.load( 'models/obj/Site9-Terrain.obj', function ( obj )
+					// } );
 
-			 {
-				 obj.traverse( function ( child ) {
+				// 	var material9 = new THREE.MeshStandardMaterial( {
+				// 		color: 0xcfcdcc,
+				// 		metalness: 0.3,
+				// 		roughness: 0.7,
+				// 		envMap: cubeTexture,
+				// 		envMapIntensity: API.envMapIntensity,
+				// 		side: THREE.DoubleSide,
+				// 	} );
+			 //
+			 //
+				// var loader = new OBJLoader();
+			 //  loader.load( 'models/obj/Site9-Terrain.obj', function ( obj )
+			 //
+			 // {
+				//  obj.traverse( function ( child ) {
+			 //
+				// 	 if ( child.isMesh ) child.material = material9;
+			 //
+				//  } );
+			 //    var layer = 1
+			 //    var object = obj.children[ 0 ].clone();
+				// 	object.layers.set( layer );
+				// 	object.rotation.x = -3.1415926787/2;
+				// 	object.castShadow = true;
+				// 	object.receiveShadow = true;
+			 //    scene.add( object );
+			 //
+			 //    });
 
-					 if ( child.isMesh ) child.material = material9;
+					new MTLLoader( )
+						.setPath( 'models/obj/' )
+						.load( 'Site23-Terrain.mtl', function ( materialz ) {
 
-				 } );
-			    var layer = 1
-			    var object = obj.children[ 0 ].clone();
-					object.layers.set( layer );
-					object.rotation.x = -3.1415926787/2;
-					object.castShadow = true;
-					object.receiveShadow = true;
-			    scene.add( object );
+							materialz.preload();
 
-			    });
+
+							new OBJLoader( )
+								.setMaterials( materialz )
+								.setPath( 'models/obj/' )
+								.load( 'Site23-Terrain.obj', function ( obj ) {
+
+									var object = obj.children[ 0 ].clone()
+
+									object.layers.set( 1 );
+									object.rotation.x = -3.1415926787/2;
+									object.castShadow = true;
+									object.receiveShadow = true;
+									scene.add( object );
+									// console.log(obj);
+								});
+							});
+
+
 
 				// var	material3 = new THREE.MeshStandardMaterial( {
 				// 		color: 0xcccccf,
@@ -341,14 +431,14 @@ var counter1 = 3;
 								roughness: 0.7,
 								envMap: cubeTexture,
 								envMapIntensity: API.envMapIntensity,
-								// side: THREE.DoubleSide,
+								side: THREE.DoubleSide,
 
 								// ***** Clipping setup (material): *****
 
 							} );
 							var loader9 = new OBJLoader();
 
-							loader9.load( 'models/obj/Site9-Buildings.obj', function ( obj )
+							loader9.load( 'models/obj/Site22-Buildings.obj', function ( obj )
 
 						 {
 							 obj.traverse( function ( child ) {
@@ -368,7 +458,7 @@ var counter1 = 3;
 
 								var loader10 = new OBJLoader();
 
-								loader10.load( 'models/obj/Site10-Buildings.obj', function ( obj )
+								loader10.load( 'models/obj/Site22-Buildings1.obj', function ( obj )
 
 							 {
 								 obj.traverse( function ( child ) {
@@ -468,6 +558,7 @@ var counter1 = 3;
 							.setPath( 'models/obj/' )
 							.load( 'Site11_Bldg11.obj', function ( obj ) {
 								// console.log(obj);
+								//'SiteW-4.obj'
 
 								obj.traverse( function ( child ) {
 
@@ -673,6 +764,8 @@ new MTLLoader( )
 				var width = window.innerWidth;
 				var height = window.innerHeight;
 
+				setTimeout( addImage, 1300 );
+
 
 
 
@@ -713,9 +806,44 @@ new MTLLoader( )
 
 
 
+				var FizzyText = function() {
+  this.message = 'dat.gui';
+  this.speed = 0.8;
+	this.camera = 1;
+  this.displayOutline = false;
+  this.explode = function() { peopleOn = !peopleOn };
+  // Define render logic ...
+};
+
+
+  var text = new FizzyText();
+
+	var clippingP = function(){
+		this.sixthFloor = false;
+		this.thirdFloor = false;
+		this.section = false;
+	}
+
+	var mClip = new clippingP();
+
+
+
+
 				//
 				// Init gui
 				var gui = new GUI({  width: 150 });
+
+				var f2 = gui.addFolder('Clipping');
+				f2.add(mClip,'sixthFloor');
+				f2.add(mClip,'thirdFloor');
+				f2.add(mClip,'section');
+
+				// f2.add(text, 'message');
+			  // f2.add(text, 'speed', -5, 5);
+			  gui.add(text, 'displayOutline');
+			  gui.add(text, 'explode');
+				// Choose from named values
+				gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
 
 
 

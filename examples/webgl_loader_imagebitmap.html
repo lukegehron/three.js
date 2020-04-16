@@ -23,58 +23,85 @@
 			init();
 			animate();
 
-			function addImageBitmap() {
-
-				new THREE.ImageBitmapLoader()
-					.setOptions( { imageOrientation: 'none' } )
-					.load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( imageBitmap ) {
-
-						var texture = new THREE.CanvasTexture( imageBitmap );
-						var material = new THREE.MeshBasicMaterial( { map: texture } );
-
-						/* ImageBitmap should be disposed when done with it
-						   Can't be done until it's actually uploaded to WebGLTexture */
-
-						// imageBitmap.close();
-
-						addCube( material );
-
-					}, function ( p ) {
-
-						console.log( p );
-
-					}, function ( e ) {
-
-						console.log( e );
-
-					} );
-
-			}
+			// function addImageBitmap() {
+			//
+			// 	new THREE.ImageBitmapLoader()
+			// 		.setOptions( { imageOrientation: 'none' } )
+			// 		.load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( imageBitmap ) {
+			//
+			// 			var texture = new THREE.CanvasTexture( imageBitmap );
+			// 			var material = new THREE.MeshBasicMaterial( { map: texture } );
+			//
+			// 			/* ImageBitmap should be disposed when done with it
+			// 			   Can't be done until it's actually uploaded to WebGLTexture */
+			//
+			// 			// imageBitmap.close();
+			//
+			// 			addCube( material );
+			//
+			// 		}, function ( p ) {
+			//
+			// 			console.log( p );
+			//
+			// 		}, function ( e ) {
+			//
+			// 			console.log( e );
+			//
+			// 		} );
+			//
+			// }
 
 			function addImage() {
 
 				new THREE.ImageLoader()
 					.setCrossOrigin( '*' )
-					.load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+					// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree1.png?' + performance.now(), function ( image ) {
 
 						var texture = new THREE.CanvasTexture( image );
-						var material = new THREE.MeshBasicMaterial( { color: 0xff8888, map: texture } );
-						addCube( material );
+						// var material = new THREE.MeshBasicMaterial( { color: 0xff8888, map: texture } );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < 10000; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = 20 * Math.random() - 10;
+				        vertex.y = 0;
+				        vertex.z = 20 * Math.random() - 10;
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 1,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+				    // material.color.setHSL(1.0, 0.3, 0.7);
+				    var particles = new THREE.Points(geometry, material);
+				    // particles.sortParticles = true;
+				    // Using material.alphaTest = 0.5 instead
+				    // Thanks @WestLangley
+				    scene.add(particles);
+						// addCube( material );
 
 					} );
 
 			}
 
-			var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-
-			function addCube( material ) {
-
-				var cube = new THREE.Mesh( geometry, material );
-				cube.position.set( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-				cube.rotation.set( Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI );
-				cubes.add( cube );
-
-			}
+			// var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+			//
+			// function addCube( material ) {
+			//
+			// 	var cube = new THREE.Mesh( geometry, material );
+			// 	cube.position.set( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
+			// 	cube.rotation.set( Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI );
+			// 	cubes.add( cube );
+			//
+			// }
 
 			function init() {
 
@@ -84,7 +111,7 @@
 				// CAMERA
 
 				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 1500 );
-				camera.position.set( 0, 4, 7 );
+				camera.position.set( 0, 14, 17 );
 				camera.lookAt( 0, 0, 0 );
 
 				// SCENE
@@ -92,14 +119,16 @@
 				scene = new THREE.Scene();
 
 				//
+				//
+				// group = new THREE.Group();
+				// scene.add( group );
+				//
+				// group.add( new THREE.GridHelper( 4, 12 ) );
+				//
+				// cubes = new THREE.Group();
+				// group.add( cubes );
 
-				group = new THREE.Group();
-				scene.add( group );
 
-				group.add( new THREE.GridHelper( 4, 12 ) );
-
-				cubes = new THREE.Group();
-				group.add( cubes );
 
 				// RENDERER
 
@@ -110,12 +139,12 @@
 
 				// TESTS
 
+				// setTimeout( addImage, 300 );
+				// setTimeout( addImage, 600 );
+				// setTimeout( addImage, 900 );
 				setTimeout( addImage, 300 );
-				setTimeout( addImage, 600 );
-				setTimeout( addImage, 900 );
-				setTimeout( addImageBitmap, 1300 );
-				setTimeout( addImageBitmap, 1600 );
-				setTimeout( addImageBitmap, 1900 );
+				// setTimeout( addImageBitmap, 1600 );
+				// setTimeout( addImageBitmap, 1900 );
 
 				// EVENTS
 
@@ -134,7 +163,7 @@
 
 			function animate() {
 
-				group.rotation.y = performance.now() / 3000;
+				// group.rotation.y = performance.now() / 3000;
 
 				renderer.render( scene, camera );
 

@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>three.js webgl - layers</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="main.css">
+	<style>
+		body {
+			background-color: #f0f0f0;
+			color: #444;
+		}
+
+		a {
+			color: #08f;
+		}
+
+		 #blocker {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+		}
+
+		#instructions {
+			width: 100%;
+			height: 100%;
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+
+			-webkit-box-orient: horizontal;
+			-moz-box-orient: horizontal;
+			box-orient: horizontal;
+
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			box-pack: center;
+
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			box-align: center;
+
+			color: #ffffff;
+			text-align: center;
+			font-family: Arial;
+			font-size: 14px;
+			line-height: 24px;
+
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="info">
+		<!-- <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl layers -->
+	</div>
+
+	<!-- <div id="blocker">
+
+		<div id="instructions">
+			<span style="font-size:36px">LOADING...</span>
+			<br /><br />
+			PAYETTE<br/>
+		</div>
+
+	</div> -->
+
+	<script type="module">
+
+		import * as THREE from '../build/three.module.js';
+		import { GUI } from './jsm/libs/dat.gui.module.js';
+		import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+		import { MTLLoader } from './jsm/loaders/MTLLoader.js';
+		import { MapControls } from './jsm/controls/OrbitControls.js';
+		import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+		import { Sky } from './jsm/objects/Sky.js';
+		import { LightProbeGenerator } from './jsm/lights/LightProbeGenerator.js';
+		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
+		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
+
+		var cameraOrtho, sceneOrtho;
+
+		var spriteC;
+
+		var mapC;
+
+
+		var hasntBeenUpdated = true;
+
+		var b = [];
+		var boxPos;
+		var boxyPosIndex = 0;
+
+		var xPaths = [];
+		var yPaths = [];
+		var zPaths = [];
+
+		var xTreePaths1 = [];
+		var yTreePaths1 = [];
+		var zTreePaths1 = [];
+
+		var xTreePaths2 = [];
+		var yTreePaths2 = [];
+		var zTreePaths2 = [];
+
+		var xTreePaths3 = [];
+		var yTreePaths3 = [];
+		var zTreePaths3 = [];
+
+		var xTreePaths4 = [];
+		var yTreePaths4 = [];
+		var zTreePaths4 = [];
+
+		var xTreePaths5 = [];
+		var yTreePaths5 = [];
+		var zTreePaths5 = [];
+
+		var xTreePaths6 = [];
+		var yTreePaths6 = [];
+		var zTreePaths6 = [];
+
+
+		var xArray = [];
+		var yArray = [];
+		var zArray = [];
+
+		var opt1 = true;
+		var opt2 = false;
+
+		var peopleOn = false;
+
+		var container, stats, controls;
+		var camera, scene, renderer;
+		var sky, sunSphere;
+
+		var composer;
+
+		var lightProbe, directionalLight;
+
+		var effectController = {
+			turbidity: 3,
+			rayleigh: 4,
+			mieCoefficient: 0.033,
+			mieDirectionalG: 1,
+			luminance: 0.9,
+			inclination: 0.31, // elevation / inclination
+			azimuth: 0.24, // Facing front,
+			sun: ! true
+		};
+
+		var localPlane, localPlane2;
+		var counter1 = 3;
+
+		var API = {
+			lightProbeIntensity: 1.0,
+			directionalLightIntensity: 0.12,
+			envMapIntensity: 0.8
+		};
+
+		var radius = 100, theta = 0;
+
+
+		var params = {
+			animate: true,
+			planeY: {
+				constant: 99,
+				negated: false,
+				displayHelper: false
+			}
+		};
+
+
+		init();
+		animate();
+
+	function addImage() {
+
+			new THREE.ImageLoader()
+				.setCrossOrigin( '*' )
+				.load( 'textures/tree/tree1-5.png?' + performance.now(), function ( image ) {
+
+					var texture = new THREE.CanvasTexture( image );
+					var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+			    sprite.needsUpdate = true;
+			    for (var i = 0; i < zTreePaths1.length; i++) {
+			        var vertex = new THREE.Vector3();
+			        vertex.x = xTreePaths1[i];
+			        vertex.y = yTreePaths1[i]+20;
+			        vertex.z = zTreePaths1[i];
+			        geometry.vertices.push(vertex);
+			    }
+			    material = new THREE.PointsMaterial({
+			        size: 100,
+			        sizeAttenuation: true,
+			        map: sprite,
+			        transparent: true,
+			        alphaTest: 0.5
+			    });
+
+			    var particles = new THREE.Points(geometry, material);
+
+			    scene.add(particles);
+
+				} );
+
+				new THREE.ImageLoader()
+					.setCrossOrigin( '*' )
+					// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree2-2.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths2.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths2[i];
+				        vertex.y = yTreePaths2[i]+22;
+				        vertex.z = zTreePaths2[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 120,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+					new THREE.ImageLoader()
+						.setCrossOrigin( '*' )
+						// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree3-1.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths3.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths3[i];
+				        vertex.y = yTreePaths3[i]+10;
+				        vertex.z = zTreePaths3[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 60,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+					new THREE.ImageLoader()
+						.setCrossOrigin( '*' )
+						// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree4-1.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths4.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths4[i];
+				        vertex.y = yTreePaths4[i]+20;
+				        vertex.z = zTreePaths4[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 100,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+					new THREE.ImageLoader()
+						.setCrossOrigin( '*' )
+						// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree5.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths5.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths5[i];
+				        vertex.y = yTreePaths5[i]+15;
+				        vertex.z = zTreePaths5[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 80,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+					new THREE.ImageLoader()
+						.setCrossOrigin( '*' )
+						// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+						.load( 'textures/tree/tree6.png?' + performance.now(), function ( image ) {
+
+						var texture = new THREE.CanvasTexture( image );
+						var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true } );
+
+						var geometry = new THREE.Geometry();
+
+						var sprite = new THREE.Texture(image);
+				    sprite.needsUpdate = true;
+				    for (var i = 0; i < zTreePaths6.length; i++) {
+				        var vertex = new THREE.Vector3();
+				        vertex.x = xTreePaths6[i];
+				        vertex.y = yTreePaths6[i]+25;
+				        vertex.z = zTreePaths6[i];
+				        geometry.vertices.push(vertex);
+				    }
+				    material = new THREE.PointsMaterial({
+				        size: 150,
+				        sizeAttenuation: true,
+				        map: sprite,
+				        transparent: true,
+				        alphaTest: 0.5
+				    });
+
+				    var particles = new THREE.Points(geometry, material);
+
+				    scene.add(particles);
+
+					} );
+
+		}
+
+			function initSky() {
+
+				// Add Sky
+				sky = new Sky();
+				sky.scale.setScalar( 450000 );
+				scene.add( sky );
+
+				// Add Sun Helper
+				sunSphere = new THREE.Mesh(
+					new THREE.SphereBufferGeometry( 20000, 16, 8 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+				);
+				sunSphere.position.y = - 700000;
+				sunSphere.visible = false;
+				scene.add( sunSphere );
+
+			}
+
+			function init() {
+				renderer = new THREE.WebGLRenderer({antialias: true});
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				var width = window.innerWidth / 2;
+				var height = window.innerHeight / 2;
+
+				camera = new THREE.PerspectiveCamera( 52, window.innerWidth / window.innerHeight, 1, 9000 );
+
+				cameraOrtho = new THREE.OrthographicCamera( - width / 2, width / 2, height / 2, - height / 2, 1, 10 );
+				cameraOrtho.position.z = 10;
+
+
+
+				controls = new MapControls(camera, renderer.domElement);
+				controls.mouseButtons = {
+				LEFT: THREE.MOUSE.PAN,
+				MIDDLE: THREE.MOUSE.ROTATE,
+				RIGHT: THREE.MOUSE.ROTATE
+				}
+
+				camera.position.x = -1660;
+				camera.position.y = 1080;
+				camera.position.z = 1520;
+
+
+				camera.layers.enable( 0 ); // enabled by default
+				camera.layers.enable( 1 );
+				camera.layers.enable( 2 );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
+
+				sceneOrtho = new THREE.Scene();
+
+
+
+
+
+
+
+
+
+				var	spotLight = new THREE.SpotLight( 0x888888 );
+				spotLight.name = 'Spot Light';
+				spotLight.angle = Math.PI / 5;
+				spotLight.penumbra = 0.3;
+				spotLight.position.set( 80, 200, 50 );
+				spotLight.castShadow = true;
+				spotLight.shadow.camera.near = 80;
+				spotLight.shadow.camera.far = 2000;
+				spotLight.shadow.mapSize.width = 1024;
+				spotLight.shadow.mapSize.height = 1024;
+				spotLight.shadow.bias = -0.002;
+				spotLight.shadow.radius = 12;
+
+
+				var dirLight = new THREE.DirectionalLight( 0xFFFFFF, 0.13 );
+				dirLight.name = 'Dir. Light';
+				dirLight.position.set( 500, 1200, -750 );
+				dirLight.castShadow = true;
+				dirLight.shadow.camera.near = 0.1;
+				dirLight.shadow.camera.far = 5000;
+				dirLight.shadow.camera.right = 1370;
+				dirLight.shadow.camera.left = - 1370;
+				dirLight.shadow.camera.top	= 1370;
+				dirLight.shadow.camera.bottom = - 1370;
+				dirLight.shadow.mapSize.width = 2048;
+				dirLight.shadow.mapSize.height = 2048;
+				dirLight.shadow.radius = 12;
+				dirLight.shadow.bias = -0.002;
+				scene.add( dirLight );
+
+				var dirGroup = new THREE.Group();
+				dirGroup.add( dirLight );
+				scene.add( dirGroup );
+
+				scene.add( camera );
+
+				scene.add( new THREE.AmbientLight( 0xffffff, 0.7 ) );
+				var dirLight = new THREE.DirectionalLight( 0xffffff, 0.2 );
+				dirLight.position.set( -50, 100, -75 );
+
+				scene.add( dirLight );
+
+				initSky();
+
+				var layer;
+
+				var genCubeUrls = function ( prefix, postfix ) {
+
+					return [
+						prefix + 'px' + postfix, prefix + 'nx' + postfix,
+						prefix + 'py' + postfix, prefix + 'ny' + postfix,
+						prefix + 'pz' + postfix, prefix + 'nz' + postfix
+					];
+
+				};
+
+				var urls = genCubeUrls( 'textures/cube/skyboxsun25deg/', '.jpg' );
+
+				new THREE.CubeTextureLoader().load( urls, function ( cubeTexture ) {
+
+					cubeTexture.encoding = THREE.sRGBEncoding;
+
+					lightProbe.copy( LightProbeGenerator.fromCubeTexture( cubeTexture ) );
+
+					scene.envionment = cubeTexture;
+
+					localPlane = new THREE.Plane( new THREE.Vector3( 0, - 1, 0 ), 35 );
+
+
+					render();
+
+					var loader = new FBXLoader();
+					loader.load( 'models/fbx/lines2.fbx', function ( object ) {
+
+						scene.add( object );
+
+					} );
+
+
+
+					var loader = new FBXLoader();
+					loader.load( 'models/fbx/path2.fbx', function ( object ) {
+
+						for(let j = 0; j < object.children.length; j++){
+							xArray = [];
+							yArray = [];
+							zArray = [];
+							for (let i = 0; i < object.children[j].geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xArray.push(object.children[j].geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										yArray.push(object.children[j].geometry.attributes.position.array[i]);
+									}else{
+										zArray.push(object.children[j].geometry.attributes.position.array[i]);
+									}
+
+							}
+							xPaths.push(xArray);
+							yPaths.push(yArray);
+							zPaths.push(zArray);
+						}
+
+
+					} );
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-1.json', function ( geometry ) {
+
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths1.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths1.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths1.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-2.json', function ( geometry ) {
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths2.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths2.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths2.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-3.json', function ( geometry ) {
+
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths3.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths3.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths3.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-4.json', function ( geometry ) {
+
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths4.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths4.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths4.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-5.json', function ( geometry ) {
+
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths5.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths5.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths5.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+					var loader3 = new THREE.BufferGeometryLoader();
+					loader3.load( 'models/json/trees-6.json', function ( geometry ) {
+
+							for (let i = 0; i < geometry.attributes.position.array.length; i++ ){
+									if(i % 3 == 0){
+										xTreePaths6.push(geometry.attributes.position.array[i]);
+									}else if(i % 3 == 1){
+										zTreePaths6.push(geometry.attributes.position.array[i]*-1);
+									}else{
+										yTreePaths6.push(geometry.attributes.position.array[i]);
+									}
+
+							}
+							});
+
+
+					new MTLLoader( )
+						.setPath( 'models/obj/' )
+						.load( 'Site23-Terrain.mtl', function ( materialz ) {
+
+							materialz.preload();
+
+
+							new OBJLoader( )
+								.setMaterials( materialz )
+								.setPath( 'models/obj/' )
+								.load( 'Site23-Terrain.obj', function ( obj ) {
+
+									var object = obj.children[ 0 ].clone()
+
+									object.layers.set( 1 );
+									object.rotation.x = -3.1415926787/2;
+									object.castShadow = true;
+									object.receiveShadow = true;
+									scene.add( object );
+								});
+							});
+
+						var	material = new THREE.MeshStandardMaterial( {
+								color: 0xcccccf,
+								metalness: 0.3,
+								roughness: 0.7,
+								envMap: cubeTexture,
+								envMapIntensity: API.envMapIntensity,
+								side: THREE.DoubleSide,
+
+							} );
+							var loader9 = new OBJLoader();
+
+							loader9.load( 'models/obj/Site22-Buildings.obj', function ( obj )
+
+						 {
+							 obj.traverse( function ( child ) {
+
+								 if ( child.isMesh ) child.material = material;
+
+							 } );
+						    var layer = 1
+						    var object = obj.children[ 0 ].clone();
+								object.layers.set( layer );
+								object.rotation.x = -3.1415926787/2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+						    scene.add( object );
+
+						    });
+
+								var loader10 = new OBJLoader();
+
+								loader10.load( 'models/obj/Site22-Buildings2.obj', function ( obj )
+
+							 {
+								 obj.traverse( function ( child ) {
+
+									 if ( child.isMesh ) child.material = material;
+
+								 } );
+							    var layer = 1
+							    var object = obj.children[ 0 ].clone();
+									object.layers.set( layer );
+									object.rotation.x = -3.1415926787/2;
+									object.castShadow = true;
+									object.receiveShadow = true;
+							    scene.add( object );
+
+							    });
+
+
+
+									//BUILDING OPTION 1
+
+									var material5 = new THREE.LineBasicMaterial( { color: 0x444444, linewidth: 0.5, clippingPlanes: [ localPlane ],
+									clipShadows: true } );
+
+									var loader = new FBXLoader();
+									loader.load( 'models/fbx/bldgOutline1.fbx', function ( object ) {
+										var layer = 2
+
+										object.traverse( function ( child ) {
+
+										 child.material = material5;
+										 child.layers.set(layer)
+
+									 } );
+
+									object.layers.set( layer );
+
+										scene.add( object );
+
+									} );
+
+								var urls1 = genCubeUrls( 'textures/cube/skyboxsun25deg1/', '.jpg' );
+
+								new THREE.CubeTextureLoader().load( urls1, function ( cubeTexture1 ) {
+
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness:1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent:true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [ localPlane ],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+
+
+					var loader = new OBJLoader();
+				  loader.load( 'models/obj/Site11_Glass.obj', function ( obj )
+
+				 {
+					 obj.traverse( function ( child ) {
+
+						 if ( child.isMesh ) child.material = material1;
+
+					 } );
+				    var layer = 2
+				    var object = obj.children[ 0 ].clone();
+						object.layers.set( layer );
+						object.rotation.x = -3.1415926787/2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+				    scene.add( object );
+
+				    });
+					});
+
+				new MTLLoader( )
+					.setPath( 'models/obj/' )
+					.load( 'Site11_Bldg11.mtl', function ( materials ) {
+
+						materials.preload();
+
+
+						new OBJLoader( )
+							.setMaterials( materials )
+							.setPath( 'models/obj/' )
+							.load( 'Site11_Bldg11.obj', function ( obj ) {
+								//'SiteW-4.obj'
+
+								obj.traverse( function ( child ) {
+
+		 						 if ( child.isMesh ) child.material.clippingPlanes= [ localPlane ];
+								 if ( child.isMesh ) child.material.clipShadows= true;
+
+		 					 } );
+
+								var object = obj.children[ 0 ].clone()
+
+								object.traverse( function ( child ) {
+									if ( child.isMesh ) {
+										for(var i = 0; i < child.material.length; i++){
+											child.material[i].clippingPlanes= [ localPlane ];
+											child.material[i].clipShadows= true;
+										}
+									}
+								} );
+
+
+								object.layers.set( 2 );
+								object.rotation.x = -3.1415926787/2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add( object );
+
+							}, onProgress, onError );
+
+					} );
+
+					//END OF OPTION 1
+
+					//BUILDING OPTION 2
+
+
+
+					var material5 = new THREE.LineBasicMaterial( { color: 0x444444, linewidth: 0.5, clippingPlanes: [ localPlane ],
+					clipShadows: true } );
+
+					var loader = new FBXLoader();
+					loader.load( 'models/fbx/bldgOutline2.fbx', function ( object ) {
+						var layer = 3;
+
+						object.traverse( function ( child ) {
+
+						 child.material = material5;
+						 child.layers.set(layer)
+					 } );
+
+					object.layers.set( layer );
+						scene.add( object );
+
+					} );
+
+					var loader = new FBXLoader();
+					loader.load( 'models/fbx/floorPlan-2.fbx', function ( object ) {
+						var layer = 5;
+
+						object.traverse( function ( child ) {
+
+						 child.material = material5;
+						 child.layers.set(layer)
+					 } );
+
+					object.layers.set( layer );
+						scene.add( object );
+
+					} );
+
+				var urls1 = genCubeUrls( 'textures/cube/skyboxsun25deg1/', '.jpg' );
+
+				new THREE.CubeTextureLoader().load( urls1, function ( cubeTexture1 ) {
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness:1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent:true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [ localPlane ],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+					var loader = new OBJLoader();
+					loader.load( 'models/obj/Site12_Glass.obj', function ( obj )
+
+				 {
+					 obj.traverse( function ( child ) {
+
+						 if ( child.isMesh ) child.material = material1;
+
+					 } );
+						var layer = 3
+						var object = obj.children[ 0 ].clone();
+						object.layers.set( layer );
+						object.rotation.x = -3.1415926787/2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add( object );
+
+						});
+					});
+
+				new MTLLoader( )
+					.setPath( 'models/obj/' )
+					.load( 'Site12_Bldg1.mtl', function ( materials ) {
+
+						materials.preload();
+
+					new OBJLoader( )
+					.setMaterials( materials )
+					.setPath( 'models/obj/' )
+					.load( 'Site12_Bldg1.obj', function ( obj ) {
+						obj.traverse( function ( child ) {
+
+						 if ( child.isMesh ) child.material.clippingPlanes= [ localPlane ];
+						 if ( child.isMesh ) child.material.clipShadows= true;
+
+					 } );
+
+
+						var object = obj.children[ 0 ].clone()
+
+						object.traverse( function ( child ) {
+							if ( child.isMesh ) {
+
+								for(var i = 0; i < child.material.length; i++){
+									child.material[i].clippingPlanes= [ localPlane ];
+									child.material[i].clipShadows= true;
+								}
+							}
+						} );
+
+
+						object.layers.set( 3 );
+						object.rotation.x = -3.1415926787/2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add( object );
+
+					}, onProgress, onError );
+
+			} );
+
+			//END OF OPTION 2
+			} );
+
+			for(let i = 0; i < 71; i++){
+				b[i] = new THREE.Mesh(
+					new THREE.BoxGeometry(1.2,6,1.2),
+					new THREE.MeshPhysicalMaterial({
+						color: "#666666",
+						transparency: 0.7,
+						transparent:true
+					})
+
+				);
+
+				b[i].position.y = -100;
+
+				scene.add(b[i]);
+			}
+
+			var textureLoader = new THREE.TextureLoader();
+
+			textureLoader.load( "textures/tree/S42-03.jpg", createHUDSprites );
+
+
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		container.appendChild( renderer.domElement );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = THREE.VSMShadowMap;
+		renderer.setClearColor( 0xCCCCCC, 1 );
+		renderer.localClippingEnabled = false;
+		renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+
+
+		lightProbe = new THREE.LightProbe();
+		scene.add( lightProbe );
+
+		directionalLight = new THREE.DirectionalLight( 0xffffff, API.directionalLightIntensity );
+
+		directionalLight.position.set( -50, 100, -75 );
+		directionalLight.castShadow = true;
+		scene.add( directionalLight );
+
+		controls.screenSpacePanning = true;
+
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+
+		setTimeout( addImage, 1300 );
+
+
+
+
+		var layers = {
+
+			'Site': function() {
+
+				camera.layers.toggle( 1 );
+
+			},
+
+			'Building': function() {
+
+				camera.layers.toggle( 2 );
+				camera.layers.toggle( 3 );
+				opt1 = !opt1;
+				opt2 = !opt2;
+
+
+			}
+
+
+		};
+
+
+		var btn = { Camera:function(){ hasntBeenUpdated = true }};
+		var btn1 = { Clipping:function(){
+			renderer.localClippingEnabled = !renderer.localClippingEnabled;
+		}};
+		var btn2 = { People:function(){ peopleOn = !peopleOn }};
+
+
+
+				var FizzyText = function() {
+  this.message = 'dat.gui';
+  this.speed = 0.8;
+	this.camera = 1;
+  this.displayOutline = false;
+	this.orbitControl = false;
+  this.explode = function() { peopleOn = !peopleOn };
+  // Define render logic ...
+};
+
+
+  var text = new FizzyText();
+
+	var clippingP = function(){
+		this.sixthFloor = false;
+		this.thirdFloor = false;
+		this.section = false;
+	}
+
+	var mClip = new clippingP();
+
+
+
+
+				//
+				// Init gui
+				var gui = new GUI({  width: 150 });
+				//
+				// var f2 = gui.addFolder('Clipping');
+				// f2.add(mClip,'sixthFloor');
+				// f2.add(mClip,'thirdFloor');
+				// f2.add(mClip,'section');
+				//
+			  // gui.add(text, 'displayOutline');
+			  // gui.add(text, 'explode');
+				// gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
+
+
+				var f1 = gui.addFolder('OPTIONS');
+				f1.add(btn,'Camera');
+				f1.add(btn1,'Clipping');
+				f1.add(btn2,'People');
+
+				f1.add( layers, 'Site' );
+				f1.add( layers, 'Building' );
+				gui.add(text, 'orbitControl');
+
+
+				guiChanged();
+
+				function guiChanged() {
+
+					var uniforms = sky.material.uniforms;
+					uniforms[ "turbidity" ].value = effectController.turbidity;
+					uniforms[ "rayleigh" ].value = effectController.rayleigh;
+					uniforms[ "mieCoefficient" ].value = effectController.mieCoefficient;
+					uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
+					uniforms[ "luminance" ].value = effectController.luminance;
+
+					var theta = Math.PI * ( effectController.inclination - 0.5 );
+					var phi = 2 * Math.PI * ( effectController.azimuth - 0.5 );
+
+					var distance = 400000;
+
+					sunSphere.position.x = distance * Math.cos( phi );
+					sunSphere.position.y = distance * Math.sin( phi ) * Math.sin( theta );
+					sunSphere.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+
+					sunSphere.visible = effectController.sun;
+
+					uniforms[ "sunPosition" ].value.copy( sunSphere.position );
+				}
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				var blocker = document.getElementById( 'blocker' );
+				var instructions = document.getElementById( 'instructions' );
+
+				document.addEventListener( 'click', function () {
+
+					// controls.lock();
+
+				}, false );
+
+				controls.addEventListener( 'lock', function () {
+
+					instructions.style.display = 'none';
+					blocker.style.display = 'none';
+
+				} );
+
+				controls.addEventListener( 'unlock', function () {
+
+					blocker.style.display = 'block';
+					instructions.style.display = '';
+
+				} );
+
+				document.addEventListener('keydown', onKeyDown, false);
+
+			}
+
+			function createHUDSprites( texture ) {
+
+				var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-grey.jpg' );
+
+				var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
+
+				var width = material.map.image.width;
+				var height = material.map.image.height;
+
+				width = window.innerWidth/2;
+				height = window.innerHeight/2;
+
+
+				spriteC = new THREE.Sprite( material );
+				spriteC.center.set( 0.5, 0.5 );
+				spriteC.scale.set( width, height, 1 );
+
+				sceneOrtho.add( spriteC );
+
+				document.addEventListener('keydown', onKeyDown, false);
+				 spriteC.position.set( 0, 0, 1 ); // center
+
+
+
+				updateHUDSprites();
+
+			}
+
+			// function updateHUDSprites() {
+			//
+			//
+			//
+			//
+			//
+			//
+			//
+			// }
+
+
+			function onWindowResize() {
+				var width = window.innerWidth / 2;
+				var height = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				cameraOrtho.left = - width / 2;
+				cameraOrtho.right = width / 2;
+				cameraOrtho.top = height / 2;
+				cameraOrtho.bottom = - height / 2;
+				cameraOrtho.updateProjectionMatrix();
+
+				// updateHUDSprites();
+
+			}
+
+			var onKeyDown = function (event) {
+
+					 switch (event.keyCode) {
+
+							 case 87: // w
+							 controls = new PointerLockControls( camera, renderer.domElement );
+							controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
+							scene.add( controls.getObject() );
+							controls.lock();
+
+							break;
+
+
+						//  case 83: // s
+						//
+						//  //get camera position and rotation
+						//
+						//  controls.unlock();
+						//  controls = new MapControls(camera, renderer.domElement);
+						//  controls.screenSpacePanning = true;
+						// controls.mouseButtons = {
+		 				// LEFT: THREE.MOUSE.PAN,
+		 				// MIDDLE: THREE.MOUSE.ROTATE,
+		 				// RIGHT: THREE.MOUSE.ROTATE
+		 				// }
+						//
+						// //set camera position and rotation
+						//  break;
+
+						 case 65: //a
+						 console.log("a was pressed");
+
+						 sceneOrtho.remove( spriteC );
+						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
+						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-white.jpg' );
+						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
+						 //
+						 // var width = material.map.image.width;
+						 // var height = material.map.image.height;
+
+						 var width = window.innerWidth/2;
+						 var height = window.innerHeight/2;
+
+
+						 spriteC = new THREE.Sprite( material );
+						 spriteC.center.set( 0.5, 0.5 );
+						 spriteC.scale.set( width, height, 1 );
+
+						 sceneOrtho.add( spriteC );
+
+						 break;
+
+						 case 83: //a
+						 console.log("a was pressed");
+
+						 sceneOrtho.remove( spriteC );
+						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
+						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-grey.jpg' );
+						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
+						 //
+						 // var width = material.map.image.width;
+						 // var height = material.map.image.height;
+
+						 var width = window.innerWidth/2;
+						 var height = window.innerHeight/2;
+
+
+						 spriteC = new THREE.Sprite( material );
+						 spriteC.center.set( 0.5, 0.5 );
+						 spriteC.scale.set( width, height, 1 );
+
+						 sceneOrtho.add( spriteC );
+
+						 break;
+
+						 case 68: //a
+						 console.log("a was pressed");
+
+						 sceneOrtho.remove( spriteC );
+						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
+						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-black.jpg' );
+						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
+						 //
+						 // var width = material.map.image.width;
+						 // var height = material.map.image.height;
+
+						 var width = window.innerWidth/2;
+						 var height = window.innerHeight/2;
+
+
+						 spriteC = new THREE.Sprite( material );
+						 spriteC.center.set( 0.5, 0.5 );
+						 spriteC.scale.set( width, height, 1 );
+
+						 sceneOrtho.add( spriteC );
+
+						 break;
+
+
+					 }
+			};
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+
+
+
+				if (renderer.localClippingEnabled){
+					if(opt1){
+					camera.layers.enable( 4 );
+				}else{
+					camera.layers.disable( 4 );
+				}
+
+				if(opt2){
+				camera.layers.enable( 5 );
+			}else{
+				camera.layers.disable( 5 );
+			}
+		}else{
+			camera.layers.disable( 4 );
+			camera.layers.disable( 5 );
+		}
+
+
+					if(hasntBeenUpdated){
+						counter1++;
+
+
+						if(counter1 % 4 == 2){
+							camera.position.x =28.2;
+							camera.position.y =-15.3;
+							camera.position.z =-183;
+
+							camera.lookAt( new THREE.Vector3(0,0,0) );
+						}else if(counter1 % 4 == 1){
+							camera.position.x = 157;
+							camera.position.y = -46.5;
+							camera.position.z = 280;
+
+							camera.lookAt( new THREE.Vector3(0,0,0));
+						}else if(counter1 % 4 == 3){
+							camera.position.x = -1660;
+							camera.position.y = 1080;
+							camera.position.z = 1520;
+
+							camera.lookAt( new THREE.Vector3(0,0,0));
+						}else{
+							camera.position.x = 300;
+							camera.position.y = 200;
+							camera.position.z = 260;
+
+							camera.lookAt( new THREE.Vector3(0,0,0));
+						}
+
+						hasntBeenUpdated = false;
+					}
+
+
+
+					let multiplier = 5;
+
+					boxyPosIndex++;
+					if(peopleOn){
+
+					for(let j = 0; j < zPaths.length; j++){
+
+							let currentIndex = boxyPosIndex % ((zPaths[j].length*multiplier)-1);
+							// console.log(zPaths[j].length);
+							b[j].position.x = xPaths[j][parseInt(currentIndex/multiplier)];
+							b[j].position.y = yPaths[j][parseInt(currentIndex/multiplier)] + 3;
+							b[j].position.z = zPaths[j][parseInt(currentIndex/multiplier)];
+						// }
+					}
+				}else{
+					for(let j = 0; j < zPaths.length; j++){
+
+							let currentIndex = boxyPosIndex % zPaths[j].length;
+
+							b[j].position.x = 0;
+							b[j].position.y = -10000;
+							b[j].position.z = 0;
+						// }
+					}
+				}
+
+
+				// renderer.render( scene, camera );
+				render();
+
+
+			}
+
+			render();
+
+			function render() {
+				renderer.clear();
+				renderer.render( scene, camera );
+				renderer.clearDepth();
+				renderer.render( sceneOrtho, cameraOrtho );
+
+			}
+
+			function onProgress( xhr ) {
+
+				if ( xhr.lengthComputable ) {
+
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					// console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+
+				}
+
+			}
+
+			function onError() {}
+
+		</script>
+
+</body>
+
+</html>

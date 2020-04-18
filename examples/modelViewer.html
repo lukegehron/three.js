@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>three.js webgl - layers</title>
+	<title>Model Viewer</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<link type="text/css" rel="stylesheet" href="main.css">
@@ -83,12 +83,43 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var startx = 0;
+		var goalx = 0;
+
+		var starty = 0;
+		var goaly = 0;
+
+		var startz = 0;
+		var goalz = 0;
+
+		var timer = 0;
+
+		var prevLookAtx = 0;
+		var nextLookAtx = 0;
+		var nowLookAtx = 0;
+
+		var prevLookAty = 0;
+		var nextLookAty = 0;
+		var nowLookAty = 0;
+
+		var prevLookAtz = 0;
+		var nextLookAtz = 0;
+		var nowLookAtz = 0;
+
+		var clock = new THREE.Clock();
+
 		var cameraOrtho, sceneOrtho;
 
+		var opts;
+
+		var transparentLevel = 22;
+		var makeOpaque = false;
+		var makeTransparent = false;
+
 		var spriteC;
+		var spriteMaterial;
 
 		var mapC;
-
 
 		var hasntBeenUpdated = true;
 
@@ -413,12 +444,13 @@
 
 
 
-				controls = new MapControls(camera, renderer.domElement);
-				controls.mouseButtons = {
-				LEFT: THREE.MOUSE.PAN,
-				MIDDLE: THREE.MOUSE.ROTATE,
-				RIGHT: THREE.MOUSE.ROTATE
-				}
+				// controls = new MapControls(camera, renderer.domElement);
+				// controls.mouseButtons = {
+				// LEFT: THREE.MOUSE.PAN,
+				// MIDDLE: THREE.MOUSE.ROTATE,
+				// RIGHT: THREE.MOUSE.ROTATE
+				// }
+				// controls.screenSpacePanning = true;
 
 				camera.position.x = -1660;
 				camera.position.y = 1080;
@@ -433,12 +465,6 @@
 				scene.background = new THREE.Color( 0xf0f0f0 );
 
 				sceneOrtho = new THREE.Scene();
-
-
-
-
-
-
 
 
 
@@ -976,7 +1002,7 @@
 		directionalLight.castShadow = true;
 		scene.add( directionalLight );
 
-		controls.screenSpacePanning = true;
+
 
 		var width = window.innerWidth;
 		var height = window.innerHeight;
@@ -986,33 +1012,6 @@
 
 
 
-		var layers = {
-
-			'Site': function() {
-
-				camera.layers.toggle( 1 );
-
-			},
-
-			'Building': function() {
-
-				camera.layers.toggle( 2 );
-				camera.layers.toggle( 3 );
-				opt1 = !opt1;
-				opt2 = !opt2;
-
-
-			}
-
-
-		};
-
-
-		var btn = { Camera:function(){ hasntBeenUpdated = true }};
-		var btn1 = { Clipping:function(){
-			renderer.localClippingEnabled = !renderer.localClippingEnabled;
-		}};
-		var btn2 = { People:function(){ peopleOn = !peopleOn }};
 
 
 
@@ -1038,11 +1037,147 @@
 	var mClip = new clippingP();
 
 
+// 	var gui = new dat.GUI({
+//   load: JSON,
+//   preset: 'Flow'
+// });
+					var OptionSelection = function(){
+						this.clipping = 1;
+						this.cameraView = 1;
+						this.buildingOption = 1;
+						this.siteOn = true;
+						this.specialContextOn = true;
+						this.showRendering = false;
+						this.hideRendering = true;
+						this.peopleWalking = true;
+						this.orbitOn = false;
+					}
+
+					var mOpts = new OptionSelection();
+
+					var layers = {
+						'Site': function() {
+							camera.layers.toggle( 1 );
+						},
+						'Building': function() {
+							camera.layers.toggle( 2 );
+							camera.layers.toggle( 3 );
+							opt1 = !opt1;
+							opt2 = !opt2;
+						}
+					};
+
+					var btn = { Camera:function(){ hasntBeenUpdated = true }};
+					var btn1 = { Clipping:function(){
+						renderer.localClippingEnabled = !renderer.localClippingEnabled;
+					}};
+					var btn2 = { People:function(){ peopleOn = !peopleOn }};
+
+
 
 
 				//
 				// Init gui
-				var gui = new GUI({  width: 150 });
+				// var gui = new GUI({  width: 150 });
+
+
+				var gui = new GUI({
+				  load: getPresetJSON(),
+				  preset: 'Preset1'
+				});
+
+				opts = {
+					Clipping: 'string_0',
+					Camera: 'string_2',
+					Option: 'string_1',
+					Site: true,
+					Mclaughlin: true,
+					Rendering: false,
+					People: true,
+					Orbit: false
+				};
+
+				var object1 = {
+				  type1_boolean: false,
+				  type2_string: 'string',
+				  type3_number: 0,
+				  type4_function: function() {
+				    alert('This is a function.');
+				  }
+				};
+
+				var object2 = {
+				  string1: 'string1',
+				  string2: 'string2'
+				};
+
+
+				// dat.GUI will modify colors in the format defined by their initial value.
+
+				// saveValues: gui.remember must be executed before gui.add
+				gui.remember(opts);
+				gui.remember(object1);
+				gui.remember(object2);
+
+				// setController: boolean, string, number, function
+				// gui.add(object1, 'type1_boolean');
+				// gui.add(object1, 'type2_string');
+
+				var folder1 = gui.addFolder('SETTINGS');
+
+				folder1.add(opts, 'Clipping',  {
+					'None': 'string_0',
+				  '6th Floor': 'string_1',
+				  '3rd Floor': 'string_2',
+				  'Ground': 'string_3',
+					'Section': 'string_4'
+				});
+				folder1.add(opts, 'Camera',  {
+					'From Stairs': 'string_0',
+				  'From Balcony': 'string_1',
+				  'Far Aerial': 'string_2',
+				  'N Aerial': 'string_3',
+					'S Aerial': 'string_4'
+				});
+				folder1.add(opts, 'Option',{
+					'Jewel': 'string_0',
+				  'Tall Bar': 'string_1',
+				  'Opt 3': 'string_2'
+				});
+				folder1.add(opts, 'Site');
+				folder1.add(opts, 'Mclaughlin');
+				folder1.add(opts, 'Rendering');
+				folder1.add(opts, 'People');
+
+				// Option: 1,
+				// Site: true,
+				// Mclaughlin: true,
+				// ShowRendering: false,
+				// HideRendering: true,
+				// People: true,
+				// Orbit: false
+
+				// var folder1 = gui.addFolder('FolderNameA');
+				// folder1.add(object1, 'type3_number', -5, 5);
+				// folder1.add(object1, 'type4_function');
+
+				// collapse folder1
+				folder1.close();
+
+				// var folder2 = gui.addFolder('FolderNameB');
+				// folder2.add(object2, 'string1', {
+				//   'key1': 'string_1',
+				//   'key2': 'string_2',
+				//   'key3': 'string_3'
+				// });
+				// folder2.add(object2, 'string2', [
+				//   'string_1', 'string_2', 'string_3'
+				// ]);
+
+
+
+
+
 				//
 				// var f2 = gui.addFolder('Clipping');
 				// f2.add(mClip,'sixthFloor');
@@ -1061,7 +1196,9 @@
 
 				f1.add( layers, 'Site' );
 				f1.add( layers, 'Building' );
-				gui.add(text, 'orbitControl');
+
+				gui.add(opts, 'Orbit');
+				// gui.add(text, 'orbitControl');
 
 
 				guiChanged();
@@ -1089,72 +1226,94 @@
 					uniforms[ "sunPosition" ].value.copy( sunSphere.position );
 				}
 
+
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				var blocker = document.getElementById( 'blocker' );
 				var instructions = document.getElementById( 'instructions' );
 
-				document.addEventListener( 'click', function () {
-
-					// controls.lock();
-
-				}, false );
-
-				controls.addEventListener( 'lock', function () {
-
-					instructions.style.display = 'none';
-					blocker.style.display = 'none';
-
-				} );
-
-				controls.addEventListener( 'unlock', function () {
-
-					blocker.style.display = 'block';
-					instructions.style.display = '';
-
-				} );
+				// document.addEventListener( 'click', function () {
+				//
+				// 	// controls.lock();
+				//
+				// }, false );
+				//
+				// controls.addEventListener( 'lock', function () {
+				//
+				// 	instructions.style.display = 'none';
+				// 	blocker.style.display = 'none';
+				//
+				// } );
+				//
+				// controls.addEventListener( 'unlock', function () {
+				//
+				// 	blocker.style.display = 'block';
+				// 	instructions.style.display = '';
+				//
+				// } );
 
 				document.addEventListener('keydown', onKeyDown, false);
+					document.addEventListener('mousedown', onMouseDown, false);
 
 			}
 
+
+
+
+
+			var checkForChanges = function(){
+				// console.log("eventLogged");
+				if(opts.Site){
+					camera.layers.enable(1);
+				}else{
+					camera.layers.disable(1);
+				}
+
+				if(opts.Clipping == 'string_1'){
+					console.log("clipping1");
+				}
+
+
+			}
+
+			var onMouseDown = function(event){
+				setTimeout( checkForChanges, 300 );
+				// checkForChanges();
+			}
+
+
+
+			var transparentImgs = [];
+
 			function createHUDSprites( texture ) {
 
-				var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-grey.jpg' );
+				var spriteMap = new THREE.TextureLoader().load( 'textures/tree/black.jpg' );
 
-				var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
+				spriteMaterial = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
 
-				var width = material.map.image.width;
-				var height = material.map.image.height;
-
-				width = window.innerWidth/2;
-				height = window.innerHeight/2;
+				var width =  window.innerWidth/2;
+				var height = window.innerHeight/2;
 
 
-				spriteC = new THREE.Sprite( material );
+				spriteC = new THREE.Sprite( spriteMaterial );
 				spriteC.center.set( 0.5, 0.5 );
 				spriteC.scale.set( width, height, 1 );
 
 				sceneOrtho.add( spriteC );
 
 				document.addEventListener('keydown', onKeyDown, false);
-				 spriteC.position.set( 0, 0, 1 ); // center
+				document.addEventListener('mousedown', onMouseDown, false);
+				spriteC.position.set( 0, 0, 1 ); // center
 
+				const zeroPad = (num, places) => String(num).padStart(places, '0')
 
-
-				updateHUDSprites();
+				for(var i = 0; i < 22; i++){
+					var spriteMap = new THREE.TextureLoader().load( 'textures/transparent/img_00' + zeroPad(i,2) + '.jpg' );
+					transparentImgs.push(spriteMap);
+				}
 
 			}
 
-			// function updateHUDSprites() {
-			//
-			//
-			//
-			//
-			//
-			//
-			//
-			// }
 
 
 			function onWindowResize() {
@@ -1172,11 +1331,64 @@
 				cameraOrtho.bottom = - height / 2;
 				cameraOrtho.updateProjectionMatrix();
 
-				// updateHUDSprites();
+			}
 
+			function animatePlayer(delta) {
+				if (timer < 1.0) {
+					timer += delta; // Increase the timer value
+					// console.log(nextLookAtx);
+					// console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
+					//Use interpolation to move from the start towards the goal, by 'timer' percentage;
+					var camPosx = THREE.Math.lerp(startx, goalx, timer);
+					var camPosy = THREE.Math.lerp(starty, goaly, timer);
+					var camPosz = THREE.Math.lerp(startz, goalz, timer);
+					camera.position.x = camPosx;
+					camera.position.y = camPosy;
+					camera.position.z = camPosz;
+
+					nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, timer);
+					nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, timer);
+					nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, timer);
+
+
+					// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
+					var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+					var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+					var cube = new THREE.Mesh( geometry, material );
+					scene.add( cube );
+					cube.position.x =  camPosx + 10;
+					cube.position.y =  nowLookAty;
+					cube.position.z =  camPosz + 10;
+					// camera.up.set( 0, 1,0 );
+					// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+					// console.log(cube.position.y);
+					camera.lookAt((cube.position));
+					scene.remove(cube);
+
+
+					// camera.rotation.y = THREE.Math.lerp(start, goal, timer);
+				}
 			}
 
 			var onKeyDown = function (event) {
+
+				timer = 0;
+				startx = camera.position.x;
+				starty = camera.position.y;
+				startz = camera.position.z;
+				goalx = startx + 120;
+				goaly = starty + 0;
+				goalz = startz + 12;
+
+				prevLookAtx = nextLookAtx;
+				prevLookAty = nextLookAty;
+				prevLookAtz = nextLookAtz;
+
+				nextLookAtx = prevLookAtx + 0;
+				nextLookAty = prevLookAty - 0.8;
+				nextLookAtz = prevLookAtz + 0;
+
+				checkForChanges();
 
 					 switch (event.keyCode) {
 
@@ -1189,88 +1401,37 @@
 							break;
 
 
-						//  case 83: // s
-						//
-						//  //get camera position and rotation
-						//
-						//  controls.unlock();
-						//  controls = new MapControls(camera, renderer.domElement);
-						//  controls.screenSpacePanning = true;
-						// controls.mouseButtons = {
-		 				// LEFT: THREE.MOUSE.PAN,
-		 				// MIDDLE: THREE.MOUSE.ROTATE,
-		 				// RIGHT: THREE.MOUSE.ROTATE
-		 				// }
-						//
-						// //set camera position and rotation
-						//  break;
-
 						 case 65: //a
 						 console.log("a was pressed");
 
-						 sceneOrtho.remove( spriteC );
-						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
-						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-white.jpg' );
-						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
-						 //
-						 // var width = material.map.image.width;
-						 // var height = material.map.image.height;
+						 makeOpaque = true;
 
-						 var width = window.innerWidth/2;
-						 var height = window.innerHeight/2;
-
-
-						 spriteC = new THREE.Sprite( material );
-						 spriteC.center.set( 0.5, 0.5 );
-						 spriteC.scale.set( width, height, 1 );
-
-						 sceneOrtho.add( spriteC );
 
 						 break;
 
-						 case 83: //a
-						 console.log("a was pressed");
+						 case 83: //s
+						 console.log("s was pressed");
 
-						 sceneOrtho.remove( spriteC );
-						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
-						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-grey.jpg' );
-						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
-						 //
-						 // var width = material.map.image.width;
-						 // var height = material.map.image.height;
 
 						 var width = window.innerWidth/2;
 						 var height = window.innerHeight/2;
 
+						 spriteMaterial.alphaMap = transparentImgs[11]
 
-						 spriteC = new THREE.Sprite( material );
+						 sceneOrtho.remove( spriteC );
+						 spriteC = new THREE.Sprite( spriteMaterial );
 						 spriteC.center.set( 0.5, 0.5 );
 						 spriteC.scale.set( width, height, 1 );
 
 						 sceneOrtho.add( spriteC );
+						 // spriteC.alphaMap = transparentImgs[11];
 
 						 break;
 
-						 case 68: //a
-						 console.log("a was pressed");
+						 case 68: //d
+						 console.log("d was pressed");
 
-						 sceneOrtho.remove( spriteC );
-						 var texture = new THREE.TextureLoader().load( 'textures/tree/S42-03.jpg' );
-						 var spriteMap = new THREE.TextureLoader().load( 'textures/tree/S42-03-black.jpg' );
-						 var material = new THREE.SpriteMaterial( { map: texture, alphaMap: spriteMap } );
-						 //
-						 // var width = material.map.image.width;
-						 // var height = material.map.image.height;
-
-						 var width = window.innerWidth/2;
-						 var height = window.innerHeight/2;
-
-
-						 spriteC = new THREE.Sprite( material );
-						 spriteC.center.set( 0.5, 0.5 );
-						 spriteC.scale.set( width, height, 1 );
-
-						 sceneOrtho.add( spriteC );
+						 makeTransparent = true;
 
 						 break;
 
@@ -1280,8 +1441,55 @@
 
 			function animate() {
 
+				var delta = clock.getDelta();
+				animatePlayer(delta);
+
+				// console.log(opts);
+
+
+				// camera.rotation.x = 0;
+				// camera.rotation.y = 0;
+				// camera.rotation.z = 0;
+
+				var width = window.innerWidth/2;
+				var height = window.innerHeight/2;
+
 				requestAnimationFrame( animate );
-				console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+				// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+
+				if(makeOpaque){
+					if(transparentLevel < 22){
+						spriteMaterial.alphaMap = transparentImgs[transparentLevel];
+
+						sceneOrtho.remove( spriteC );
+						spriteC = new THREE.Sprite( spriteMaterial );
+						spriteC.center.set( 0.5, 0.5 );
+						spriteC.scale.set( width, height, 1 );
+
+						sceneOrtho.add( spriteC );
+						transparentLevel++;
+					}
+					else{
+						makeOpaque = false;
+					}
+				}
+
+				if(makeTransparent){
+					if(transparentLevel > 0){
+						spriteMaterial.alphaMap = transparentImgs[transparentLevel];
+
+						sceneOrtho.remove( spriteC );
+						spriteC = new THREE.Sprite( spriteMaterial );
+						spriteC.center.set( 0.5, 0.5 );
+						spriteC.scale.set( width, height, 1 );
+
+						sceneOrtho.add( spriteC );
+						transparentLevel--;
+					}
+					else{
+						makeTransparent = false;
+					}
+				}
 
 
 
@@ -1303,38 +1511,38 @@
 		}
 
 
-					if(hasntBeenUpdated){
-						counter1++;
-
-
-						if(counter1 % 4 == 2){
-							camera.position.x =28.2;
-							camera.position.y =-15.3;
-							camera.position.z =-183;
-
-							camera.lookAt( new THREE.Vector3(0,0,0) );
-						}else if(counter1 % 4 == 1){
-							camera.position.x = 157;
-							camera.position.y = -46.5;
-							camera.position.z = 280;
-
-							camera.lookAt( new THREE.Vector3(0,0,0));
-						}else if(counter1 % 4 == 3){
-							camera.position.x = -1660;
-							camera.position.y = 1080;
-							camera.position.z = 1520;
-
-							camera.lookAt( new THREE.Vector3(0,0,0));
-						}else{
-							camera.position.x = 300;
-							camera.position.y = 200;
-							camera.position.z = 260;
-
-							camera.lookAt( new THREE.Vector3(0,0,0));
-						}
-
-						hasntBeenUpdated = false;
-					}
+					// if(hasntBeenUpdated){
+					// 	counter1++;
+					//
+					//
+					// 	if(counter1 % 4 == 2){
+					// 		camera.position.x =28.2;
+					// 		camera.position.y =-15.3;
+					// 		camera.position.z =-183;
+					//
+					// 		camera.lookAt( new THREE.Vector3(0,0,0) );
+					// 	}else if(counter1 % 4 == 1){
+					// 		camera.position.x = 157;
+					// 		camera.position.y = -46.5;
+					// 		camera.position.z = 280;
+					//
+					// 		camera.lookAt( new THREE.Vector3(0,0,0));
+					// 	}else if(counter1 % 4 == 3){
+					// 		camera.position.x = -1660;
+					// 		camera.position.y = 1080;
+					// 		camera.position.z = 1520;
+					//
+					// 		camera.lookAt( new THREE.Vector3(0,0,0));
+					// 	}else{
+					// 		camera.position.x = 300;
+					// 		camera.position.y = 200;
+					// 		camera.position.z = 260;
+					//
+					// 		camera.lookAt( new THREE.Vector3(0,0,0));
+					// 	}
+					//
+					// 	hasntBeenUpdated = false;
+					// }
 
 
 
@@ -1393,6 +1601,45 @@
 			}
 
 			function onError() {}
+
+			function getPresetJSON() {
+  return {
+    "preset": "Default",
+    "closed": false,
+    "remembered": {
+      "Default": {
+        "0": {
+          "type1_boolean": false,
+          "type2_string": "string",
+          "type3_number": 0
+        },
+        "1": {
+          "string1": "string1",
+          "string2": "string2"
+        }
+      },
+      "Preset1": {
+        "0": {
+          "type1_boolean": true,
+          "type2_string": "string123",
+          "type3_number": -2.2938689217758985
+        },
+        "1": {
+          "string1": "string_2",
+          "string2": "string_3"
+        }
+      }
+    },
+    "folders": {
+      "FolderNameA": {
+        "preset": "Default",
+        "closed": false,
+        "folders": {}
+      }
+    }
+  };
+}
+
 
 		</script>
 

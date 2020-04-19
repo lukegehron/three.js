@@ -983,7 +983,7 @@
 
 			var gui = new GUI({
 				load: getPresetJSON(),
-				preset: 'Preset1'
+				preset: 'Detault'
 			});
 
 			opts = {
@@ -1008,27 +1008,27 @@
 				Orbit: true
 			};
 
-			var object1 = {
-				type1_boolean: false,
-				type2_string: 'string',
-				type3_number: 0,
-				type4_function: function () {
-					alert('This is a function.');
-				}
-			};
+			// var object1 = {
+			// 	type1_boolean: false,
+			// 	type2_string: 'string',
+			// 	type3_number: 0,
+			// 	type4_function: function () {
+			// 		alert('This is a function.');
+			// 	}
+			// };
 
-			var object2 = {
-				string1: 'string1',
-				string2: 'string2'
-			};
+			// var object2 = {
+			// 	string1: 'string1',
+			// 	string2: 'string2'
+			// };
 
 
 			// dat.GUI will modify colors in the format defined by their initial value.
 
 			// saveValues: gui.remember must be executed before gui.add
 			gui.remember(opts);
-			gui.remember(object1);
-			gui.remember(object2);
+			// gui.remember(object1);
+			// gui.remember(object2);
 
 			// setController: boolean, string, number, function
 			// gui.add(object1, 'type1_boolean');
@@ -1102,10 +1102,10 @@
 			// gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
 
 
-			var f1 = gui.addFolder('OPTIONS');
-			f1.add(btn, 'Camera');
-			f1.add(btn1, 'Clipping');
-			f1.add(btn2, 'People');
+			// var f1 = gui.addFolder('OPTIONS');
+			// f1.add(btn, 'Camera');
+			// f1.add(btn1, 'Clipping');
+			// f1.add(btn2, 'People');
 
 			// f1.add(layers, 'Site');
 			// f1.add(layers, 'Building');
@@ -1523,7 +1523,7 @@
 			renderer.clear();
 			renderer.render(scene, camera);
 			renderer.clearDepth();
-			// renderer.render(sceneOrtho, cameraOrtho);
+			renderer.render(sceneOrtho, cameraOrtho);
 
 		}
 
@@ -1547,29 +1547,31 @@
 				"remembered": {
 					"Default": {
 						"0": {
-							"type1_boolean": false,
-							"type2_string": "string",
-							"type3_number": 0
-						},
-						"1": {
-							"string1": "string1",
-							"string2": "string2"
+							"Clipping": 'none',
+							"Camera": 'c3',
+							"Option": 'opt1',
+							"Site": true,
+							"Mclaughlin": true,
+							"Rendering": false,
+							"People": true,
+							"Orbit": false
 						}
 					},
-					"Preset1": {
+					"Scene1": {
 						"0": {
-							"type1_boolean": true,
-							"type2_string": "string123",
-							"type3_number": -2.2938689217758985
-						},
-						"1": {
-							"string1": "string_2",
-							"string2": "string_3"
-						}
+							"Clipping": 'six',
+							"Camera": 'c4',
+							"Option": 'opt2',
+							"Site": true,
+							"Mclaughlin": true,
+							"Rendering": false,
+							"People": true,
+							"Orbit": false
 					}
+				}
 				},
 				"folders": {
-					"FolderNameA": {
+					"SETTINGS": {
 						"preset": "Default",
 						"closed": false,
 						"folders": {}

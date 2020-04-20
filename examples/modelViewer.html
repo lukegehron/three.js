@@ -88,7 +88,7 @@
 
 		var sceneFinder = 0;
 
-		var scenes = ["Default", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5", "Scene6", "Scene7"];
+		var scenes = ["Default", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5", "Scene6", "Scene7", "Scene8", "Scene9"];
 
 		let multiplier = 3.0; //how fast the people walk
 
@@ -1001,6 +1001,7 @@
 				'Top View': 'c6',
 				'Above Stairs': 'c7',
 				'Lower Stairs': 'c8',
+				'Site Section': 'c9'
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
@@ -1378,6 +1379,13 @@
 					nextLookAtx = -120;
 					nextLookAty = 0;
 					nextLookAtz = 51;
+				}else if (opts.Camera == 'c9') {
+					goalx = 320;
+					goaly = 1;
+					goalz = -54;
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
@@ -1452,7 +1460,7 @@
 			// opts.CamX = camera.position.x;
 			// opts.CamY = camera.position.y;
 			// opts.CamZ = camera.position.z;
-			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z + ", " + camera.rotation.x + ", " + camera.rotation.y + ", " + camera.rotation.z);
+			console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z + ", " + camera.rotation.x + ", " + camera.rotation.y + ", " + camera.rotation.z);
 
 			if (makeOpaque) {
 				makeTransparent = false;
@@ -1689,7 +1697,42 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				}
+				},"Scene8": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c9',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"Scene9": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
 			},	
 			"folders": {
 				"SETTINGS": {

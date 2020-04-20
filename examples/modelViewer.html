@@ -77,11 +77,11 @@
 				background-image: url('textures/tree/S42-03.jpg');
 				background-repeat: no-repeat;
 				background-position: 50% 0;
-				-ms-background-size: cover;
-				-o-background-size: cover;
-				-moz-background-size: cover;
-				-webkit-background-size: cover;
-				background-size: cover;
+				-ms-background-size: 100% 100%;
+				-o-background-size: 100% 100%;
+				-moz-background-size: 100% 100%;
+				-webkit-background-size: 100% 100%;
+				background-size: 100% 100%;
 		}
 	</style>
 </head>
@@ -128,7 +128,7 @@
 
 		var scenes = ["Default", "S01", "S02", "S03", "S04", "S04-1", "S05", "S05-1", "S06", "S06-1", "S06-2", "S07", "S07-1", "S07-2", "S08", "S09", "S10", "S11", "S12", "S13", "S14"];
 
-		let multiplier = 3.0; //how fast the people walk
+		let multiplier = 5.0; //how fast the people walk
 
 		var gui;
 
@@ -509,7 +509,7 @@
 			var width = window.innerWidth / 2;
 			var height = window.innerHeight / 2;
 
-			camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 1, 9000);
+			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
 
 			// cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
 			// cameraOrtho.position.z = 10;
@@ -1461,11 +1461,11 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 28.2;
-					goaly = -15.3;
+					goalx = 27.8;
+					goaly = -11.3;
 					goalz = -183;
-					nextLookAtx = 0;
-					nextLookAty = -15.3;
+					nextLookAtx = -20;
+					nextLookAty = 0;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c2') {

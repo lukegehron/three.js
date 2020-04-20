@@ -126,7 +126,8 @@
 
 		var sceneFinder = 0;
 
-		var scenes = ["Default", "S01", "S02", "S03", "S04", "S04-1", "S05", "S05-1", "S06", "S06-1", "S06-2", "S07", "S07-1", "S07-2", "S08", "S09", "S10", "S11", "S12", "S13", "S14"];
+		var scenes = ["Default", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S57", "S58", "S59", "S60"
+];
 
 		let multiplier = 5.0; //how fast the people walk
 
@@ -1418,13 +1419,13 @@
 
 				if (opts.Clipping == 'six') {
 					localPlane.constant =  35;
-					if (opts.Option == 'opt1') {
+					if (opts.Option == 'opt2') {
 						camera.layers.enable(4);
 					} else {
 						camera.layers.disable(4);
 					}
 
-					if (opts.Option == 'opt2') {
+					if (opts.Option == 'opt1') {
 						camera.layers.enable(5);
 					} else {
 						camera.layers.disable(5);
@@ -1545,16 +1546,16 @@
 
 			if(prevOpts.Option != opts.Option){
 				if(opts.Option == 'opt0'){
-					camera.layers.disable(2);
 					camera.layers.disable(3);
+					camera.layers.disable(2);
 					camera.layers.disable(6);
 				}else if(opts.Option == 'opt1'){
-					camera.layers.enable(2);
-					camera.layers.disable(3);
-					camera.layers.disable(6);
-				}else if(opts.Option == 'opt2'){
 					camera.layers.enable(3);
 					camera.layers.disable(2);
+					camera.layers.disable(6);
+				}else if(opts.Option == 'opt2'){
+					camera.layers.enable(2);
+					camera.layers.disable(3);
 					camera.layers.disable(6);
 				}else if(opts.Option == 'opt3'){
 					camera.layers.disable(3);
@@ -1600,6 +1601,26 @@
 				// console.log("somethingChanged");
 				prevOpts.Rendering = opts.Rendering;
 			// }
+
+			if(opts.Image == "opt1sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/S02_Section_Scheme1-03.jpg')";
+			}else if(opts.Image == "opt2sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt2section.jpg')";
+			}else if(opts.Image == "opt3sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/S03_Section_Scheme3-03.jpg')";
+			}else if(opts.Image == "opt1stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt1perspective.jpg')";
+			}else if(opts.Image == "opt1bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option1-01.jpg')";
+			}else if(opts.Image == "opt2stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt2perspective.jpg')";
+			}else if(opts.Image == "opt2bal"){
+				blocker.style.backgroundImage = "url('textures/tree/S42-03.jpg')";
+			}else if(opts.Image == "opt3stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt3perspective.jpg')";
+			}else if(opts.Image == "opt3bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-01.jpg')";
+			}
 
 			if(prevOpts.People != opts.People){
 				if(opts.People){
@@ -1781,7 +1802,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S04-1": {
+				"S05": {
 					"0": {
 						"Clipping": 'three',
 						"Camera": 'c4',
@@ -1800,7 +1821,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S05": {
+			"S06": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
@@ -1819,7 +1840,7 @@
 						"CamRotZ": 0
 					}
 				},	
-				"S05-1": {
+				"S07": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
@@ -1838,127 +1859,13 @@
 						"CamRotZ": 0
 					}
 				},
-			"S06": {
+			"S08": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c8',
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": false,
-						"Rendering": false,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S06-1": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c8',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S06-2": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c8',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": false,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-			"S07": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S07-1": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": true,
-						"Image": 'opt1stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S07-2": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S08": {
-					"0": {
-						"Clipping": 'siteSection',
-						"Camera": 'c9',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
 						"Rendering": false,
 						"Image": 'opt1sec',
 						"People": true,
@@ -1973,12 +1880,12 @@
 				},
 				"S09": {
 					"0": {
-						"Clipping": 'siteSection',
-						"Camera": 'c10',
+						"Clipping": 'none',
+						"Camera": 'c8',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
+						"Mclaughlin": false,
+						"Rendering": true,
 						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
@@ -1993,10 +1900,10 @@
 				"S10": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c10',
+						"Camera": 'c8',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": false,
 						"Image": 'opt1sec',
 						"People": true,
@@ -2009,10 +1916,10 @@
 						"CamRotZ": 0
 					}
 				},
-				"S11": {
+			"S11": {
 					"0": {
-						"Clipping": 'ground',
-						"Camera": 'c10',
+						"Clipping": 'none',
+						"Camera": 'c2',
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": true,
@@ -2031,7 +1938,45 @@
 				"S12": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c1',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S13": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S14": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": true,
@@ -2046,7 +1991,83 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S13": {
+				},
+				"S15": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S16": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S17": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S18": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S19": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -2054,7 +2075,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": true,
-						"Image": 'opt1sec',
+						"Image": 'opt1bal',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2064,7 +2085,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S14": {
+				},"S20": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -2072,7 +2093,761 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
-						"Image": 'opt1sec',
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S21": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S22": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S23": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c5',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S24": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S25": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S26": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+				"S27": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S28": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S29": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S30": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S31": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S32": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S33": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S34": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S35": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c10',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S36": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c10',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S37": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S38": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S39": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S40": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S41": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S42": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S43": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c5',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S44": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S45": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S46": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+				"S47": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S48": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S49": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S50": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S51": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S52": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt3stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S53": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S54": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S55": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c10',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S56": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c10',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S57": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S58": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S59": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S60": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,

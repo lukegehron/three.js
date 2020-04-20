@@ -82,6 +82,8 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var globalPlane;
+
 		var runUpdate = false;
 
 		var sceneFinder = 0;
@@ -466,6 +468,7 @@
 			controls.enabled = false;
 
 			localPlane = new THREE.Plane(new THREE.Vector3(0, - 1, 0), 35);
+			globalPlane = new THREE.Plane( new THREE.Vector3( - 1, 0, .28 ), 65 );
 
 			camera.position.x = -1660;
 			camera.position.y = 1080;
@@ -916,6 +919,8 @@
 			// renderer.localClippingEnabled = false;
 			renderer.localClippingEnabled = true;
 			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+			
+			renderer.clippingPlanes = [globalPlane];
 
 
 			lightProbe = new THREE.LightProbe();
@@ -1150,6 +1155,8 @@
 
 		var onKeyDown = function (event) {
 
+			renderer.clippingPlanes = [globalPlane];
+
 
 			switch (event.keyCode) {
 
@@ -1228,6 +1235,8 @@
 		
 
 			var onKeyUp = function (event) {
+
+				renderer.clippingPlanes = [];
 
 
 				switch (event.keyCode) {
@@ -1347,11 +1356,11 @@
 					nextLookAty = 0;
 					nextLookAtz = 0;
 
-				} else if (opts.Camera == 'c6') {
+				} else if (opts.Camera == 'c6') { //top-down
 					goalx = -9;
 					goaly = 779;
 					goalz = 54;
-					nextLookAtx = -20;
+					nextLookAtx = -24;
 					nextLookAty = 0;
 					nextLookAtz = 2;
 

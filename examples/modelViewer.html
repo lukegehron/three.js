@@ -82,6 +82,10 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var sceneFinder = 0;
+
+		var scenes = ["Default", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5", "Scene6", "Scene7"];
+
 		let multiplier = 3.0; //how fast the people walk
 
 		var gui;
@@ -180,6 +184,12 @@
 		var composer;
 
 		var lightProbe, directionalLight;
+
+		var keyControls = {
+						LEFT: THREE.MOUSE.PAN,
+						MIDDLE: THREE.MOUSE.ROTATE,
+						RIGHT: THREE.MOUSE.ROTATE
+					}
 
 		var effectController = {
 			turbidity: 3,
@@ -446,12 +456,10 @@
 			cameraOrtho.position.z = 10;
 
 			controls = new MapControls(camera, renderer.domElement);
-			controls.mouseButtons = {
-			LEFT: THREE.MOUSE.PAN,
-			MIDDLE: THREE.MOUSE.ROTATE,
-			RIGHT: THREE.MOUSE.ROTATE
-			}
+			controls.mouseButtons = keyControls;
+			
 			controls.screenSpacePanning = true;
+			controls.enableKeys = false;
 
 			controls.enabled = false;
 
@@ -1011,6 +1019,8 @@
 
 	
 			gui.add(opts, 'Orbit');
+
+			gui.hide();
 			
 
 
@@ -1067,6 +1077,7 @@
 			sceneOrtho.add(spriteC);
 
 			document.addEventListener('keydown', onKeyDown, false);
+			document.addEventListener('keyup', onKeyUp, false);
 			// document.addEventListener('mousedown', onMouseDown, false);
 			spriteC.position.set(0, 0, 1); // center
 
@@ -1175,8 +1186,64 @@
 					console.log("d was pressed");
 					makeTransparent = true;
 					break;
+				
+				case 16: //shift
+					// controls.reset();
+					// controls = new MapControls(camera, renderer.domElement);
+					
+					keyControls = {
+						LEFT: THREE.MOUSE.PAN,
+						MIDDLE: THREE.MOUSE.PAN,
+						RIGHT: THREE.MOUSE.ROTATE
+					}
+					// controls.screenSpacePanning = true;
+					// controls.enableKeys = false;
+					// controls.enabled = false;
+					// console.log("ShiftPressed");
+					break;
+				
+					case 39: // --> arrow
+					sceneFinder++;
+					if(sceneFinder > scenes.length){
+						sceneFinder = 0;
+					} 
+					gui.preset = scenes[sceneFinder];
+					break;
+
+					case 37: // <-- arrow
+					sceneFinder--;
+					if(sceneFinder < 0){
+						sceneFinder = scenes.length;
+					} 
+					gui.preset = scenes[sceneFinder];
+					break;
 			}
 		};
+
+		
+
+			var onKeyUp = function (event) {
+
+
+				switch (event.keyCode) {
+
+
+					case 16: //shift
+					// controls.reset();
+					// controls = new MapControls(camera, renderer.domElement);
+						keyControls = {
+							LEFT: THREE.MOUSE.PAN,
+							MIDDLE: THREE.MOUSE.ROTATE,
+							RIGHT: THREE.MOUSE.ROTATE
+						}
+						// controls.screenSpacePanning = true;
+					// controls.enableKeys = false;
+					// controls.enabled = false;
+						// console.log("ShiftReleased");
+						
+						break;
+				}
+			};
 
 		var update = function() {
 			requestAnimationFrame(update);
@@ -1356,6 +1423,7 @@
 				
 				
 			document.addEventListener('keydown', onKeyDown, false);
+			document.addEventListener('keyup', onKeyUp, false);
 			// document.addEventListener('mousedown', onMouseDown, false);
 
 			var delta = clock.getDelta();

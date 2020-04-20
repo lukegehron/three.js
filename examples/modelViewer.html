@@ -82,6 +82,8 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var runUpdate = false;
+
 		var sceneFinder = 0;
 
 		var scenes = ["Default", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5", "Scene6", "Scene7"];
@@ -1198,7 +1200,8 @@
 					}
 					// controls.screenSpacePanning = true;
 					// controls.enableKeys = false;
-					// controls.enabled = false;
+					controls.enabled = true;
+					opts.Orbit = true;
 					// console.log("ShiftPressed");
 					break;
 				
@@ -1208,6 +1211,7 @@
 						sceneFinder = 0;
 					} 
 					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
 					break;
 
 					case 37: // <-- arrow
@@ -1216,6 +1220,7 @@
 						sceneFinder = scenes.length;
 					} 
 					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
 					break;
 			}
 		};
@@ -1291,7 +1296,7 @@
 
 			}
 
-			if (prevOpts.Camera != opts.Camera) {
+			if (prevOpts.Camera != opts.Camera || runUpdate) {
 				timer = 0;
 
 				startx = camera.position.x;
@@ -1366,6 +1371,7 @@
 					nextLookAtz = 51;
 				}
 				prevOpts.Camera = opts.Camera;
+				runUpdate = false;
 			}
 
 			if(prevOpts.Option != opts.Option){
@@ -1411,7 +1417,7 @@
 				prevOpts.People = opts.People;
 			}
 
-			if(prevOpts.Orbit != opts.Orbit){
+			if(prevOpts.Orbit != opts.Orbit || controls.enabled){
 				if(opts.Orbit){
 					controls.enabled = true;
 				}else{

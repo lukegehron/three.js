@@ -36,9 +36,9 @@ var OrbitControls = function ( object, domElement ) {
 	this.enabled = true;
 
 	// "target" sets the location of focus, where the object orbits around
-	this.target = new Vector3();
-	// this.target = new Vector3().addVectors(/*new line for readability*/
-  //   object.position, object.getWorldDirection());
+	// this.target = new Vector3();
+	this.target = new Vector3().addVectors(/*new line for readability*/
+    object.position, object.getWorldDirection());
 
 	// How far you can dolly in and out ( PerspectiveCamera only )
 	this.minDistance = 0;

@@ -82,6 +82,10 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		let multiplier = 3.0; //how fast the people walk
+
+		var gui;
+
 		var textureS;
 		var mapS;
 
@@ -96,7 +100,7 @@
 
 		var transparentImgs = [];
 
-		var tMult = 3.0;
+		var tMult = 4.0;
 
 
 		var startx = -1660;
@@ -919,71 +923,9 @@
 			setTimeout(addImage, 1300);
 			createHUDSprites();
 
-			var FizzyText = function () {
-				this.message = 'dat.gui';
-				this.speed = 0.8;
-				this.camera = 1;
-				this.displayOutline = false;
-				this.orbitControl = false;
-				this.explode = function () { peopleOn = !peopleOn };
-				// Define render logic ...
-			};
-
-
-			var text = new FizzyText();
-
-			var clippingP = function () {
-				this.sixthFloor = false;
-				this.thirdFloor = false;
-				this.section = false;
-			}
-
-			var mClip = new clippingP();
-
-
-			// 	var gui = new dat.GUI({
-			//   load: JSON,
-			//   preset: 'Flow'
-			// });
-			var OptionSelection = function () {
-				this.clipping = 1;
-				this.cameraView = 1;
-				this.buildingOption = 1;
-				this.siteOn = true;
-				this.specialContextOn = true;
-				this.showRendering = false;
-				this.hideRendering = true;
-				this.peopleWalking = true;
-				this.orbitOn = false;
-			}
-
-			var mOpts = new OptionSelection();
-
-			// var layers = {
-			// 	'Site': function () {
-			// 		camera.layers.toggle(1);
-			// 	},
-			// 	'Building': function () {
-			// 		camera.layers.toggle(2);
-			// 		camera.layers.toggle(3);
-			// 		opt1 = !opt1;
-			// 		opt2 = !opt2;
-			// 	}
-			// };
-
-			var btn = { Camera: function () { hasntBeenUpdated = true } };
-			var btn1 = {
-				Clipping: function () {
-					renderer.localClippingEnabled = !renderer.localClippingEnabled;
-				}
-			};
-			var btn2 = { People: function () { peopleOn = !peopleOn } };
-
-
-
-			var gui = new GUI({
+			gui = new GUI({
 				load: getPresetJSON(),
-				preset: 'Detault'
+				preset: 'Default'
 			});
 
 			opts = {
@@ -994,7 +936,13 @@
 				Mclaughlin: true,
 				Rendering: false,
 				People: true,
-				Orbit: false
+				Orbit: false,
+				CamX: 0,
+				CamY: 0,
+				CamZ: 0,
+				CamRotX: 0,
+				CamRotY: 0,
+				CamRotZ: 0
 			};
 
 			prevOpts = {
@@ -1005,34 +953,19 @@
 				Mclaughlin: false,
 				Rendering: true,
 				People: false,
-				Orbit: true
+				Orbit: true,
+				CamX: 0,
+				CamY: 0,
+				CamZ: 0,
+				CamRotX: 0,
+				CamRotY: 0,
+				CamRotZ: 0
 			};
 
-			// var object1 = {
-			// 	type1_boolean: false,
-			// 	type2_string: 'string',
-			// 	type3_number: 0,
-			// 	type4_function: function () {
-			// 		alert('This is a function.');
-			// 	}
-			// };
-
-			// var object2 = {
-			// 	string1: 'string1',
-			// 	string2: 'string2'
-			// };
-
-
-			// dat.GUI will modify colors in the format defined by their initial value.
 
 			// saveValues: gui.remember must be executed before gui.add
 			gui.remember(opts);
-			// gui.remember(object1);
-			// gui.remember(object2);
-
-			// setController: boolean, string, number, function
-			// gui.add(object1, 'type1_boolean');
-			// gui.add(object1, 'type2_string');
+		
 
 			var folder1 = gui.addFolder('SETTINGS');
 
@@ -1049,7 +982,10 @@
 				'From Stairs': 'c2',
 				'Far Aerial': 'c3',
 				'N Aerial': 'c4',
-				'S Aerial': 'c5'
+				'N Aerial2': 'c5',
+				'Top View': 'c6',
+				'Above Stairs': 'c7',
+				'Lower Stairs': 'c8',
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
@@ -1062,56 +998,20 @@
 			folder1.add(opts, 'Rendering');
 			folder1.add(opts, 'People');
 
-			// Option: 1,
-			// Site: true,
-			// Mclaughlin: true,
-			// ShowRendering: false,
-			// HideRendering: true,
-			// People: true,
-			// Orbit: false
-
-			// var folder1 = gui.addFolder('FolderNameA');
-			// folder1.add(object1, 'type3_number', -5, 5);
-			// folder1.add(object1, 'type4_function');
-
-			// collapse folder1
 			folder1.close();
 
-			// var folder2 = gui.addFolder('FolderNameB');
-			// folder2.add(object2, 'string1', {
-			//   'key1': 'string_1',
-			//   'key2': 'string_2',
-			//   'key3': 'string_3'
-			// });
-			// folder2.add(object2, 'string2', [
-			//   'string_1', 'string_2', 'string_3'
-			// ]);
+			var folder2 = gui.addFolder('ADVANCED');
 
+			folder2.add(opts, 'CamX', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamY', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamZ', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamRotX', -4, 4, 0.001).listen();
+			folder2.add(opts, 'CamRotY', -4, 4, 0.001).listen();
+			folder2.add(opts, 'CamRotZ', -4, 4, 0.001).listen();
 
-
-
-
-			//
-			// var f2 = gui.addFolder('Clipping');
-			// f2.add(mClip,'sixthFloor');
-			// f2.add(mClip,'thirdFloor');
-			// f2.add(mClip,'section');
-			//
-			// gui.add(text, 'displayOutline');
-			// gui.add(text, 'explode');
-			// gui.add(text, 'camera', { View1: 0, View2: 1, Aerial1: 2, Aerial2: 3 } );
-
-
-			// var f1 = gui.addFolder('OPTIONS');
-			// f1.add(btn, 'Camera');
-			// f1.add(btn1, 'Clipping');
-			// f1.add(btn2, 'People');
-
-			// f1.add(layers, 'Site');
-			// f1.add(layers, 'Building');
-
+	
 			gui.add(opts, 'Orbit');
-			// gui.add(text, 'orbitControl');
+			
 
 
 			guiChanged();
@@ -1139,32 +1039,7 @@
 				uniforms["sunPosition"].value.copy(sunSphere.position);
 			}
 
-
 			window.addEventListener('resize', onWindowResize, false);
-
-			var blocker = document.getElementById('blocker');
-			var instructions = document.getElementById('instructions');
-
-			// document.addEventListener( 'click', function () {
-			//
-			// 	// controls.lock();
-			//
-			// }, false );
-			//
-			// controls.addEventListener( 'lock', function () {
-			//
-			// 	instructions.style.display = 'none';
-			// 	blocker.style.display = 'none';
-			//
-			// } );
-			//
-			// controls.addEventListener( 'unlock', function () {
-			//
-			// 	blocker.style.display = 'block';
-			// 	instructions.style.display = '';
-			//
-			// } );
-
 		}
 
 
@@ -1224,21 +1099,21 @@
 		}
 
 		function animatePlayer(delta) {
-			if (timer < tMult) {
+			if (timer <= tMult) {
 				timer += delta; // Increase the timer value
 				// console.log(nextLookAtx);
 				// console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
 				//Use interpolation to move from the start towards the goal, by 'timer' percentage;
-				var camPosx = THREE.Math.lerp(startx, goalx, timer/tMult);
-				var camPosy = THREE.Math.lerp(starty, goaly, timer/tMult);
-				var camPosz = THREE.Math.lerp(startz, goalz, timer/tMult);
+				var camPosx = THREE.Math.lerp(startx, goalx, Math.min(1.0, timer/tMult));
+				var camPosy = THREE.Math.lerp(starty, goaly, Math.min(1.0, timer/tMult));
+				var camPosz = THREE.Math.lerp(startz, goalz, Math.min(1.0, timer/tMult));
 				camera.position.x = camPosx;
 				camera.position.y = camPosy;
 				camera.position.z = camPosz;
 
-				nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, timer/tMult);
-				nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, timer/tMult);
-				nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, timer/tMult);
+				nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, Math.min(1.0, timer/tMult));
+				nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, Math.min(1.0, timer/tMult));
+				nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, Math.min(1.0, timer/tMult));
 
 
 				// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
@@ -1246,9 +1121,9 @@
 				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 				var cube = new THREE.Mesh(geometry, material);
 				scene.add(cube);
-				cube.position.x = 0;
-				cube.position.y = 0;
-				cube.position.z = 0;
+				cube.position.x = nowLookAtx;
+				cube.position.y = nowLookAty;
+				cube.position.z = nowLookAtz;
 				// camera.up.set( 0, 1,0 );
 				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
 				// console.log(cube.position.y);
@@ -1266,6 +1141,7 @@
 			switch (event.keyCode) {
 
 				case 87: // w
+					controls.enabled = true;
 					controls = new PointerLockControls(camera, renderer.domElement);
 					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
 					scene.add(controls.getObject());
@@ -1302,11 +1178,27 @@
 			}
 		};
 
+		var update = function() {
+			requestAnimationFrame(update);
+			opts.CamX = camera.position.x;
+			opts.CamY = camera.position.y;
+			opts.CamZ = camera.position.z;
+			opts.CamRotX = camera.rotation.x;
+			opts.CamRotY = camera.rotation.y;
+			opts.CamRotZ = camera.rotation.z;
+		};
 
+		update();
 
 		function animate() {
 
-			if (prevOpts.Clipping != opts.Clipping) {
+			// console.log(gui.__preset_select.value);
+			// console.log(gui);
+			// console.log(gui.saveToLocalStorageIfPossible);
+			// console.log(gui.'[[Scopes]]'[3].params.load.remembered.Default;
+			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+
+			if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option) {
 				if(opts.Clipping == 'none'){
 					localPlane.constant = 200;
 				}
@@ -1329,50 +1221,82 @@
 					camera.layers.disable(5);
 				}
 				prevOpts.Clipping = opts.Clipping;
+
 			}
 
-			if(prevOpts.Camera != opts.Camera){
+			if (prevOpts.Camera != opts.Camera) {
 				timer = 0;
 
 				startx = camera.position.x;
 				starty = camera.position.y;
 				startz = camera.position.z;
 
-				if(opts.Camera == 'c1'){
+				prevLookAtx = nextLookAtx;
+				prevLookAty = nextLookAty;
+				prevLookAtz = nextLookAtz;
+
+				if (opts.Camera == 'c1') {
 					goalx = 28.2;
 					goaly = -15.3;
 					goalz = -183;
-
-					// prevLookAtx = nextLookAtx;
-					// prevLookAty = nextLookAty;
-					// prevLookAtz = nextLookAtz;
-
 					nextLookAtx = 0;
 					nextLookAty = 0;
 					nextLookAtz = 0;
-			
-					// camera.lookAt( new THREE.Vector3(0,0,0) );
-				}else if(opts.Camera == 'c2'){
+
+				} else if (opts.Camera == 'c2') {
 					goalx = 157;
 					goaly = -46.5;
 					goalz = 280;
-					camera.lookAt( new THREE.Vector3(0,0,0));
-				}else if(opts.Camera == 'c3'){
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c3') {
 					goalx = -1660;
 					goaly = 1080;
 					goalz = 1520;
-		
-					camera.lookAt( new THREE.Vector3(0,0,0));
-				}else if(opts.Camera == 'c4'){
-					goalx = 300;
-					goaly = 200;
-					goalz = 260;
-					camera.lookAt( new THREE.Vector3(0,0,0));
-				}else if(opts.Camera == 'c5'){
-					goalx = 300;
-					goaly = 200;
-					goalz = 260;
-					camera.lookAt( new THREE.Vector3(0,0,0));
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c4') {
+					goalx = 180;
+					goaly = 380;
+					goalz = 350;
+					nextLookAtx = -50;
+					nextLookAty = 31;
+					nextLookAtz = 51;
+
+				} else if (opts.Camera == 'c5') {
+					goalx = 247;
+					goaly = 430;
+					goalz = 240;
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c6') {
+					goalx = -9;
+					goaly = 779;
+					goalz = 54;
+					nextLookAtx = -20;
+					nextLookAty = 0;
+					nextLookAtz = 2;
+
+				}else if (opts.Camera == 'c7') {
+					goalx = 230;
+					goaly = 85;
+					goalz = 415;
+					nextLookAtx = -120;
+					nextLookAty = 21;
+					nextLookAtz = 51;
+				}else if (opts.Camera == 'c8') {
+					goalx = 119;
+					goaly = -7;
+					goalz = 408;
+					nextLookAtx = -120;
+					nextLookAty = 0;
+					nextLookAtz = 51;
 				}
 				prevOpts.Camera = opts.Camera;
 			}
@@ -1437,18 +1361,15 @@
 			var delta = clock.getDelta();
 			animatePlayer(delta);
 
-			// console.log(opts);
-
-
-			// camera.rotation.x = 0;
-			// camera.rotation.y = 0;
-			// camera.rotation.z = 0;
 
 			var width = window.innerWidth / 2;
 			var height = window.innerHeight / 2;
 
 			requestAnimationFrame(animate);
-			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+			// opts.CamX = camera.position.x;
+			// opts.CamY = camera.position.y;
+			// opts.CamZ = camera.position.z;
+			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z + ", " + camera.rotation.x + ", " + camera.rotation.y + ", " + camera.rotation.z);
 
 			if (makeOpaque) {
 				makeTransparent = false;
@@ -1490,9 +1411,6 @@
 					makeTransparent = false;
 				}
 			}
-
-
-			let multiplier = 5;
 
 			boxyPosIndex++;
 			if (peopleOn) {
@@ -1538,50 +1456,170 @@
 
 		}
 
-		function onError() { }
+	function onError() { }
 
-		function getPresetJSON() {
-			return {
-				"preset": "Default",
-				"closed": false,
-				"remembered": {
-					"Default": {
-						"0": {
-							"Clipping": 'none',
-							"Camera": 'c3',
-							"Option": 'opt1',
-							"Site": true,
-							"Mclaughlin": true,
-							"Rendering": false,
-							"People": true,
-							"Orbit": false
-						}
-					},
-					"Scene1": {
-						"0": {
-							"Clipping": 'six',
-							"Camera": 'c4',
-							"Option": 'opt2',
-							"Site": true,
-							"Mclaughlin": true,
-							"Rendering": false,
-							"People": true,
-							"Orbit": false
+	function getPresetJSON() {
+		return {
+			"preset": "Default",
+			"closed": false,
+			"remembered": {
+				"Default": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c3',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
 					}
-				}
 				},
-				"folders": {
-					"SETTINGS": {
-						"preset": "Default",
-						"closed": false,
-						"folders": {}
+				"Scene1": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt0',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"Scene2": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"Scene3": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c5',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"Scene4": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"Scene5": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+			"Scene6": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"Scene7": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
 					}
 				}
-			};
-		}
+			},	
+			"folders": {
+				"SETTINGS": {
+					"preset": "Default",
+					"closed": false,
+					"folders": {}
+				}
+			}
+		};
+	}
 
 
-	</script>
+</script>
 
 </body>
 

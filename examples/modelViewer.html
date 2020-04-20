@@ -51,6 +51,38 @@
 
 			cursor: pointer;
 		}
+
+		#my-container {
+    /* position: relative;
+    background: #5C97FF;
+    overflow: hidden; */
+		position: absolute;
+			width: 100%;
+			height: 100%;
+			/* background-color: rgba(0, 0, 0, 0.5); */
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+				content: ' ';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+				opacity: 0.0;
+				/* background-image: url('http://placekitten.com/1500/1000'); */
+				background-image: url('textures/tree/S42-03.jpg');
+				background-repeat: no-repeat;
+				background-position: 50% 0;
+				-ms-background-size: cover;
+				-o-background-size: cover;
+				-moz-background-size: cover;
+				-webkit-background-size: cover;
+				background-size: cover;
+		}
 	</style>
 </head>
 
@@ -58,6 +90,9 @@
 
 	<div id="info">
 	</div>
+	<div id="my-container">
+    <!-- <h1>Scotch Scotch Scotch</h1> -->
+</div>
 
 	<!-- <div id="blocker">
 
@@ -82,13 +117,16 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var currentOpacity = 0.0;
+		var turnOnRendering = false;
+
 		var globalPlane;
 
 		var runUpdate = false;
 
 		var sceneFinder = 0;
 
-		var scenes = ["Default", "Scene1", "Scene2", "Scene3", "Scene4", "Scene5", "Scene6", "Scene7", "Scene8", "Scene9"];
+		var scenes = ["Default", "S01", "S02", "S03", "S04", "S04-1", "S05", "S05-1", "S06", "S06-1", "S06-2", "S07", "S07-1", "S07-2", "S08", "S09", "S10", "S11", "S12", "S13", "S14"];
 
 		let multiplier = 3.0; //how fast the people walk
 
@@ -97,19 +135,7 @@
 		var textureS;
 		var mapS;
 
-		var transparentLevel = 22;
-		var makeOpaque = false;
-		var makeTransparent = false;
-
-		var spriteC;
-		var spriteMaterial;
-
-		var mapC;
-
-		var transparentImgs = [];
-
 		var tMult = 4.0;
-
 
 		var startx = -1660;
 		var goalx = -1660;
@@ -134,7 +160,7 @@
 
 		var clock = new THREE.Clock();
 
-		var cameraOrtho, sceneOrtho;
+		// var cameraOrtho, sceneOrtho;
 
 		var opts, prevOpts;
 
@@ -225,6 +251,8 @@
 
 		var localPlane;
 		var counter1 = 3;
+
+		var blocker;
 
 
 		init();
@@ -446,6 +474,33 @@
 		}
 
 		function init() {
+
+			// var blocker = document.getElementById( 'blocker' );
+			// var instructions = document.getElementById( 'instructions' );
+
+			// instructions.addEventListener( 'click', function () {
+
+			// 	controls.lock();
+
+			// }, false );
+
+			// controls.addEventListener( 'lock', function () {
+
+			// 	instructions.style.display = 'none';
+			// 	blocker.style.display = 'none';
+
+			// } );
+
+			// controls.addEventListener( 'unlock', function () {
+
+			// 	blocker.style.display = 'block';
+			// 	instructions.style.display = '';
+
+			// } );
+
+			blocker = document.getElementById( 'my-container' );
+			blocker.style.display = 'none';
+			
 			renderer = new THREE.WebGLRenderer({ antialias: true });
 
 			container = document.createElement('div');
@@ -456,8 +511,8 @@
 
 			camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 1, 9000);
 
-			cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
-			cameraOrtho.position.z = 10;
+			// cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
+			// cameraOrtho.position.z = 10;
 
 			controls = new MapControls(camera, renderer.domElement);
 			controls.mouseButtons = keyControls;
@@ -477,11 +532,12 @@
 			camera.layers.enable(0); // enabled by default
 			camera.layers.enable(1);
 			camera.layers.enable(2);
+			camera.layers.enable(7); //Mclaughlin
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
 
-			sceneOrtho = new THREE.Scene();
+			// sceneOrtho = new THREE.Scene();
 
 			var spotLight = new THREE.SpotLight(0x888888);
 			spotLight.name = 'Spot Light';
@@ -678,11 +734,25 @@
 				});
 
 				var loader9 = new OBJLoader();
-				loader9.load('models/obj/Site22-Buildings.obj', function (obj) {
+				loader9.load('models/obj/Site30-Buildings.obj', function (obj) {
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
-					var layer = 1
+					var layer = 7;
+					var object = obj.children[0].clone();
+					object.layers.set(layer);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
+				var loader9 = new OBJLoader();
+				loader9.load('models/obj/Site31-Buildings.obj', function (obj) {
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material;
+					});
+					var layer = 1;
 					var object = obj.children[0].clone();
 					object.layers.set(layer);
 					object.rotation.x = -3.1415926787 / 2;
@@ -696,7 +766,7 @@
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
-					var layer = 1
+					var layer = 1;
 					var object = obj.children[0].clone();
 					object.layers.set(layer);
 					object.rotation.x = -3.1415926787 / 2;
@@ -714,7 +784,7 @@
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/bldgOutline1.fbx', function (object) {
-					var layer = 2
+					var layer = 2;
 
 					object.traverse(function (child) {
 						child.material = material5;
@@ -748,7 +818,7 @@
 						obj.traverse(function (child) {
 							if (child.isMesh) child.material = material1;
 						});
-						var layer = 2
+						var layer = 2;
 						var object = obj.children[0].clone();
 						object.layers.set(layer);
 						object.rotation.x = -3.1415926787 / 2;
@@ -849,7 +919,7 @@
 						obj.traverse(function (child) {
 							if (child.isMesh) child.material = material1;
 						});
-						var layer = 3
+						var layer = 3;
 						var object = obj.children[0].clone();
 						object.layers.set(layer);
 						object.rotation.x = -3.1415926787 / 2;
@@ -891,6 +961,104 @@
 					});
 
 				//END OF OPTION 2
+				//BUILDING OPTION 3
+
+				var material5 = new THREE.LineBasicMaterial({
+					color: 0x444444, linewidth: 0.5, clippingPlanes: [localPlane],
+					clipShadows: true
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/bldgOutline2.fbx', function (object) {
+					var layer = 6;
+					object.traverse(function (child) {
+						child.material = material5;
+						child.layers.set(layer)
+					});
+
+					object.layers.set(layer);
+					scene.add(object);
+
+				});
+
+				// var loader = new FBXLoader();
+				// loader.load('models/fbx/floorPlan-2.fbx', function (object) {
+				// 	var layer = 5;
+
+				// 	object.traverse(function (child) {
+
+				// 		child.material = material5;
+				// 		child.layers.set(layer)
+				// 	});
+				// 	object.layers.set(layer);
+				// 	scene.add(object);
+				// });
+
+				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+
+				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness: 1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent: true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [localPlane],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+					var loader = new OBJLoader();
+					loader.load('models/obj/Opt3-Glass.obj', function (obj) {
+						obj.traverse(function (child) {
+							if (child.isMesh) child.material = material1;
+						});
+						var layer = 6;
+						var object = obj.children[0].clone();
+						object.layers.set(layer);
+						object.rotation.x = -3.1415926787 / 2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					});
+				});
+
+				new MTLLoader()
+					.setPath('models/obj/')
+					.load('Opt3-WithMat.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/')
+							.load('Opt3-WithMat.obj', function (obj) {
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+									if (child.isMesh) child.material.clipShadows = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(6);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+				//END OF OPTION 3
 			});
 
 			for (let i = 0; i < 71; i++) {
@@ -920,7 +1088,7 @@
 			renderer.localClippingEnabled = true;
 			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 			
-			renderer.clippingPlanes = [globalPlane];
+			// renderer.clippingPlanes = [globalPlane];
 
 
 			lightProbe = new THREE.LightProbe();
@@ -936,7 +1104,7 @@
 			var height = window.innerHeight;
 
 			setTimeout(addImage, 1300);
-			createHUDSprites();
+			// createHUDSprites();
 
 			gui = new GUI({
 				load: getPresetJSON(),
@@ -950,6 +1118,7 @@
 				Site: true,
 				Mclaughlin: true,
 				Rendering: false,
+				Image: 'opt1sec',
 				People: true,
 				Orbit: false,
 				CamX: 0,
@@ -967,6 +1136,7 @@
 				Site: false,
 				Mclaughlin: false,
 				Rendering: true,
+				Image: 'opt1stair',
 				People: false,
 				Orbit: true,
 				CamX: 0,
@@ -990,7 +1160,7 @@
 				'3rd Floor': 'three',
 				'Ground': 'ground',
 				'Section': 'bldgSection',
-				'Site Section': 'bldgSection'
+				'Site Section': 'siteSection'
 			});
 			folder1.add(opts, 'Camera', {
 				'From Balcony': 'c1',
@@ -1001,7 +1171,8 @@
 				'Top View': 'c6',
 				'Above Stairs': 'c7',
 				'Lower Stairs': 'c8',
-				'Site Section': 'c9'
+				'Site Section': 'c9',
+				'S Aerial': 'c10'
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
@@ -1012,6 +1183,17 @@
 			folder1.add(opts, 'Site');
 			folder1.add(opts, 'Mclaughlin');
 			folder1.add(opts, 'Rendering');
+			folder1.add(opts,  'Image', {
+				'Opt1 Section': 'opt1sec',
+				'Opt1 Stair': 'opt1stair',
+				'Opt1 Balcony': 'opt1bal',
+				'Opt2 Section': 'opt2sec',
+				'Opt2 Stair': 'opt2stair',
+				'Opt2 Balcony': 'opt2bal',
+				'Opt3 Section': 'opt3sec',
+				'Opt3 Stair': 'opt3stair',
+				'Opt3 Balcony': 'opt3bal',
+			});
 			folder1.add(opts, 'People');
 
 			folder1.close();
@@ -1061,45 +1243,6 @@
 		}
 
 
-
-
-		
-
-		function createHUDSprites() {
-			textureS = new THREE.TextureLoader().load("textures/tree/S42-03.jpg");
-
-			mapS = new THREE.TextureLoader().load('textures/tree/black.jpg');
-
-			spriteMaterial = new THREE.SpriteMaterial({ map: textureS, alphaMap: mapS });
-
-			var width = window.innerWidth / 2;
-			var height = window.innerHeight / 2;
-
-			width = 500;
-			height = 500;
-
-			spriteC = new THREE.Sprite(spriteMaterial);
-			spriteC.center.set(0.5, 0.5);
-			spriteC.scale.set(width, height, 1);
-
-			sceneOrtho.add(spriteC);
-
-			document.addEventListener('keydown', onKeyDown, false);
-			document.addEventListener('keyup', onKeyUp, false);
-			// document.addEventListener('mousedown', onMouseDown, false);
-			spriteC.position.set(0, 0, 1); // center
-
-			const zeroPad = (num, places) => String(num).padStart(places, '0')
-
-			for (var i = 0; i < 22; i++) {
-				var spriteMap = new THREE.TextureLoader().load('textures/transparent/img_00' + zeroPad(i, 2) + '.jpg');
-				transparentImgs.push(spriteMap);
-			}
-
-		}
-
-
-
 		function onWindowResize() {
 			var width = window.innerWidth / 2;
 			var height = window.innerHeight / 2;
@@ -1109,11 +1252,6 @@
 
 			renderer.setSize(window.innerWidth, window.innerHeight);
 
-			cameraOrtho.left = - width / 2;
-			cameraOrtho.right = width / 2;
-			cameraOrtho.top = height / 2;
-			cameraOrtho.bottom = - height / 2;
-			cameraOrtho.updateProjectionMatrix();
 
 		}
 
@@ -1148,16 +1286,10 @@
 				// console.log(cube.position.y);
 				camera.lookAt((cube.position));
 				scene.remove(cube);
-
-
-				// camera.rotation.y = THREE.Math.lerp(start, goal, timer);
 			}
 		}
 
 		var onKeyDown = function (event) {
-
-			renderer.clippingPlanes = [globalPlane];
-
 
 			switch (event.keyCode) {
 
@@ -1169,33 +1301,23 @@
 					controls.lock();
 					break;
 
-				case 65: //a
-					console.log("a was pressed");
-					makeOpaque = true;
-					break;
+				// case 65: //a
+				// 	console.log("a was pressed");
+				// 	// makeOpaque = true;
+				// 	break;
 
-				case 83: //s
-					console.log("s was pressed");
+				// case 83: //s
+				// 	console.log("s was pressed");
 
-					var width = window.innerWidth / 2;
-					var height = window.innerHeight / 2;
+				// 	var width = window.innerWidth / 2;
+				// 	var height = window.innerHeight / 2;
 
-					spriteMaterial.alphaMap = transparentImgs[11]
+				// 	break;
 
-					sceneOrtho.remove(spriteC);
-					spriteC = new THREE.Sprite(spriteMaterial);
-					spriteC.center.set(0.5, 0.5);
-					spriteC.scale.set(width, height, 1);
-
-					sceneOrtho.add(spriteC);
-					// spriteC.alphaMap = transparentImgs[11];
-
-					break;
-
-				case 68: //d
-					console.log("d was pressed");
-					makeTransparent = true;
-					break;
+				// case 68: //d
+				// 	console.log("d was pressed");
+				// 	// makeTransparent = true;
+				// 	break;
 				
 				case 16: //shift
 					// controls.reset();
@@ -1236,13 +1358,7 @@
 		
 
 			var onKeyUp = function (event) {
-
-				renderer.clippingPlanes = [];
-
-
 				switch (event.keyCode) {
-
-
 					case 16: //shift
 					// controls.reset();
 					// controls = new MapControls(camera, renderer.domElement);
@@ -1251,10 +1367,7 @@
 							MIDDLE: THREE.MOUSE.ROTATE,
 							RIGHT: THREE.MOUSE.ROTATE
 						}
-						// controls.screenSpacePanning = true;
-					// controls.enableKeys = false;
-					// controls.enabled = false;
-						// console.log("ShiftReleased");
+		
 						
 						break;
 				}
@@ -1272,7 +1385,25 @@
 
 		update();
 
+		
+
 		function animate() {
+
+			// console.log(currentOpacity);
+
+			if(turnOnRendering){
+				currentOpacity += 0.05;
+				if(currentOpacity >= 1){
+					currentOpacity = 1;
+				}
+			}else{
+				if(currentOpacity != 0){
+					currentOpacity -= 0.05;
+					if(currentOpacity <= 0){
+						currentOpacity = 0;
+					}
+				}
+			}
 
 			// console.log(gui.__preset_select.value);
 			// console.log(gui);
@@ -1298,9 +1429,21 @@
 					} else {
 						camera.layers.disable(5);
 					}
-				} else {
+				} else if(opts.Clipping == 'three'){
+					localPlane.constant =  10;
+				}
+				else if(opts.Clipping == 'ground'){
+					localPlane.constant =  -32;
+				}
+				else {
 					camera.layers.disable(4);
 					camera.layers.disable(5);
+				}
+
+				if(opts.Clipping == 'siteSection'){
+					renderer.clippingPlanes = [globalPlane];
+				}else{
+					renderer.clippingPlanes = [];
 				}
 				prevOpts.Clipping = opts.Clipping;
 
@@ -1322,15 +1465,15 @@
 					goaly = -15.3;
 					goalz = -183;
 					nextLookAtx = 0;
-					nextLookAty = 0;
+					nextLookAty = -15.3;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c2') {
 					goalx = 157;
-					goaly = -46.5;
+					goaly = -16.5;
 					goalz = 280;
 					nextLookAtx = 0;
-					nextLookAty = 0;
+					nextLookAty = -16.5;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c3') {
@@ -1342,8 +1485,8 @@
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c4') {
-					goalx = 180;
-					goaly = 380;
+					goalx = 120;
+					goaly = 480;
 					goalz = 350;
 					nextLookAtx = -50;
 					nextLookAty = 31;
@@ -1385,7 +1528,16 @@
 					goalz = -54;
 					nextLookAtx = 0;
 					nextLookAty = 0;
+					nextLookAtz = 40;
+					
+				}else if (opts.Camera == 'c10') { //S Aerial
+					goalx = 66;
+					goaly = 360;
+					goalz = -360;
+					nextLookAtx = 0;
+					nextLookAty = 40;
 					nextLookAtz = 0;
+					//66.33958598391895, 359.7010046785748, -359.01371392434567
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
@@ -1395,12 +1547,19 @@
 				if(opts.Option == 'opt0'){
 					camera.layers.disable(2);
 					camera.layers.disable(3);
+					camera.layers.disable(6);
 				}else if(opts.Option == 'opt1'){
 					camera.layers.enable(2);
 					camera.layers.disable(3);
+					camera.layers.disable(6);
 				}else if(opts.Option == 'opt2'){
 					camera.layers.enable(3);
 					camera.layers.disable(2);
+					camera.layers.disable(6);
+				}else if(opts.Option == 'opt3'){
+					camera.layers.disable(3);
+					camera.layers.disable(2);
+					camera.layers.enable(6);
 				}
 				// console.log("somethingChanged");
 				prevOpts.Option = opts.Option;
@@ -1416,14 +1575,31 @@
 			}
 
 			if(prevOpts.Mclaughlin != opts.Mclaughlin){
+				if (opts.Mclaughlin) {
+					camera.layers.enable(7);
+				} else {
+					camera.layers.disable(7);
+				}
+				prevOpts.Site = opts.Site;
 				console.log("somethingChanged");
 				prevOpts.Mclaughlin = opts.Mclaughlin;
 			}
 
-			if(prevOpts.Rendering != opts.Rendering){
-				console.log("somethingChanged");
+			// if(prevOpts.Rendering != opts.Rendering){
+				if(opts.Rendering){
+					turnOnRendering = true;
+					blocker.style.opacity = currentOpacity;
+					blocker.style.display = 'block';
+				}else{
+					turnOnRendering = false;
+					blocker.style.opacity = currentOpacity;
+					if(currentOpacity == 0){
+						blocker.style.display = 'none';
+					}
+				}
+				// console.log("somethingChanged");
 				prevOpts.Rendering = opts.Rendering;
-			}
+			// }
 
 			if(prevOpts.People != opts.People){
 				if(opts.People){
@@ -1460,48 +1636,7 @@
 			// opts.CamX = camera.position.x;
 			// opts.CamY = camera.position.y;
 			// opts.CamZ = camera.position.z;
-			console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z + ", " + camera.rotation.x + ", " + camera.rotation.y + ", " + camera.rotation.z);
-
-			if (makeOpaque) {
-				makeTransparent = false;
-				if (transparentLevel <= 22) {
-					spriteMaterial.alphaMap = transparentImgs[transparentLevel];
-
-					// console.log("removeC");
-					console.log(transparentLevel);
-
-					sceneOrtho.remove(spriteC);
-					// spriteMaterial = new THREE.SpriteMaterial({ map: texture, alphaMap: transparentImgs[transparentLevel] });
-					spriteC = new THREE.Sprite(spriteMaterial);
-					spriteC.center.set(0.5, 0.5);
-					spriteC.scale.set(width, height, 1);
-
-					// console.log("AddC");
-					sceneOrtho.add(spriteC);
-					transparentLevel++;
-				}
-				else {
-					makeOpaque = false;
-				}
-			}
-
-			if (makeTransparent) {
-				makeOpaque = false;
-				if (transparentLevel > 0) {
-					spriteMaterial.alphaMap = transparentImgs[transparentLevel];
-
-					sceneOrtho.remove(spriteC);
-					spriteC = new THREE.Sprite(spriteMaterial);
-					spriteC.center.set(0.5, 0.5);
-					spriteC.scale.set(width, height, 1);
-
-					sceneOrtho.add(spriteC);
-					transparentLevel--;
-				}
-				else {
-					makeTransparent = false;
-				}
-			}
+			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z );
 
 			boxyPosIndex++;
 			if (peopleOn) {
@@ -1531,9 +1666,6 @@
 		function render() {
 			renderer.clear();
 			renderer.render(scene, camera);
-			renderer.clearDepth();
-			renderer.render(sceneOrtho, cameraOrtho);
-
 		}
 
 		function onProgress(xhr) {
@@ -1562,6 +1694,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1572,7 +1705,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"Scene1": {
+				"S01": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c6',
@@ -1580,6 +1713,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1590,7 +1724,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"Scene2": {
+			"S02": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c6',
@@ -1598,6 +1732,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1608,7 +1743,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"Scene3": {
+			"S03": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c5',
@@ -1616,6 +1751,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1626,7 +1762,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"Scene4": {
+			"S04": {
 					"0": {
 						"Clipping": 'six',
 						"Camera": 'c4',
@@ -1634,6 +1770,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1644,7 +1781,26 @@
 						"CamRotZ": 0
 					}
 				},
-			"Scene5": {
+				"S04-1": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S05": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
@@ -1652,6 +1808,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1662,14 +1819,15 @@
 						"CamRotZ": 0
 					}
 				},	
-			"Scene6": {
+				"S05-1": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c7',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1680,7 +1838,64 @@
 						"CamRotZ": 0
 					}
 				},
-			"Scene7": {
+			"S06": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S06-1": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S06-2": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S07": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -1688,23 +1903,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"Scene8": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c9',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -1715,7 +1914,121 @@
 						"CamRotZ": 0
 					}
 				},
-				"Scene9": {
+				"S07-1": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S07-2": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S08": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S09": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S10": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S11": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S12": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -1723,6 +2036,43 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S13": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S14": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,

@@ -1361,17 +1361,7 @@
 
 		var onKeyDown = function (event) {
 
-			if(opts.Option == 'opt0'){
-				showText = '00';
-			}else if(opts.Option == 'opt1'){
-				showText = '01';
-			}else if(opts.Option == 'opt2'){
-				showText = '02';
-			}else if(opts.Option == 'opt3'){
-				showText = '03';
-			}
-
-			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
+			
 
 			switch (event.keyCode) {
 
@@ -1442,6 +1432,19 @@
 		
 
 			var onKeyUp = function (event) {
+
+        if(opts.Option == 'opt0'){
+				showText = '00';
+			}else if(opts.Option == 'opt1'){
+				showText = '01';
+			}else if(opts.Option == 'opt2'){
+				showText = '02';
+			}else if(opts.Option == 'opt3'){
+				showText = '03';
+			}
+
+			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
+      
 				switch (event.keyCode) {
 					case 16: //shift
 					// controls.reset();

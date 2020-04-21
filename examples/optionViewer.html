@@ -701,12 +701,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/')
-					.load('Site23-Terrain.mtl', function (materialz) {
+					.load('Site40-Terrain.mtl', function (materialz) {
 						materialz.preload();
 						new OBJLoader()
 							.setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site23-Terrain.obj', function (obj) {
+							.load('Site40-Terrain.obj', function (obj) {
 								var object = obj.children[0].clone()
 								object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;
@@ -827,12 +827,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt1-1.mtl', function (materials) {
+					.load('opt1-2.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt1-1.obj', function (obj) {
+							.load('opt1-2.obj', function (obj) {
 								//'SiteW-4.obj'
 
 								obj.traverse(function (child) {
@@ -877,14 +877,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								object.traverse(function (child) {
-									if (child.isMesh) {
-										for (var i = 0; i < child.material.length; i++) {
-											child.material[i].clippingPlanes = [localPlane];
-											child.material[i].clipShadows = true;
-										}
-									}
-								});
+								
 
 								object.layers.set(5);
 								object.rotation.x = -3.1415926787 / 2;
@@ -896,10 +889,10 @@
 
           new MTLLoader()
 					.setPath('models/obj/diagrams/')
-					.load('opt1-1-flr3.mtl', function (materials) {
-						materials.preload();
+					.load('opt1-1-flr3.mtl', function (materials2) {
+						materials2.preload();
 						new OBJLoader()
-							.setMaterials(materials)
+							.setMaterials(materials2)
 							.setPath('models/obj/diagrams/')
 							.load('opt1-1-flr3.obj', function (obj) {
 							
@@ -908,17 +901,11 @@
                   if (child.isMesh) child.material.clipShadows = true;
 									if (child.isMesh) child.material.alphaTest = 0.5;
                   if (child.isMesh) child.material.transparent = true;
+                  if (child.isMesh) child.material.lights = false;
 								});
 
 								var object = obj.children[0].clone()
-								object.traverse(function (child) {
-									if (child.isMesh) {
-										for (var i = 0; i < child.material.length; i++) {
-											child.material[i].clippingPlanes = [localPlane];
-											child.material[i].clipShadows = true;
-										}
-									}
-								});
+							
 
 								object.layers.set(6);
 								object.rotation.x = -3.1415926787 / 2;
@@ -930,10 +917,10 @@
 
           new MTLLoader()
 					.setPath('models/obj/diagrams/')
-					.load('opt1-1-flr0.mtl', function (materials) {
-						materials.preload();
+					.load('opt1-1-flr0.mtl', function (materials1) {
+						materials1.preload();
 						new OBJLoader()
-							.setMaterials(materials)
+							.setMaterials(materials1)
 							.setPath('models/obj/diagrams/')
 							.load('opt1-1-flr0.obj', function (obj) {
 								obj.traverse(function (child) {
@@ -941,17 +928,11 @@
                   if (child.isMesh) child.material.clipShadows = true;
 									if (child.isMesh) child.material.alphaTest = 0.5;
                   if (child.isMesh) child.material.transparent = true;
+                  if (child.isMesh) child.material.lights = false;
 								});
 
 								var object = obj.children[0].clone()
-								object.traverse(function (child) {
-									if (child.isMesh) {
-										for (var i = 0; i < child.material.length; i++) {
-											child.material[i].clippingPlanes = [localPlane];
-											child.material[i].clipShadows = true;
-										}
-									}
-								});
+							
 
 								object.layers.set(7);
 								object.rotation.x = -3.1415926787 / 2;
@@ -1017,12 +998,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-1.mtl', function (materials) {
+					.load('opt2-2.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-1.obj', function (obj) {
+							.load('opt2-2.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1202,12 +1183,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-1.mtl', function (materials) {
+					.load('opt3-2.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-1.obj', function (obj) {
+							.load('opt3-2.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1706,7 +1687,7 @@
 					}
 					
 				} else if(opts.Clipping == 'three'){
-					localPlane.constant =  -23;
+					localPlane.constant =  -22;
           if (opts.Option == 'opt1') {
 						camera.layers.enable(6);
 					} else {
@@ -1726,7 +1707,7 @@
 					}
 				}
 				else if(opts.Clipping == 'ground'){
-					localPlane.constant =  -42;
+					localPlane.constant =  -40;
           if (opts.Option == 'opt1') {
 						camera.layers.enable(7);
 					} else {

@@ -240,7 +240,7 @@
 
 		var API = {
 			lightProbeIntensity: 1.0,
-			directionalLightIntensity: 0.12,
+			directionalLightIntensity: 0.22,
 			envMapIntensity: 0.8
 		};
 
@@ -255,7 +255,7 @@
 
 		var theta = 0;
 
-		var localPlane;
+		var localPlane, localPlane2;
 		var counter1 = 3;
 
 		var blocker;
@@ -487,28 +487,7 @@
 
 			// var blocker = document.getElementById( 'blocker' );
 			sceneText = document.getElementById( 'Scene' );
-			// console.log(instructions);
-			
-
-			// instructions.addEventListener( 'click', function () {
-
-			// 	controls.lock();
-
-			// }, false );
-
-			// controls.addEventListener( 'lock', function () {
-
-			// 	instructions.style.display = 'none';
-			// 	blocker.style.display = 'none';
-
-			// } );
-
-			// controls.addEventListener( 'unlock', function () {
-
-			// 	blocker.style.display = 'block';
-			// 	instructions.style.display = '';
-
-			// } );
+	
 
 			blocker = document.getElementById( 'my-container' );
 			blocker.style.display = 'none';
@@ -545,25 +524,25 @@
 			camera.layers.enable(0); // enabled by default
 			camera.layers.enable(1);
 			camera.layers.enable(2);
-			camera.layers.enable(7); //Mclaughlin
+			camera.layers.enable(14); //Mclaughlin
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
 
 			// sceneOrtho = new THREE.Scene();
 
-			var spotLight = new THREE.SpotLight(0x888888);
-			spotLight.name = 'Spot Light';
-			spotLight.angle = Math.PI / 5;
-			spotLight.penumbra = 0.3;
-			spotLight.position.set(80, 200, 50);
-			spotLight.castShadow = true;
-			spotLight.shadow.camera.near = 80;
-			spotLight.shadow.camera.far = 2000;
-			spotLight.shadow.mapSize.width = 1024;
-			spotLight.shadow.mapSize.height = 1024;
-			spotLight.shadow.bias = -0.002;
-			spotLight.shadow.radius = 12;
+			// var spotLight = new THREE.SpotLight(0x888888);
+			// spotLight.name = 'Spot Light';
+			// spotLight.angle = Math.PI / 5;
+			// spotLight.penumbra = 0.3;
+			// spotLight.position.set(80, 200, 50);
+			// spotLight.castShadow = true;
+			// spotLight.shadow.camera.near = 80;
+			// spotLight.shadow.camera.far = 2000;
+			// spotLight.shadow.mapSize.width = 1024;
+			// spotLight.shadow.mapSize.height = 1024;
+			// spotLight.shadow.bias = -0.002;
+			// spotLight.shadow.radius = 12;
 
 			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.13);
 			dirLight.name = 'Dir. Light';
@@ -581,17 +560,17 @@
 			dirLight.shadow.bias = -0.002;
 			scene.add(dirLight);
 
-			var dirGroup = new THREE.Group();
-			dirGroup.add(dirLight);
-			scene.add(dirGroup);
+			// var dirGroup = new THREE.Group();
+			// dirGroup.add(dirLight);
+			// scene.add(dirGroup);
 
 			scene.add(camera);
 
-			scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-			var dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
-			dirLight.position.set(-50, 100, -75);
+			scene.add(new THREE.AmbientLight(0xffffff, 0.41));
+			// var dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
+			// dirLight.position.set(-50, 100, -75);
 
-			scene.add(dirLight);
+			// scene.add(dirLight);
 
 			initSky();
 
@@ -737,23 +716,23 @@
 							});
 					});
 
-				var material = new THREE.MeshStandardMaterial({
-					color: 0xcccccf,
+				var material99 = new THREE.MeshStandardMaterial({
+					color: 0xffffff,
 					metalness: 0.3,
 					roughness: 0.7,
 					envMap: cubeTexture,
 					envMapIntensity: API.envMapIntensity,
 					side: THREE.DoubleSide,
+          clippingPlanes: [localPlane]
 				});
 
 				var loader9 = new OBJLoader();
 				loader9.load('models/obj/Site30-Buildings.obj', function (obj) {
 					obj.traverse(function (child) {
-						if (child.isMesh) child.material = material;
+						if (child.isMesh) child.material = material99;
 					});
-					var layer = 7;
 					var object = obj.children[0].clone();
-					object.layers.set(layer);
+					object.layers.set(14);
 					object.rotation.x = -3.1415926787 / 2;
 					object.castShadow = true;
 					object.receiveShadow = true;
@@ -774,14 +753,22 @@
 				// 	scene.add(object);
 				// });
 
+        var material = new THREE.MeshStandardMaterial({
+					color: 0xffffff,
+					metalness: 0.3,
+					roughness: 0.7,
+					envMap: cubeTexture,
+					envMapIntensity: API.envMapIntensity,
+					side: THREE.DoubleSide,
+				});
+
 				var loader10 = new OBJLoader();
 				loader10.load('models/obj/allContextBldgs.obj', function (obj) {
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
-					var layer = 1;
 					var object = obj.children[0].clone();
-					object.layers.set(layer);
+					object.layers.set(1);
 					object.rotation.x = -3.1415926787 / 2;
 					object.castShadow = true;
 					object.receiveShadow = true;
@@ -797,14 +784,12 @@
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/linework-opt1-1.fbx', function (object) {
-					var layer = 2;
-
 					object.traverse(function (child) {
 						child.material = material5;
-						child.layers.set(layer)
+						child.layers.set(2)
 					});
 
-					object.layers.set(layer);
+					object.layers.set(2);
 					scene.add(object);
 				});
 
@@ -831,9 +816,8 @@
 						obj.traverse(function (child) {
 							if (child.isMesh) child.material = material1;
 						});
-						var layer = 2;
 						var object = obj.children[0].clone();
-						object.layers.set(layer);
+						object.layers.set(2);
 						object.rotation.x = -3.1415926787 / 2;
 						object.castShadow = true;
 						object.receiveShadow = true;
@@ -875,15 +859,50 @@
 					});
         
           new MTLLoader()
-					.setPath('models/obj/opts/')
-					.load('opt1-diagram2.mtl', function (materials) {
+					.setPath('models/obj/diagrams/')
+					.load('opt1-1-flr6.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
-							.setPath('models/obj/opts/')
-							.load('opt1-diagram2.obj', function (obj) {
+							.setPath('models/obj/diagrams/')
+							.load('opt1-1-flr6.obj', function (obj) {
 								//'SiteW-4.obj'
 
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+                  if (child.isMesh) child.material.clipShadows = true;
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+                  if (child.isMesh) child.material.lights = false;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(5);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = false;
+								object.receiveShadow = false;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+          new MTLLoader()
+					.setPath('models/obj/diagrams/')
+					.load('opt1-1-flr3.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/diagrams/')
+							.load('opt1-1-flr3.obj', function (obj) {
+							
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
                   if (child.isMesh) child.material.clipShadows = true;
@@ -901,10 +920,43 @@
 									}
 								});
 
-								object.layers.set(4);
+								object.layers.set(6);
 								object.rotation.x = -3.1415926787 / 2;
-								object.castShadow = true;
-								object.receiveShadow = true;
+								object.castShadow = false;
+								object.receiveShadow = false;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+          new MTLLoader()
+					.setPath('models/obj/diagrams/')
+					.load('opt1-1-flr0.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/diagrams/')
+							.load('opt1-1-flr0.obj', function (obj) {
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+                  if (child.isMesh) child.material.clipShadows = true;
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(7);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = false;
+								object.receiveShadow = false;
 								scene.add(object);
 							}, onProgress, onError);
 					});
@@ -921,13 +973,12 @@
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/linework-opt2-1.fbx', function (object) {
-					var layer = 3;
 					object.traverse(function (child) {
 						child.material = material5;
-						child.layers.set(layer)
+						child.layers.set(3)
 					});
 
-					object.layers.set(layer);
+					object.layers.set(3);
 					scene.add(object);
 
 				});
@@ -955,9 +1006,8 @@
 						obj.traverse(function (child) {
 							if (child.isMesh) child.material = material1;
 						});
-						var layer = 3;
 						var object = obj.children[0].clone();
-						object.layers.set(layer);
+						object.layers.set(3);
 						object.rotation.x = -3.1415926787 / 2;
 						object.castShadow = true;
 						object.receiveShadow = true;
@@ -996,39 +1046,107 @@
 							}, onProgress, onError);
 					});
 
-          new MTLLoader()
-					.setPath('models/obj/opts/')
-					.load('opt1-diagram1.mtl', function (materials) {
-						materials.preload();
-						new OBJLoader()
-							.setMaterials(materials)
-							.setPath('models/obj/opts/')
-							.load('opt1-diagram1.obj', function (obj) {
-								//'SiteW-4.obj'
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt2-1-flr6.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt2-1-flr6.obj', function (obj) {
+					// 			//'SiteW-4.obj'
 
-								obj.traverse(function (child) {
-									if (child.isMesh) child.material.clippingPlanes = [localPlane];
-									if (child.isMesh) child.material.alphaTest = 0.5;
-                  if (child.isMesh) child.material.transparent = true;
-								});
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
 
-								var object = obj.children[0].clone()
-								object.traverse(function (child) {
-									if (child.isMesh) {
-										for (var i = 0; i < child.material.length; i++) {
-											child.material[i].clippingPlanes = [localPlane];
-											child.material[i].clipShadows = true;
-										}
-									}
-								});
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
 
-								object.layers.set(5);
-								object.rotation.x = -3.1415926787 / 2;
-								object.castShadow = true;
-								object.receiveShadow = true;
-								scene.add(object);
-							}, onProgress, onError);
-					});
+					// 			object.layers.set(8);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
+
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt2-1-flr3.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt2-1-flr3.obj', function (obj) {
+							
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
+
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
+
+					// 			object.layers.set(9);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
+
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt2-1-flr0.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt2-1-flr0.obj', function (obj) {
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
+
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
+
+					// 			object.layers.set(10);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
 
 				//END OF OPTION 2
 				//BUILDING OPTION 3
@@ -1040,29 +1158,15 @@
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/linework-opt3-1.fbx', function (object) {
-					var layer = 6;
 					object.traverse(function (child) {
 						child.material = material5;
-						child.layers.set(layer)
+						child.layers.set(4)
 					});
 
-					object.layers.set(layer);
+					object.layers.set(4);
 					scene.add(object);
 
 				});
-
-				// var loader = new FBXLoader();
-				// loader.load('models/fbx/floorPlan-2.fbx', function (object) {
-				// 	var layer = 5;
-
-				// 	object.traverse(function (child) {
-
-				// 		child.material = material5;
-				// 		child.layers.set(layer)
-				// 	});
-				// 	object.layers.set(layer);
-				// 	scene.add(object);
-				// });
 
 				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
 
@@ -1087,9 +1191,8 @@
 						obj.traverse(function (child) {
 							if (child.isMesh) child.material = material1;
 						});
-						var layer = 6;
 						var object = obj.children[0].clone();
-						object.layers.set(layer);
+						object.layers.set(4);
 						object.rotation.x = -3.1415926787 / 2;
 						object.castShadow = true;
 						object.receiveShadow = true;
@@ -1120,13 +1223,115 @@
 									}
 								});
 
-								object.layers.set(6);
+								object.layers.set(4);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = true;
 								object.receiveShadow = true;
 								scene.add(object);
 							}, onProgress, onError);
 					});
+
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt3-1-flr6.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt3-1-flr6.obj', function (obj) {
+					// 			//'SiteW-4.obj'
+
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
+
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
+
+					// 			object.layers.set(11);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
+
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt3-1-flr3.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt3-1-flr3.obj', function (obj) {
+							
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
+
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
+
+					// 			object.layers.set(12);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
+
+          // new MTLLoader()
+					// .setPath('models/obj/diagrams/')
+					// .load('opt3-1-flr0.mtl', function (materials) {
+					// 	materials.preload();
+					// 	new OBJLoader()
+					// 		.setMaterials(materials)
+					// 		.setPath('models/obj/diagrams/')
+					// 		.load('opt3-1-flr0.obj', function (obj) {
+					// 			obj.traverse(function (child) {
+					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
+          //         if (child.isMesh) child.material.clipShadows = true;
+					// 				if (child.isMesh) child.material.alphaTest = 0.5;
+          //         if (child.isMesh) child.material.transparent = true;
+					// 			});
+
+					// 			var object = obj.children[0].clone()
+					// 			object.traverse(function (child) {
+					// 				if (child.isMesh) {
+					// 					for (var i = 0; i < child.material.length; i++) {
+					// 						child.material[i].clippingPlanes = [localPlane];
+					// 						child.material[i].clipShadows = true;
+					// 					}
+					// 				}
+					// 			});
+
+					// 			object.layers.set(13);
+					// 			object.rotation.x = -3.1415926787 / 2;
+					// 			object.castShadow = false;
+					// 			object.receiveShadow = false;
+					// 			scene.add(object);
+					// 		}, onProgress, onError);
+					// });
 
 				//END OF OPTION 3
 			});
@@ -1375,35 +1580,16 @@
 					controls.lock();
 					break;
 
-				// case 65: //a
-				// 	console.log("a was pressed");
-				// 	// makeOpaque = true;
-				// 	break;
 
-				// case 83: //s
-				// 	console.log("s was pressed");
-
-				// 	var width = window.innerWidth / 2;
-				// 	var height = window.innerHeight / 2;
-
-				// 	break;
-
-				// case 68: //d
-				// 	console.log("d was pressed");
-				// 	// makeTransparent = true;
-				// 	break;
 				
 				case 16: //shift
-					// controls.reset();
-					// controls = new MapControls(camera, renderer.domElement);
 					
 					keyControls = {
 						LEFT: THREE.MOUSE.PAN,
 						MIDDLE: THREE.MOUSE.PAN,
 						RIGHT: THREE.MOUSE.ROTATE
 					}
-					// controls.screenSpacePanning = true;
-					// controls.enableKeys = false;
+
 					controls.enabled = true;
 					opts.Orbit = true;
 					// console.log("ShiftPressed");
@@ -1444,18 +1630,14 @@
 			}
 
 			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
-      
+
 				switch (event.keyCode) {
 					case 16: //shift
-					// controls.reset();
-					// controls = new MapControls(camera, renderer.domElement);
 						keyControls = {
 							LEFT: THREE.MOUSE.PAN,
 							MIDDLE: THREE.MOUSE.ROTATE,
 							RIGHT: THREE.MOUSE.ROTATE
 						}
-		
-						
 						break;
 				}
 			};
@@ -1476,9 +1658,6 @@
 
 		function animate() {
 
-			
-
-			// console.log(currentOpacity);
 
 			if(turnOnRendering){
 				currentOpacity += 0.05;
@@ -1506,28 +1685,76 @@
 				}
 
 				if (opts.Clipping == 'six') {
-					localPlane.constant =  35;
-					
-				} else if(opts.Clipping == 'three'){
-					localPlane.constant =  10;
-          if (opts.Option == 'opt1') {
-						camera.layers.enable(4);
-					} else {
-						camera.layers.disable(4);
-					}
+					localPlane.constant =  8;
 
-					if (opts.Option == 'opt2') {
+          if (opts.Option == 'opt1') {
 						camera.layers.enable(5);
 					} else {
 						camera.layers.disable(5);
 					}
+
+					if (opts.Option == 'opt2') {
+						camera.layers.enable(8);
+					} else {
+						camera.layers.disable(8);
+					}
+
+          if (opts.Option == 'opt3') {
+						camera.layers.enable(11);
+					} else {
+						camera.layers.disable(11);
+					}
+					
+				} else if(opts.Clipping == 'three'){
+					localPlane.constant =  -23;
+          if (opts.Option == 'opt1') {
+						camera.layers.enable(6);
+					} else {
+						camera.layers.disable(6);
+					}
+
+					if (opts.Option == 'opt2') {
+						camera.layers.enable(9);
+					} else {
+						camera.layers.disable(9);
+					}
+
+          if (opts.Option == 'opt3') {
+						camera.layers.enable(12);
+					} else {
+						camera.layers.disable(12);
+					}
 				}
 				else if(opts.Clipping == 'ground'){
-					localPlane.constant =  -32;
+					localPlane.constant =  -42;
+          if (opts.Option == 'opt1') {
+						camera.layers.enable(7);
+					} else {
+						camera.layers.disable(7);
+					}
+
+					if (opts.Option == 'opt2') {
+						camera.layers.enable(10);
+					} else {
+						camera.layers.disable(10);
+					}
+
+          if (opts.Option == 'opt3') {
+						camera.layers.enable(13);
+					} else {
+						camera.layers.disable(13);
+					}
 				}
 				else {
-					camera.layers.disable(4);
 					camera.layers.disable(5);
+          camera.layers.disable(6);
+          camera.layers.disable(7);
+          camera.layers.disable(8);
+          camera.layers.disable(9);
+          camera.layers.disable(10);
+          camera.layers.disable(11);
+          camera.layers.disable(12);
+          camera.layers.disable(13);
 				}
 
 				if(opts.Clipping == 'siteSection'){
@@ -1609,12 +1836,12 @@
 					nextLookAty = 21;
 					nextLookAtz = 51;
 				}else if (opts.Camera == 'c8') {
-					goalx = 119;
-					goaly = -7;
-					goalz = 408;
-					nextLookAtx = -120;
-					nextLookAty = 0;
-					nextLookAtz = 51;
+					goalx = -40;
+					goaly = -18;
+					goalz = 311;
+					nextLookAtx = -50;
+					nextLookAty = -5;
+					nextLookAtz = 0;
 				}else if (opts.Camera == 'c9') {
 					goalx = 320;
 					goaly = 1;
@@ -1640,19 +1867,19 @@
 				if(opts.Option == 'opt0'){
 					camera.layers.disable(2);
 					camera.layers.disable(3);
-					camera.layers.disable(6);
+					camera.layers.disable(4);
 				}else if(opts.Option == 'opt1'){
 					camera.layers.enable(2);
 					camera.layers.disable(3);
-					camera.layers.disable(6);
+					camera.layers.disable(4);
 				}else if(opts.Option == 'opt2'){
-					camera.layers.enable(3);
 					camera.layers.disable(2);
-					camera.layers.disable(6);
+          camera.layers.enable(3);
+					camera.layers.disable(4);
 				}else if(opts.Option == 'opt3'){
-					camera.layers.disable(3);
 					camera.layers.disable(2);
-					camera.layers.enable(6);
+					camera.layers.disable(3);
+					camera.layers.enable(4);
 				}
 				// console.log("somethingChanged");
 				prevOpts.Option = opts.Option;
@@ -1669,12 +1896,12 @@
 
 			if(prevOpts.Mclaughlin != opts.Mclaughlin){
 				if (opts.Mclaughlin) {
-					camera.layers.enable(7);
+					camera.layers.enable(14);
 				} else {
-					camera.layers.disable(7);
+					camera.layers.disable(14);
 				}
 				prevOpts.Site = opts.Site;
-				console.log("somethingChanged");
+				// console.log("somethingChanged");
 				prevOpts.Mclaughlin = opts.Mclaughlin;
 			}
 
@@ -1695,23 +1922,23 @@
 			// }
 
 			if(opts.Image == "opt1sec"){
-				blocker.style.backgroundImage = "url('textures/renderings/S02_Section_Scheme1-03.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/S03_Option1.jpg')";
 			}else if(opts.Image == "opt2sec"){
-				blocker.style.backgroundImage = "url('textures/renderings/opt2section.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/S03_Option1.jpg')";
 			}else if(opts.Image == "opt3sec"){
-				blocker.style.backgroundImage = "url('textures/renderings/S03_Section_Scheme3-03.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/S03_Option3b.jpg')";
 			}else if(opts.Image == "opt1stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/opt1perspective.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/S60-Option1-01.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-02.jpg')";
 			}else if(opts.Image == "opt2stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/opt2perspective.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/tree/S42-03.jpg')";
+				blocker.style.backgroundImage = "url('textures/tree/S60-Option3-02.jpg')";
 			}else if(opts.Image == "opt3stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/opt3perspective.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-01.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-02.jpg')";
 			}
 
 			if(prevOpts.People != opts.People){

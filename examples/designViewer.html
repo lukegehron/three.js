@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Model Viewer</title>
+	<title>Design Viewer</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<link type="text/css" rel="stylesheet" href="main.css">
@@ -98,7 +98,7 @@
 	<!-- <div id="blocker"> -->
 
 		<div id="instructions">
-			<span style="font-size:26px">Scene: 00 // Option: 01</span>
+			<span style="font-size:26px" id="Scene">Scene: 00 // Option: 01</span>
 			<br>
 			Some other text we can add here...<br/>
 		</div>
@@ -127,7 +127,7 @@
 
 		var sceneFinder = 0;
 
-		var scenes = ["Default", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
+		var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
 ];
 
 		let multiplier = 5.0; //how fast the people walk
@@ -255,6 +255,8 @@
 		var counter1 = 3;
 
 		var blocker;
+
+		var sceneText;
 
 
 		init();
@@ -478,7 +480,9 @@
 		function init() {
 
 			// var blocker = document.getElementById( 'blocker' );
-			// var instructions = document.getElementById( 'instructions' );
+			sceneText = document.getElementById( 'Scene' );
+			// console.log(instructions);
+			
 
 			// instructions.addEventListener( 'click', function () {
 
@@ -1097,7 +1101,7 @@
 
 			gui = new GUI({
 				load: getPresetJSON(),
-				preset: 'Default'
+				preset: 'S00'
 			});
 
 			opts = {
@@ -1374,9 +1378,21 @@
 
 		update();
 
-		
+		var showText;
 
 		function animate() {
+
+			if(opts.Option == 'opt0'){
+				showText = '00';
+			}else if(opts.Option == 'opt1'){
+				showText = '01';
+			}else if(opts.Option == 'opt2'){
+				showText = '02';
+			}else if(opts.Option == 'opt3'){
+				showText = '03';
+			}
+
+			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
 
 			// console.log(currentOpacity);
 
@@ -1695,10 +1711,10 @@
 
 	function getPresetJSON() {
 		return {
-			"preset": "Default",
+			"preset": "S00",
 			"closed": false,
 			"remembered": {
-				"Default": {
+				"S00": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c3',
@@ -2539,7 +2555,7 @@
 						"Image": 'opt3sec',
 						"People": true,
 						"Orbit": false,
-						"CamX": 0, 
+						"CamX": 0,
 						"CamY": 0,
 						"CamZ": 0,
 						"CamRotX": 0,

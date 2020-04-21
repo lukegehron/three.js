@@ -118,6 +118,8 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+    var pointControl;
+
 		var currentOpacity = 0.0;
 		var turnOnRendering = false;
 
@@ -481,6 +483,8 @@
 
 		function init() {
 
+      
+
 			// var blocker = document.getElementById( 'blocker' );
 			sceneText = document.getElementById( 'Scene' );
 			// console.log(instructions);
@@ -518,6 +522,7 @@
 			var height = window.innerHeight / 2;
 
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
+      pointControl = new PointerLockControls(camera, renderer.domElement);
 
 			// cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
 			// cameraOrtho.position.z = 10;
@@ -1336,8 +1341,10 @@
 			switch (event.keyCode) {
 
 				case 87: // w
+          // controls.reset();
 					controls.enabled = true;
-					controls = new PointerLockControls(camera, renderer.domElement);
+          
+					controls = pointControl;
 					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
 					scene.add(controls.getObject());
 					controls.lock();

@@ -1,0 +1,2925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Model Viewer</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="main.css">
+	<style>
+		body {
+			background-color: #f0f0f0;
+			color: #444;
+		}
+
+		a {
+			color: #000000;
+		}
+
+		#blocker {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		#instructions {
+			position: absolute;
+			width: 100%;
+			height: 10%;
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+
+			-webkit-box-orient: horizontal;
+			-moz-box-orient: horizontal;
+			box-orient: horizontal;
+
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			box-pack: center;
+
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			box-align: center;
+
+			/* color: #ffffff; */
+			text-align: center;
+			font-family: Arial;
+			font-size: 14px;
+			line-height: 24px;
+
+			/* cursor: pointer; */
+		}
+
+		#my-container {
+    /* position: relative;
+    background: #5C97FF;
+    overflow: hidden; */
+		position: absolute;
+			width: 100%;
+			height: 100%;
+			/* background-color: rgba(0, 0, 0, 0.5); */
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+				content: ' ';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+				opacity: 0.0;
+				/* background-image: url('http://placekitten.com/1500/1000'); */
+				background-image: url('textures/tree/S42-03.jpg');
+				background-repeat: no-repeat;
+				background-position: 50% 0;
+				-ms-background-size: 100% 100%;
+				-o-background-size: 100% 100%;
+				-moz-background-size: 100% 100%;
+				-webkit-background-size: 100% 100%;
+				background-size: 100% 100%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="info">
+	</div>
+	<div id="my-container">
+    <!-- <h1>Scotch Scotch Scotch</h1> -->
+</div>
+
+	<!-- <div id="blocker"> -->
+
+		<div id="instructions">
+			<span style="font-size:26px">Scene: 00 // Option: 01</span>
+			<br>
+			Some other text we can add here...<br/>
+		</div>
+
+	<!-- </div> -->
+
+	<script type="module">
+
+		import * as THREE from '../build/three.module.js';
+		import { GUI } from './jsm/libs/dat.gui.module.js';
+		import { OBJLoader } from './jsm/loaders/OBJLoader.js';
+		import { MTLLoader } from './jsm/loaders/MTLLoader.js';
+		import { MapControls } from './jsm/controls/OrbitControls.js';
+		import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+		import { Sky } from './jsm/objects/Sky.js';
+		import { LightProbeGenerator } from './jsm/lights/LightProbeGenerator.js';
+		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
+		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
+
+		var currentOpacity = 0.0;
+		var turnOnRendering = false;
+
+		var globalPlane;
+
+		var runUpdate = false;
+
+		var sceneFinder = 0;
+
+		var scenes = ["Default", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
+];
+
+		let multiplier = 5.0; //how fast the people walk
+
+		var gui;
+
+		var textureS;
+		var mapS;
+
+		var tMult = 4.0;
+
+		var startx = 198;
+		var goalx = 198;
+		var starty = 650;
+		var goaly = 650;
+		var startz = 1211;
+		var goalz = 1211;
+
+		var timer = 0;
+
+		var prevLookAtx = 0;
+		var nextLookAtx = 0;
+		var nowLookAtx = 0;
+
+		var prevLookAty = 0;
+		var nextLookAty = 0;
+		var nowLookAty = 0;
+
+		var prevLookAtz = 0;
+		var nextLookAtz = 0;
+		var nowLookAtz = 0;
+
+		var clock = new THREE.Clock();
+
+		// var cameraOrtho, sceneOrtho;
+
+		var opts, prevOpts;
+
+		var hasntBeenUpdated = true;
+
+		var b = [];
+		var boxPos;
+		var boxyPosIndex = 0;
+
+		var xPaths = [];
+		var yPaths = [];
+		var zPaths = [];
+
+		var xTreePaths1 = [];
+		var yTreePaths1 = [];
+		var zTreePaths1 = [];
+
+		var xTreePaths2 = [];
+		var yTreePaths2 = [];
+		var zTreePaths2 = [];
+
+		var xTreePaths3 = [];
+		var yTreePaths3 = [];
+		var zTreePaths3 = [];
+
+		var xTreePaths4 = [];
+		var yTreePaths4 = [];
+		var zTreePaths4 = [];
+
+		var xTreePaths5 = [];
+		var yTreePaths5 = [];
+		var zTreePaths5 = [];
+
+		var xTreePaths6 = [];
+		var yTreePaths6 = [];
+		var zTreePaths6 = [];
+
+		var xArray = [];
+		var yArray = [];
+		var zArray = [];
+
+		var opt1 = true;
+		var opt2 = false;
+
+		var peopleOn = false;
+
+		var container, stats, controls;
+		var camera, scene, renderer;
+		var sky, sunSphere;
+
+		var composer;
+
+		var lightProbe, directionalLight;
+
+		var keyControls = {
+						LEFT: THREE.MOUSE.PAN,
+						MIDDLE: THREE.MOUSE.ROTATE,
+						RIGHT: THREE.MOUSE.ROTATE
+					}
+
+		var effectController = {
+			turbidity: 3,
+			rayleigh: 4,
+			mieCoefficient: 0.033,
+			mieDirectionalG: 1,
+			luminance: 0.9,
+			inclination: 0.31, // elevation / inclination
+			azimuth: 0.24, // Facing front,
+			sun: ! true
+		};
+
+		var API = {
+			lightProbeIntensity: 1.0,
+			directionalLightIntensity: 0.12,
+			envMapIntensity: 0.8
+		};
+
+		var params = {
+			animate: true,
+			planeY: {
+				constant: 99,
+				negated: false,
+				displayHelper: false
+			}
+		};
+
+		var theta = 0;
+
+		var localPlane;
+		var counter1 = 3;
+
+		var blocker;
+
+
+		init();
+		animate();
+
+		function addImage() {
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				.load('textures/tree/tree1-5.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths1.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths1[i];
+						vertex.y = yTreePaths1[i] + 20;
+						vertex.z = zTreePaths1[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 100,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+					scene.add(particles);
+
+				});
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree2-2.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths2.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths2[i];
+						vertex.y = yTreePaths2[i] + 22;
+						vertex.z = zTreePaths2[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 120,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+					scene.add(particles);
+
+				});
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree3-1.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths3.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths3[i];
+						vertex.y = yTreePaths3[i] + 10;
+						vertex.z = zTreePaths3[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 60,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+
+					scene.add(particles);
+
+				});
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree4-1.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths4.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths4[i];
+						vertex.y = yTreePaths4[i] + 20;
+						vertex.z = zTreePaths4[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 100,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+
+					scene.add(particles);
+
+				});
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree5.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths5.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths5[i];
+						vertex.y = yTreePaths5[i] + 15;
+						vertex.z = zTreePaths5[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 80,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+
+					scene.add(particles);
+
+				});
+
+			new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree6.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths6.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths6[i];
+						vertex.y = yTreePaths6[i] + 25;
+						vertex.z = zTreePaths6[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 150,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+
+					scene.add(particles);
+
+				});
+
+		}
+
+		function initSky() {
+
+			// Add Sky
+			sky = new Sky();
+			sky.scale.setScalar(450000);
+			scene.add(sky);
+
+			// Add Sun Helper
+			sunSphere = new THREE.Mesh(
+				new THREE.SphereBufferGeometry(20000, 16, 8),
+				new THREE.MeshBasicMaterial({ color: 0xffffff })
+			);
+			sunSphere.position.y = - 700000;
+			sunSphere.visible = false;
+			scene.add(sunSphere);
+
+		}
+
+		function init() {
+
+			// var blocker = document.getElementById( 'blocker' );
+			// var instructions = document.getElementById( 'instructions' );
+
+			// instructions.addEventListener( 'click', function () {
+
+			// 	controls.lock();
+
+			// }, false );
+
+			// controls.addEventListener( 'lock', function () {
+
+			// 	instructions.style.display = 'none';
+			// 	blocker.style.display = 'none';
+
+			// } );
+
+			// controls.addEventListener( 'unlock', function () {
+
+			// 	blocker.style.display = 'block';
+			// 	instructions.style.display = '';
+
+			// } );
+
+			blocker = document.getElementById( 'my-container' );
+			blocker.style.display = 'none';
+			
+			renderer = new THREE.WebGLRenderer({ antialias: true });
+
+			container = document.createElement('div');
+			document.body.appendChild(container);
+
+			var width = window.innerWidth / 2;
+			var height = window.innerHeight / 2;
+
+			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
+
+			// cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
+			// cameraOrtho.position.z = 10;
+
+			controls = new MapControls(camera, renderer.domElement);
+			controls.mouseButtons = keyControls;
+			
+			controls.screenSpacePanning = true;
+			controls.enableKeys = false;
+
+			controls.enabled = true;
+
+			localPlane = new THREE.Plane(new THREE.Vector3(0, - 1, 0), 35);
+			globalPlane = new THREE.Plane( new THREE.Vector3( - 1, 0, .28 ), 65 );
+
+			camera.position.x = 198;
+			camera.position.y = 650;
+			camera.position.z = 1211;
+
+			camera.layers.enable(0); // enabled by default
+			camera.layers.enable(1);
+			camera.layers.enable(2);
+			camera.layers.enable(7); //Mclaughlin
+
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xf0f0f0);
+
+			// sceneOrtho = new THREE.Scene();
+
+			var spotLight = new THREE.SpotLight(0x888888);
+			spotLight.name = 'Spot Light';
+			spotLight.angle = Math.PI / 5;
+			spotLight.penumbra = 0.3;
+			spotLight.position.set(80, 200, 50);
+			spotLight.castShadow = true;
+			spotLight.shadow.camera.near = 80;
+			spotLight.shadow.camera.far = 2000;
+			spotLight.shadow.mapSize.width = 1024;
+			spotLight.shadow.mapSize.height = 1024;
+			spotLight.shadow.bias = -0.002;
+			spotLight.shadow.radius = 12;
+
+			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.13);
+			dirLight.name = 'Dir. Light';
+			dirLight.position.set(500, 1200, -750);
+			dirLight.castShadow = true;
+			dirLight.shadow.camera.near = 0.1;
+			dirLight.shadow.camera.far = 5000;
+			dirLight.shadow.camera.right = 1370;
+			dirLight.shadow.camera.left = - 1370;
+			dirLight.shadow.camera.top = 1370;
+			dirLight.shadow.camera.bottom = - 1370;
+			dirLight.shadow.mapSize.width = 2048;
+			dirLight.shadow.mapSize.height = 2048;
+			dirLight.shadow.radius = 12;
+			dirLight.shadow.bias = -0.002;
+			scene.add(dirLight);
+
+			var dirGroup = new THREE.Group();
+			dirGroup.add(dirLight);
+			scene.add(dirGroup);
+
+			scene.add(camera);
+
+			scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+			var dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
+			dirLight.position.set(-50, 100, -75);
+
+			scene.add(dirLight);
+
+			initSky();
+
+			var layer;
+
+			var genCubeUrls = function (prefix, postfix) {
+				return [
+					prefix + 'px' + postfix, prefix + 'nx' + postfix,
+					prefix + 'py' + postfix, prefix + 'ny' + postfix,
+					prefix + 'pz' + postfix, prefix + 'nz' + postfix
+				];
+			};
+
+			var urls = genCubeUrls('textures/cube/skyboxsun25deg/', '.jpg');
+
+			new THREE.CubeTextureLoader().load(urls, function (cubeTexture) {
+				cubeTexture.encoding = THREE.sRGBEncoding;
+				lightProbe.copy(LightProbeGenerator.fromCubeTexture(cubeTexture));
+				scene.envionment = cubeTexture;
+				
+				render();
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/lines2.fbx', function (object) {
+					scene.add(object);
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/path2.fbx', function (object) {
+
+					for (let j = 0; j < object.children.length; j++) {
+						xArray = [];
+						yArray = [];
+						zArray = [];
+						for (let i = 0; i < object.children[j].geometry.attributes.position.array.length; i++) {
+							if (i % 3 == 0) {
+								xArray.push(object.children[j].geometry.attributes.position.array[i]);
+							} else if (i % 3 == 1) {
+								yArray.push(object.children[j].geometry.attributes.position.array[i]);
+							} else {
+								zArray.push(object.children[j].geometry.attributes.position.array[i]);
+							}
+						}
+						xPaths.push(xArray);
+						yPaths.push(yArray);
+						zPaths.push(zArray);
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-1.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths1.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths1.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths1.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-2.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths2.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths2.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths2.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-3.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths3.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths3.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths3.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-4.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths4.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths4.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths4.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-5.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths5.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths5.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths5.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+				var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-6.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths6.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths6.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths6.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+
+				new MTLLoader()
+					.setPath('models/obj/')
+					.load('Site23-Terrain.mtl', function (materialz) {
+						materialz.preload();
+						new OBJLoader()
+							.setMaterials(materialz)
+							.setPath('models/obj/')
+							.load('Site23-Terrain.obj', function (obj) {
+								var object = obj.children[0].clone()
+								object.layers.set(1);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							});
+					});
+
+				var material = new THREE.MeshStandardMaterial({
+					color: 0xcccccf,
+					metalness: 0.3,
+					roughness: 0.7,
+					envMap: cubeTexture,
+					envMapIntensity: API.envMapIntensity,
+					side: THREE.DoubleSide,
+				});
+
+				var loader9 = new OBJLoader();
+				loader9.load('models/obj/Site30-Buildings.obj', function (obj) {
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material;
+					});
+					var layer = 7;
+					var object = obj.children[0].clone();
+					object.layers.set(layer);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
+				// var loader9 = new OBJLoader();
+				// loader9.load('models/obj/Site31-Buildings.obj', function (obj) {
+				// 	obj.traverse(function (child) {
+				// 		if (child.isMesh) child.material = material;
+				// 	});
+				// 	var layer = 1;
+				// 	var object = obj.children[0].clone();
+				// 	object.layers.set(layer);
+				// 	object.rotation.x = -3.1415926787 / 2;
+				// 	object.castShadow = true;
+				// 	object.receiveShadow = true;
+				// 	scene.add(object);
+				// });
+
+				var loader10 = new OBJLoader();
+				loader10.load('models/obj/allContextBldgs.obj', function (obj) {
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material;
+					});
+					var layer = 1;
+					var object = obj.children[0].clone();
+					object.layers.set(layer);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
+				//BUILDING OPTION 1
+
+				var material5 = new THREE.LineBasicMaterial({
+					color: 0x444444, linewidth: 0.5, clippingPlanes: [localPlane],
+					clipShadows: true
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-opt1-1.fbx', function (object) {
+					var layer = 2;
+
+					object.traverse(function (child) {
+						child.material = material5;
+						child.layers.set(layer)
+					});
+
+					object.layers.set(layer);
+					scene.add(object);
+				});
+
+				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+
+				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness: 1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent: true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [localPlane],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+					var loader = new OBJLoader();
+					loader.load('models/obj/opts/opt1-1Glass.obj', function (obj) {
+						obj.traverse(function (child) {
+							if (child.isMesh) child.material = material1;
+						});
+						var layer = 2;
+						var object = obj.children[0].clone();
+						object.layers.set(layer);
+						object.rotation.x = -3.1415926787 / 2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					});
+				});
+
+				new MTLLoader()
+					.setPath('models/obj/opts/')
+					.load('opt1-1.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/opts/')
+							.load('opt1-1.obj', function (obj) {
+								//'SiteW-4.obj'
+
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+									if (child.isMesh) child.material.clipShadows = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(2);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+				//END OF OPTION 1
+
+				//BUILDING OPTION 2
+
+				var material5 = new THREE.LineBasicMaterial({
+					color: 0x444444, linewidth: 0.5, clippingPlanes: [localPlane],
+					clipShadows: true
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-opt2-1.fbx', function (object) {
+					var layer = 3;
+					object.traverse(function (child) {
+						child.material = material5;
+						child.layers.set(layer)
+					});
+
+					object.layers.set(layer);
+					scene.add(object);
+
+				});
+
+				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+
+				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness: 1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent: true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [localPlane],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+					var loader = new OBJLoader();
+					loader.load('models/obj/opts/opt2-1Glass.obj', function (obj) {
+						obj.traverse(function (child) {
+							if (child.isMesh) child.material = material1;
+						});
+						var layer = 3;
+						var object = obj.children[0].clone();
+						object.layers.set(layer);
+						object.rotation.x = -3.1415926787 / 2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					});
+				});
+
+				new MTLLoader()
+					.setPath('models/obj/opts/')
+					.load('opt2-1.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/opts/')
+							.load('opt2-1.obj', function (obj) {
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+									if (child.isMesh) child.material.clipShadows = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(3);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+				//END OF OPTION 2
+				//BUILDING OPTION 3
+
+				var material5 = new THREE.LineBasicMaterial({
+					color: 0x444444, linewidth: 0.5, clippingPlanes: [localPlane],
+					clipShadows: true
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-opt3-1.fbx', function (object) {
+					var layer = 6;
+					object.traverse(function (child) {
+						child.material = material5;
+						child.layers.set(layer)
+					});
+
+					object.layers.set(layer);
+					scene.add(object);
+
+				});
+
+				// var loader = new FBXLoader();
+				// loader.load('models/fbx/floorPlan-2.fbx', function (object) {
+				// 	var layer = 5;
+
+				// 	object.traverse(function (child) {
+
+				// 		child.material = material5;
+				// 		child.layers.set(layer)
+				// 	});
+				// 	object.layers.set(layer);
+				// 	scene.add(object);
+				// });
+
+				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+
+				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+					let material1 = new THREE.MeshPhysicalMaterial({
+						color: 0xffffff,
+						clearcoat: 1,
+						reflectivity: 1,
+						metalness: 1,
+						roughness: 0,
+						transparency: 0.9,
+						transparent: true,
+						envMap: cubeTexture1,
+						envMapIntensity: API.envMapIntensity,
+						clippingPlanes: [localPlane],
+						clipShadows: true,
+						side: THREE.DoubleSide,
+					})
+
+					var loader = new OBJLoader();
+					loader.load('models/obj/opts/opt3-1Glass.obj', function (obj) {
+						obj.traverse(function (child) {
+							if (child.isMesh) child.material = material1;
+						});
+						var layer = 6;
+						var object = obj.children[0].clone();
+						object.layers.set(layer);
+						object.rotation.x = -3.1415926787 / 2;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					});
+				});
+
+				new MTLLoader()
+					.setPath('models/obj/opts/')
+					.load('opt3-1.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/opts/')
+							.load('opt3-1.obj', function (obj) {
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+									if (child.isMesh) child.material.clipShadows = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(6);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
+				//END OF OPTION 3
+			});
+
+			for (let i = 0; i < 71; i++) {
+				b[i] = new THREE.Mesh(
+					new THREE.BoxGeometry(1.2, 6, 1.2),
+					new THREE.MeshPhysicalMaterial({
+						color: "#666666",
+						transparency: 0.7,
+						transparent: true
+					})
+				);
+
+				b[i].position.y = -100;
+				scene.add(b[i]);
+			}
+
+			// var textureLoader = new THREE.TextureLoader();
+			// textureLoader.load("textures/tree/S42-03.jpg", createHUDSprites);
+
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			container.appendChild(renderer.domElement);
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.VSMShadowMap;
+			renderer.setClearColor(0xCCCCCC, 1);
+			// renderer.localClippingEnabled = false;
+			renderer.localClippingEnabled = true;
+			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+			
+			// renderer.clippingPlanes = [globalPlane];
+
+
+			lightProbe = new THREE.LightProbe();
+			scene.add(lightProbe);
+
+			directionalLight = new THREE.DirectionalLight(0xffffff, API.directionalLightIntensity);
+
+			directionalLight.position.set(-50, 100, -75);
+			directionalLight.castShadow = true;
+			scene.add(directionalLight);
+
+			var width = window.innerWidth;
+			var height = window.innerHeight;
+
+			setTimeout(addImage, 1300);
+			// createHUDSprites();
+
+			gui = new GUI({
+				load: getPresetJSON(),
+				preset: 'Default'
+			});
+
+			opts = {
+				Clipping: 'none',
+				Camera: 'c3',
+				Option: 'opt1',
+				Site: true,
+				Mclaughlin: true,
+				Rendering: false,
+				Image: 'opt1sec',
+				People: true,
+				Orbit: false,
+				CamX: 0,
+				CamY: 0,
+				CamZ: 0,
+				CamRotX: 0,
+				CamRotY: 0,
+				CamRotZ: 0
+			};
+
+			prevOpts = {
+				Clipping: 'n',
+				Camera: 'n',
+				Option: 'n',
+				Site: false,
+				Mclaughlin: false,
+				Rendering: true,
+				Image: 'opt1stair',
+				People: false,
+				Orbit: true,
+				CamX: 0,
+				CamY: 0,
+				CamZ: 0,
+				CamRotX: 0,
+				CamRotY: 0,
+				CamRotZ: 0
+			};
+
+
+			// saveValues: gui.remember must be executed before gui.add
+			gui.remember(opts);
+		
+
+			var folder1 = gui.addFolder('SETTINGS');
+
+			folder1.add(opts, 'Clipping', {
+				'None': 'none',
+				'6th Floor': 'six',
+				'3rd Floor': 'three',
+				'Ground': 'ground',
+				'Section': 'bldgSection',
+				'Site Section': 'siteSection'
+			});
+			folder1.add(opts, 'Camera', {
+				'From Balcony': 'c1',
+				'From Stairs': 'c2',
+				'Far Aerial': 'c3',
+				'N Aerial': 'c4',
+				'N Aerial2': 'c5',
+				'Top View': 'c6',
+				'Above Stairs': 'c7',
+				'Lower Stairs': 'c8',
+				'Site Section': 'c9',
+				'S Aerial': 'c10'
+			});
+			folder1.add(opts, 'Option', {
+				'Existing': 'opt0',
+				'Tall Bar': 'opt1',
+				'Opt 2': 'opt2',
+				'Jewel': 'opt3'
+			});
+			folder1.add(opts, 'Site');
+			folder1.add(opts, 'Mclaughlin');
+			folder1.add(opts, 'Rendering');
+			folder1.add(opts,  'Image', {
+				'Opt1 Section': 'opt1sec',
+				'Opt1 Stair': 'opt1stair',
+				'Opt1 Balcony': 'opt1bal',
+				'Opt2 Section': 'opt2sec',
+				'Opt2 Stair': 'opt2stair',
+				'Opt2 Balcony': 'opt2bal',
+				'Opt3 Section': 'opt3sec',
+				'Opt3 Stair': 'opt3stair',
+				'Opt3 Balcony': 'opt3bal',
+			});
+			folder1.add(opts, 'People');
+
+			folder1.close();
+
+			var folder2 = gui.addFolder('ADVANCED');
+
+			folder2.add(opts, 'CamX', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamY', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamZ', -10000, 10000, 0.1).listen();
+			folder2.add(opts, 'CamRotX', -4, 4, 0.001).listen();
+			folder2.add(opts, 'CamRotY', -4, 4, 0.001).listen();
+			folder2.add(opts, 'CamRotZ', -4, 4, 0.001).listen();
+
+	
+			gui.add(opts, 'Orbit');
+
+			gui.hide();
+			
+
+
+			guiChanged();
+
+			function guiChanged() {
+
+				var uniforms = sky.material.uniforms;
+				uniforms["turbidity"].value = effectController.turbidity;
+				uniforms["rayleigh"].value = effectController.rayleigh;
+				uniforms["mieCoefficient"].value = effectController.mieCoefficient;
+				uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
+				uniforms["luminance"].value = effectController.luminance;
+
+				var theta = Math.PI * (effectController.inclination - 0.5);
+				var phi = 2 * Math.PI * (effectController.azimuth - 0.5);
+
+				var distance = 400000;
+
+				sunSphere.position.x = distance * Math.cos(phi);
+				sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
+				sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+
+				sunSphere.visible = effectController.sun;
+
+				uniforms["sunPosition"].value.copy(sunSphere.position);
+			}
+
+			window.addEventListener('resize', onWindowResize, false);
+		}
+
+
+		function onWindowResize() {
+			var width = window.innerWidth / 2;
+			var height = window.innerHeight / 2;
+
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+		}
+
+		function animatePlayer(delta) {
+			if (timer <= tMult) {
+				timer += delta; // Increase the timer value
+				// console.log(nextLookAtx);
+				// console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
+				//Use interpolation to move from the start towards the goal, by 'timer' percentage;
+				var camPosx = THREE.Math.lerp(startx, goalx, Math.min(1.0, timer/tMult));
+				var camPosy = THREE.Math.lerp(starty, goaly, Math.min(1.0, timer/tMult));
+				var camPosz = THREE.Math.lerp(startz, goalz, Math.min(1.0, timer/tMult));
+				camera.position.x = camPosx;
+				camera.position.y = camPosy;
+				camera.position.z = camPosz;
+
+				nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, Math.min(1.0, timer/tMult));
+				nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, Math.min(1.0, timer/tMult));
+				nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, Math.min(1.0, timer/tMult));
+
+
+				// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
+				var geometry = new THREE.BoxGeometry(1, 1, 1);
+				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+				var cube = new THREE.Mesh(geometry, material);
+				scene.add(cube);
+				cube.position.x = nowLookAtx;
+				cube.position.y = nowLookAty;
+				cube.position.z = nowLookAtz;
+				// camera.up.set( 0, 1,0 );
+				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+				// console.log(cube.position.y);
+				camera.lookAt((cube.position));
+				scene.remove(cube);
+			}
+		}
+
+		var onKeyDown = function (event) {
+
+			switch (event.keyCode) {
+
+				case 87: // w
+					controls.enabled = true;
+					controls = new PointerLockControls(camera, renderer.domElement);
+					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
+					scene.add(controls.getObject());
+					controls.lock();
+					break;
+
+				// case 65: //a
+				// 	console.log("a was pressed");
+				// 	// makeOpaque = true;
+				// 	break;
+
+				// case 83: //s
+				// 	console.log("s was pressed");
+
+				// 	var width = window.innerWidth / 2;
+				// 	var height = window.innerHeight / 2;
+
+				// 	break;
+
+				// case 68: //d
+				// 	console.log("d was pressed");
+				// 	// makeTransparent = true;
+				// 	break;
+				
+				case 16: //shift
+					// controls.reset();
+					// controls = new MapControls(camera, renderer.domElement);
+					
+					keyControls = {
+						LEFT: THREE.MOUSE.PAN,
+						MIDDLE: THREE.MOUSE.PAN,
+						RIGHT: THREE.MOUSE.ROTATE
+					}
+					// controls.screenSpacePanning = true;
+					// controls.enableKeys = false;
+					controls.enabled = true;
+					opts.Orbit = true;
+					// console.log("ShiftPressed");
+					break;
+				
+					case 39: // --> arrow
+					sceneFinder++;
+					if(sceneFinder > scenes.length){
+						sceneFinder = 0;
+					} 
+					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
+					break;
+
+					case 37: // <-- arrow
+					sceneFinder--;
+					if(sceneFinder < 0){
+						sceneFinder = scenes.length;
+					} 
+					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
+					break;
+			}
+		};
+
+		
+
+			var onKeyUp = function (event) {
+				switch (event.keyCode) {
+					case 16: //shift
+					// controls.reset();
+					// controls = new MapControls(camera, renderer.domElement);
+						keyControls = {
+							LEFT: THREE.MOUSE.PAN,
+							MIDDLE: THREE.MOUSE.ROTATE,
+							RIGHT: THREE.MOUSE.ROTATE
+						}
+		
+						
+						break;
+				}
+			};
+
+		var update = function() {
+			requestAnimationFrame(update);
+			opts.CamX = camera.position.x;
+			opts.CamY = camera.position.y;
+			opts.CamZ = camera.position.z;
+			opts.CamRotX = camera.rotation.x;
+			opts.CamRotY = camera.rotation.y;
+			opts.CamRotZ = camera.rotation.z;
+		};
+
+		update();
+
+		
+
+		function animate() {
+
+			// console.log(currentOpacity);
+
+			if(turnOnRendering){
+				currentOpacity += 0.05;
+				if(currentOpacity >= 1){
+					currentOpacity = 1;
+				}
+			}else{
+				if(currentOpacity != 0){
+					currentOpacity -= 0.05;
+					if(currentOpacity <= 0){
+						currentOpacity = 0;
+					}
+				}
+			}
+
+			// console.log(gui.__preset_select.value);
+			// console.log(gui);
+			// console.log(gui.saveToLocalStorageIfPossible);
+			// console.log(gui.'[[Scopes]]'[3].params.load.remembered.Default;
+			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+
+			if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option) {
+				if(opts.Clipping == 'none'){
+					localPlane.constant = 200;
+				}
+
+				if (opts.Clipping == 'six') {
+					localPlane.constant =  35;
+					if (opts.Option == 'opt1') {
+						camera.layers.enable(4);
+					} else {
+						camera.layers.disable(4);
+					}
+
+					if (opts.Option == 'opt2') {
+						camera.layers.enable(5);
+					} else {
+						camera.layers.disable(5);
+					}
+				} else if(opts.Clipping == 'three'){
+					localPlane.constant =  10;
+				}
+				else if(opts.Clipping == 'ground'){
+					localPlane.constant =  -32;
+				}
+				else {
+					camera.layers.disable(4);
+					camera.layers.disable(5);
+				}
+
+				if(opts.Clipping == 'siteSection'){
+					renderer.clippingPlanes = [globalPlane];
+				}else{
+					renderer.clippingPlanes = [];
+				}
+				prevOpts.Clipping = opts.Clipping;
+
+			}
+
+			if (prevOpts.Camera != opts.Camera || runUpdate) {
+				timer = 0;
+
+				startx = camera.position.x;
+				starty = camera.position.y;
+				startz = camera.position.z;
+
+				prevLookAtx = nextLookAtx;
+				prevLookAty = nextLookAty;
+				prevLookAtz = nextLookAtz;
+
+				if (opts.Camera == 'c1') {
+					goalx = 27.8;
+					goaly = -11.3;
+					goalz = -183;
+					nextLookAtx = -20;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c2') {
+					goalx = 157;
+					goaly = -16.5;
+					goalz = 280;
+					nextLookAtx = 0;
+					nextLookAty = -16.5;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c3') {
+					goalx = 198;
+					goaly = 650;
+					goalz = 1211;
+					// goalx = -1660;
+					// goaly = 1080;
+					// goalz = 1520;
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c4') {
+					goalx = 120;
+					goaly = 480;
+					goalz = 350;
+					nextLookAtx = -50;
+					nextLookAty = 31;
+					nextLookAtz = 51;
+
+				} else if (opts.Camera == 'c5') {
+					goalx = 247;
+					goaly = 430;
+					goalz = 240;
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+				} else if (opts.Camera == 'c6') { //top-down
+					goalx = -9;
+					goaly = 779;
+					goalz = 54;
+					nextLookAtx = -24;
+					nextLookAty = 0;
+					nextLookAtz = 2;
+
+				}else if (opts.Camera == 'c7') {
+					goalx = 230;
+					goaly = 85;
+					goalz = 415;
+					nextLookAtx = -120;
+					nextLookAty = 21;
+					nextLookAtz = 51;
+				}else if (opts.Camera == 'c8') {
+					goalx = 119;
+					goaly = -7;
+					goalz = 408;
+					nextLookAtx = -120;
+					nextLookAty = 0;
+					nextLookAtz = 51;
+				}else if (opts.Camera == 'c9') {
+					goalx = 320;
+					goaly = 1;
+					goalz = -54;
+					nextLookAtx = 0;
+					nextLookAty = 0;
+					nextLookAtz = 40;
+					
+				}else if (opts.Camera == 'c10') { //S Aerial
+					goalx = 66;
+					goaly = 360;
+					goalz = -360;
+					nextLookAtx = 0;
+					nextLookAty = 40;
+					nextLookAtz = 0;
+					//66.33958598391895, 359.7010046785748, -359.01371392434567
+				}
+				prevOpts.Camera = opts.Camera;
+				runUpdate = false;
+			}
+
+			if(prevOpts.Option != opts.Option){
+				if(opts.Option == 'opt0'){
+					camera.layers.disable(2);
+					camera.layers.disable(3);
+					camera.layers.disable(6);
+				}else if(opts.Option == 'opt1'){
+					camera.layers.enable(2);
+					camera.layers.disable(3);
+					camera.layers.disable(6);
+				}else if(opts.Option == 'opt2'){
+					camera.layers.enable(3);
+					camera.layers.disable(2);
+					camera.layers.disable(6);
+				}else if(opts.Option == 'opt3'){
+					camera.layers.disable(3);
+					camera.layers.disable(2);
+					camera.layers.enable(6);
+				}
+				// console.log("somethingChanged");
+				prevOpts.Option = opts.Option;
+			}
+
+			if(prevOpts.Site != opts.Site){
+				if (opts.Site) {
+					camera.layers.enable(1);
+				} else {
+					camera.layers.disable(1);
+				}
+				prevOpts.Site = opts.Site;
+			}
+
+			if(prevOpts.Mclaughlin != opts.Mclaughlin){
+				if (opts.Mclaughlin) {
+					camera.layers.enable(7);
+				} else {
+					camera.layers.disable(7);
+				}
+				prevOpts.Site = opts.Site;
+				console.log("somethingChanged");
+				prevOpts.Mclaughlin = opts.Mclaughlin;
+			}
+
+			// if(prevOpts.Rendering != opts.Rendering){
+				if(opts.Rendering){
+					turnOnRendering = true;
+					blocker.style.opacity = currentOpacity;
+					blocker.style.display = 'block';
+				}else{
+					turnOnRendering = false;
+					blocker.style.opacity = currentOpacity;
+					if(currentOpacity == 0){
+						blocker.style.display = 'none';
+					}
+				}
+				// console.log("somethingChanged");
+				prevOpts.Rendering = opts.Rendering;
+			// }
+
+			if(opts.Image == "opt1sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/S02_Section_Scheme1-03.jpg')";
+			}else if(opts.Image == "opt2sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt2section.jpg')";
+			}else if(opts.Image == "opt3sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/S03_Section_Scheme3-03.jpg')";
+			}else if(opts.Image == "opt1stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt1perspective.jpg')";
+			}else if(opts.Image == "opt1bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option1-01.jpg')";
+			}else if(opts.Image == "opt2stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt2perspective.jpg')";
+			}else if(opts.Image == "opt2bal"){
+				blocker.style.backgroundImage = "url('textures/tree/S42-03.jpg')";
+			}else if(opts.Image == "opt3stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/opt3perspective.jpg')";
+			}else if(opts.Image == "opt3bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-01.jpg')";
+			}
+
+			if(prevOpts.People != opts.People){
+				if(opts.People){
+					peopleOn = true;
+				}else{
+					peopleOn = false;
+				}
+				prevOpts.People = opts.People;
+			}
+
+			if(prevOpts.Orbit != opts.Orbit || controls.enabled){
+				if(opts.Orbit){
+					controls.enabled = true;
+				}else{
+					controls.enabled = false;
+				}
+				// console.log("somethingChanged");
+				prevOpts.Orbit = opts.Orbit;
+			}
+				
+				
+			document.addEventListener('keydown', onKeyDown, false);
+			document.addEventListener('keyup', onKeyUp, false);
+			// document.addEventListener('mousedown', onMouseDown, false);
+
+			var delta = clock.getDelta();
+			animatePlayer(delta);
+
+
+			var width = window.innerWidth / 2;
+			var height = window.innerHeight / 2;
+
+			requestAnimationFrame(animate);
+			// opts.CamX = camera.position.x;
+			// opts.CamY = camera.position.y;
+			// opts.CamZ = camera.position.z;
+			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z );
+
+			boxyPosIndex++;
+			if (peopleOn) {
+
+				for (let j = 0; j < zPaths.length; j++) {
+
+					let currentIndex = boxyPosIndex % ((zPaths[j].length * multiplier) - 1);
+					// console.log(zPaths[j].length);
+					b[j].position.x = xPaths[j][parseInt(currentIndex / multiplier)];
+					b[j].position.y = yPaths[j][parseInt(currentIndex / multiplier)] + 3;
+					b[j].position.z = zPaths[j][parseInt(currentIndex / multiplier)];
+				}
+			} else {
+				for (let j = 0; j < zPaths.length; j++) {
+
+					let currentIndex = boxyPosIndex % zPaths[j].length;
+
+					b[j].position.x = 0;
+					b[j].position.y = -10000;
+					b[j].position.z = 0;
+				}
+			}
+			render();
+		}
+
+
+		function render() {
+			renderer.clear();
+			renderer.render(scene, camera);
+		}
+
+		function onProgress(xhr) {
+
+			if (xhr.lengthComputable) {
+
+				var percentComplete = xhr.loaded / xhr.total * 100;
+				// console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+
+			}
+
+		}
+
+	function onError() { }
+
+	function getPresetJSON() {
+		return {
+			"preset": "Default",
+			"closed": false,
+			"remembered": {
+				"Default": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c3',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": true,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S01": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt0',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S02": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S03": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S04": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S05": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S05-1": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c4',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S06": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+				"S07": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S08": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S09": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S10": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S11": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S12": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S13": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S14": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S15": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S16": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S17": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S18": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S19": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S20": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S21": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S22": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S23": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S24": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S25": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S25-1": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S26": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+				"S27": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S28": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S29": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S30": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S31": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S32": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S33": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S34": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S35": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S36": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S37": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S38": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S39": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S40": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S41": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S42": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c6',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S43": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S44": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S45": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S45-1": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c4',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S46": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},	
+				"S47": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c7',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S48": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S49": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S50": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S51": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S52": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt3stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S53": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S54": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S55": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S56": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S57": {
+					"0": {
+						"Clipping": 'ground',
+						"Camera": 'c10',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S58": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S59": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S60": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			},	
+			"folders": {
+				"SETTINGS": {
+					"preset": "Default",
+					"closed": false,
+					"folders": {}
+				}
+			}
+		};
+	}
+
+
+</script>
+
+</body>
+
+</html>

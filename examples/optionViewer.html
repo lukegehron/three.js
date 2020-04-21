@@ -868,6 +868,41 @@
 								scene.add(object);
 							}, onProgress, onError);
 					});
+        
+          new MTLLoader()
+					.setPath('models/obj/opts/')
+					.load('opt1-diagram1.mtl', function (materials) {
+						materials.preload();
+						new OBJLoader()
+							.setMaterials(materials)
+							.setPath('models/obj/opts/')
+							.load('opt1-diagram1.obj', function (obj) {
+								//'SiteW-4.obj'
+
+								obj.traverse(function (child) {
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+								});
+
+								var object = obj.children[0].clone()
+								object.traverse(function (child) {
+									if (child.isMesh) {
+										for (var i = 0; i < child.material.length; i++) {
+											child.material[i].clippingPlanes = [localPlane];
+											child.material[i].clipShadows = true;
+										}
+									}
+								});
+
+								object.layers.set(4);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							}, onProgress, onError);
+					});
+
 
 				//END OF OPTION 1
 
@@ -1427,7 +1462,10 @@
 
 				if (opts.Clipping == 'six') {
 					localPlane.constant =  35;
-					if (opts.Option == 'opt1') {
+					
+				} else if(opts.Clipping == 'three'){
+					localPlane.constant =  10;
+          if (opts.Option == 'opt1') {
 						camera.layers.enable(4);
 					} else {
 						camera.layers.disable(4);
@@ -1438,8 +1476,6 @@
 					} else {
 						camera.layers.disable(5);
 					}
-				} else if(opts.Clipping == 'three'){
-					localPlane.constant =  10;
 				}
 				else if(opts.Clipping == 'ground'){
 					localPlane.constant =  -32;

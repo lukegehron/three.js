@@ -27,6 +27,7 @@
 			position: absolute;
 			width: 100%;
 			height: 10%;
+      z-index: 5;
 
 			display: -webkit-box;
 			display: -moz-box;
@@ -89,19 +90,25 @@
 
 <body>
 
-	<div id="info">
-	</div>
+  <div id="instructions">
+    <span style="font-size:26px" id="Scene">Scene: 00 // Option: 01</span>
+    <br>
+    <button>PREV</button>&nbsp;
+    <button>ORBIT</button>&nbsp;
+    <button>LOOK</button>&nbsp;
+    <button>NEXT</button>
+    <br/>
+  </div>
+
+	<!-- <div id="info">
+	</div> -->
 	<div id="my-container">
     <!-- <h1>Scotch Scotch Scotch</h1> -->
 </div>
 
 	<!-- <div id="blocker"> -->
 
-		<div id="instructions">
-			<span style="font-size:26px" id="Scene">Scene: 00 // Option: 01</span>
-			<br>
-			Some other text we can add here...<br/>
-		</div>
+		
 
 	<!-- </div> -->
 
@@ -131,7 +138,7 @@
 
 		var sceneFinder = 0;
 
-		var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
+		var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S08",  "S10", "S11", "S13", "S14", "S15", "S16", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
 ];
 
 		let multiplier = 5.0; //how fast the people walk
@@ -143,12 +150,13 @@
 
 		var tMult = 4.0;
 
-		var startx = 198;
-		var goalx = 198;
-		var starty = 350;
-		var goaly = 350;
-		var startz = 1211;
-		var goalz = 1211;
+
+		var startx = 111;
+		var goalx = 111;
+		var starty = 208;
+		var goaly = 208;
+		var startz = 1254;
+		var goalz = 1254;
 
 		var timer = 0;
 
@@ -528,9 +536,10 @@
 			localPlane = new THREE.Plane(new THREE.Vector3(0, - 1, 0), 35);
 			globalPlane = new THREE.Plane( new THREE.Vector3( - 1, 0, .28 ), 65 );
 
-			camera.position.x = 198;
-			camera.position.y = 350;
-			camera.position.z = 1211;
+
+			camera.position.x = 111;
+			camera.position.y = 208;
+			camera.position.z = 1254;
 
 			camera.layers.enable(0); // enabled by default
 			camera.layers.enable(1);
@@ -578,7 +587,7 @@
 			scene.add(camera);
 
 			scene.add(new THREE.AmbientLight(0xffffff, 0.29));
-			var dirLight = new THREE.DirectionalLight(0xffffff, 0.18);
+			var dirLight = new THREE.DirectionalLight(0xffffff, 0.12);
 			dirLight.position.set(-500, 50, 500);
 
 			scene.add(dirLight);
@@ -1479,7 +1488,8 @@
 	
 			gui.add(opts, 'Orbit');
 
-			gui.hide();
+			// gui.hide();
+      gui.close();
 			
 
 
@@ -1908,7 +1918,7 @@
 			}
 
 			// if(prevOpts.Rendering != opts.Rendering){
-				if(opts.Rendering){
+				if(opts.Rendering && camera.position.x == goalx){
 					turnOnRendering = true;
 					blocker.style.opacity = currentOpacity;
 					blocker.style.display = 'block';
@@ -2206,7 +2216,7 @@
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": false,
-						"Rendering": false,
+						"Rendering": true,
 						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": false,
@@ -2262,9 +2272,9 @@
 						"Camera": 'c2',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1sec',
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt1stair',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2358,7 +2368,7 @@
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": true,
-						"Rendering": false,
+						"Rendering": true,
 						"Image": 'opt1bal',
 						"People": true,
 						"Orbit": false,

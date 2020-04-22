@@ -805,19 +805,22 @@
 					scene.add(object);
 				});
 
-				// var loader9 = new OBJLoader();
-				// loader9.load('models/obj/Site31-Buildings.obj', function (obj) {
-				// 	obj.traverse(function (child) {
-				// 		if (child.isMesh) child.material = material;
-				// 	});
-				// 	var layer = 1;
-				// 	var object = obj.children[0].clone();
-				// 	object.layers.set(layer);
-				// 	object.rotation.x = -3.1415926787 / 2;
-				// 	object.castShadow = true;
-				// 	object.receiveShadow = true;
-				// 	scene.add(object);
-				// });
+				var material15 = new THREE.LineBasicMaterial({
+					color: 0xffffff, linewidth: 1, clippingPlanes: [localPlane],
+					clipShadows: true
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-bldg1-1.fbx', function (object) {
+					object.traverse(function (child) {
+						child.material = material15;
+						child.layers.set(14)
+					});
+
+					object.layers.set(14);
+					scene.add(object);
+
+				});
 
         var material = new THREE.MeshStandardMaterial({
 					color: 0xf6faff,

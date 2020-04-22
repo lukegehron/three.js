@@ -27,7 +27,7 @@
 			position: absolute;
 			width: 100%;
 			height: 10%;
-      z-index: 5;
+      /* z-index: 5; */
 
 			display: -webkit-box;
 			display: -moz-box;
@@ -73,7 +73,7 @@
 				top: 0;
 				width: 100%;
 				height: 100%;
-				z-index: 1;
+				/* z-index: 1; */
 				opacity: 0.0;
 				/* background-image: url('http://placekitten.com/1500/1000'); */
 				background-image: url('textures/tree/S42-03.jpg');
@@ -85,7 +85,28 @@
 				-webkit-background-size: 100% 100%;
 				background-size: 100% 100%;
 		}
-	</style>
+  </style>
+  <script>
+    var prevSceneFinder = 0;
+    var sceneFinder = 0;
+
+    var controlState = false;
+    var prevControlState = false;
+
+    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S08",  "S10", "S11", "S13", "S14", "S15", "S16", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
+    ];
+    function prevSlide() {
+      sceneFinder--;
+    }
+
+    function nextSlide() {
+      sceneFinder++;
+    }
+
+    function toggleOrbit(){
+      controlState = !controlState;
+    }
+  </script>
 </head>
 
 <body>
@@ -93,10 +114,10 @@
   <div id="instructions">
     <span style="font-size:26px" id="Scene">Scene: 00 // Option: 01</span>
     <br>
-    <button>PREV</button>&nbsp;
-    <button>ORBIT</button>&nbsp;
-    <button>LOOK</button>&nbsp;
-    <button>NEXT</button>
+    <button onclick="prevSlide()">PREV</button>&nbsp;
+    <button onclick="toggleOrbit()">ORBIT</button>&nbsp;
+    <button onclick="toggleLook()">LOOK</button>&nbsp;
+    <button onclick="nextSlide()"> NEXT</button>
     <br/>
   </div>
 
@@ -136,10 +157,7 @@
 
 		var runUpdate = false;
 
-		var sceneFinder = 0;
-
-		var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S08",  "S10", "S11", "S13", "S14", "S15", "S16", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
-];
+		
 
 		let multiplier = 5.0; //how fast the people walk
 
@@ -564,7 +582,7 @@
 			// spotLight.shadow.bias = -0.002;
 			// spotLight.shadow.radius = 12;
 
-			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.10);
+			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.14);
 			dirLight.name = 'Dir. Light';
 			dirLight.position.set(500, 800, -550);
 			dirLight.castShadow = true;
@@ -586,11 +604,39 @@
 
 			scene.add(camera);
 
-			scene.add(new THREE.AmbientLight(0xffffff, 0.29));
-			var dirLight = new THREE.DirectionalLight(0xffffff, 0.12);
-			dirLight.position.set(-500, 50, 500);
+			scene.add(new THREE.AmbientLight(0xffffff, 0.26));
+			var dirLight = new THREE.DirectionalLight(0xeeeeff, 0.12);
+			dirLight.position.set(-64, 222, -370);
+      dirLight.castShadow = true;
+
+      // var helper = new THREE.DirectionalLightHelper( dirLight, 15 );
+      // scene.add( helper );
 
 			scene.add(dirLight);
+
+      var dirLight = new THREE.DirectionalLight(0xffcccc, 0.17);
+			dirLight.position.set(1303, 557, 120);
+      dirLight.castShadow = true;
+
+      // var helper = new THREE.DirectionalLightHelper( dirLight, 15 );
+      // scene.add( helper );
+
+			scene.add(dirLight);
+
+
+			lightProbe = new THREE.LightProbe();
+			scene.add(lightProbe);
+
+			// directionalLight = new THREE.DirectionalLight(0xffffff, API.directionalLightIntensity);
+      directionalLight = new THREE.DirectionalLight(0xffffff, 0.34);
+      directionalLight.position.set(-50, 50, 45);
+			// directionalLight.position.set(-370, 12, 745);
+			directionalLight.castShadow = true;
+
+      // var helper = new THREE.DirectionalLightHelper( directionalLight, 15 );
+      // scene.add( helper );
+
+			scene.add(directionalLight);
 
 			initSky();
 
@@ -738,10 +784,10 @@
 
 				var material99 = new THREE.MeshStandardMaterial({
 					color: 0xf6faff,
-					metalness: 0.25,
-					roughness: 0.5,
+					metalness: 0.3,
+					roughness: 0.7,
 					envMap: cubeTexture,
-					envMapIntensity: API.envMapIntensity,
+					envMapIntensity: 0.9,
 					side: THREE.DoubleSide,
           clippingPlanes: [localPlane]
 				});
@@ -775,10 +821,10 @@
 
         var material = new THREE.MeshStandardMaterial({
 					color: 0xf6faff,
-					metalness: 0.25,
-					roughness: 0.5,
+					metalness: 0.3,
+					roughness: 0.7,
 					envMap: cubeTexture,
-					envMapIntensity: API.envMapIntensity,
+					envMapIntensity: 0.9,
 					side: THREE.DoubleSide,
 				});
 
@@ -1367,15 +1413,6 @@
 			// renderer.clippingPlanes = [globalPlane];
 
 
-			lightProbe = new THREE.LightProbe();
-			scene.add(lightProbe);
-
-			// directionalLight = new THREE.DirectionalLight(0xffffff, API.directionalLightIntensity);
-      directionalLight = new THREE.DirectionalLight(0xffffff, 0.34);
-
-			directionalLight.position.set(-50, 50, 45);
-			directionalLight.castShadow = true;
-			scene.add(directionalLight);
 
 			var width = window.innerWidth;
 			var height = window.innerHeight;
@@ -1593,8 +1630,8 @@
 						MIDDLE: THREE.MOUSE.PAN,
 						RIGHT: THREE.MOUSE.ROTATE
 					}
-
-					controls.enabled = true;
+          controlState = true;
+					controls.enabled = controlState;
 					opts.Orbit = true;
 					// console.log("ShiftPressed");
 					break;
@@ -1661,6 +1698,17 @@
 		
 
 		function animate() {
+
+      if(controlState != prevControlState){
+        controls.enabled = controlState;
+        prevControlState = controlState;
+      }
+
+      if(sceneFinder!= prevSceneFinder){
+        prevSceneFinder = sceneFinder;
+        gui.preset = scenes[sceneFinder];
+					runUpdate = true;
+      }
 
 
 			if(turnOnRendering){

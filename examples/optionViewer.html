@@ -777,12 +777,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/')
-					.load('Site40-Terrain.mtl', function (materialz) {
+					.load('Site50-Terrain.mtl', function (materialz) {
 						materialz.preload();
 						new OBJLoader()
 							.setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site40-Terrain.obj', function (obj) {
+							.load('Site50-Terrain.obj', function (obj) {
 								var object = obj.children[0].clone()
 								object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;
@@ -1875,20 +1875,20 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 25.5
-					goaly = -27.8;
-					goalz = -159.5;
-					nextLookAtx = -40;
-					nextLookAty = 5;
+					goalx = 18;
+					goaly = -22;
+					goalz = -169.5;
+					nextLookAtx = -30;
+					nextLookAty = -8;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c2') {
-					goalx = 141
-					goaly = -18;
-					goalz = 168;
-					nextLookAtx = 0;
-					nextLookAty = -16.5;
-					nextLookAtz = 130;
+					goalx = 144.5;
+					goaly = -28.9;
+					goalz = 264;
+					nextLookAtx = -48;
+					nextLookAty = 0;
+					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c3') {
 					goalx = 111;
@@ -2011,7 +2011,8 @@
 			}
 
 			// if(prevOpts.Rendering != opts.Rendering){
-				if(opts.Rendering && camera.position.x == goalx){
+        //&& camera.position.x == goalx
+				if(opts.Rendering ){
 					turnOnRendering = true;
 					blocker.style.opacity = currentOpacity;
 					blocker.style.display = 'block';
@@ -2033,17 +2034,17 @@
 			}else if(opts.Image == "opt3sec"){
 				blocker.style.backgroundImage = "url('textures/renderings/S03_Option3b.jpg')";
 			}else if(opts.Image == "opt1stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/opt1perspective.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0003_Plaza-S_Page_1.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-02.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0000_Plaza-N_Page_1.jpg')";
 			}else if(opts.Image == "opt2stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/opt2perspective.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0004_Plaza-S_Page_2.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/tree/S60-Option3-02.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0001_Plaza-N_Page_2.jpg')";
 			}else if(opts.Image == "opt3stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/opt3perspective.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0005_Plaza-S_Page_3.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/S60-Option3-02.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/_0002_Plaza-N_Page_3.jpg')";
 			}
 
 			if(prevOpts.People != opts.People){

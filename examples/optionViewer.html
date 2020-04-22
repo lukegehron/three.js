@@ -844,14 +844,14 @@
 					scene.add(object);
 				});
 
-        var material15 = new THREE.LineBasicMaterial({
+        var material16 = new THREE.LineBasicMaterial({
 					color: 0xffffff, linewidth: 1,
 				});
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/linework-bldgs1-1.fbx', function (object) {
 					object.traverse(function (child) {
-						child.material = material15;
+						child.material = material16;
 						child.layers.set(1)
 					});
 

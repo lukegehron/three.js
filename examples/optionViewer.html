@@ -811,7 +811,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-bldg1-1.fbx', function (object) {
+				loader.load('models/fbx/linework-bldg1-2.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material15;
 						child.layers.set(14)
@@ -842,6 +842,22 @@
 					object.castShadow = true;
 					object.receiveShadow = true;
 					scene.add(object);
+				});
+
+        var material16 = new THREE.LineBasicMaterial({
+					color: 0xffffff, linewidth: 1,
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-bldgs1-1.fbx', function (object) {
+					object.traverse(function (child) {
+						child.material = material16;
+						child.layers.set(1)
+					});
+
+					object.layers.set(1);
+					scene.add(object);
+
 				});
 
 				//BUILDING OPTION 1

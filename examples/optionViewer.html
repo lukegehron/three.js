@@ -765,7 +765,7 @@
 						new OBJLoader()
 							// .setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site51-Terrain.obj', function (obj) {
+							.load('Site51-Terrain.obj', function (obj) { //NEW TERRAIN FROM SKP
 								var object = obj.children[0].clone()
                 object.material = material98;
 								object.layers.set(1);
@@ -778,7 +778,7 @@
 
 				new MTLLoader()
 					.setPath('models/obj/')
-					.load('Site50-Terrain.mtl', function (materialz) {
+					.load('Site50-Terrain.mtl', function (materialz) { //FULL TERRAIN
 						materialz.preload();
 						new OBJLoader()
 							.setMaterials(materialz)
@@ -804,7 +804,7 @@
 				});
 
 				var loader9 = new OBJLoader();
-				loader9.load('models/obj/Site30-Buildings.obj', function (obj) {
+				loader9.load('models/obj/Site30-Buildings.obj', function (obj) { //MCGLAUGHLIN
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material99;
 					});
@@ -834,7 +834,7 @@
 				});
 
         var loader9 = new OBJLoader();
-				loader9.load('models/obj/Site31-Buildings.obj', function (obj) {
+				loader9.load('models/obj/Site32-Buildings.obj', function (obj) { //MGLAUF2
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material99;
 					});
@@ -868,7 +868,7 @@
 				});
 
 				var loader10 = new OBJLoader();
-				loader10.load('models/obj/allContextBldgs3.obj', function (obj) {
+				loader10.load('models/obj/allContextBldgs3.obj', function (obj) { //ALL CONTEXT
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});

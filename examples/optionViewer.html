@@ -769,10 +769,31 @@
 
         
 
+        var material98 = new THREE.MeshPhongMaterial({
+					color: 0xdddddd,
+					// metalness: 0.3,
+					// roughness: 0.7,
+					// envMap: cubeTexture,
+					// envMapIntensity: 0.9,
+					// side: THREE.DoubleSide,
+          // clippingPlanes: [localPlane]
+				});
 
 
-
-
+        
+						new OBJLoader()
+							// .setMaterials(materialz)
+							.setPath('models/obj/')
+							.load('Site51-Terrain.obj', function (obj) {
+								var object = obj.children[0].clone()
+                object.material = material98;
+								object.layers.set(1);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = true;
+								object.receiveShadow = true;
+								scene.add(object);
+							});
+					
 
 
 				new MTLLoader()
@@ -867,7 +888,7 @@
 				});
 
 				var loader10 = new OBJLoader();
-				loader10.load('models/obj/allContextBldgs1.obj', function (obj) {
+				loader10.load('models/obj/allContextBldgs2.obj', function (obj) {
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});

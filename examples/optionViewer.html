@@ -239,9 +239,9 @@
 		};
 
 		var API = {
-			lightProbeIntensity: 1.0,
-			directionalLightIntensity: 0.22,
-			envMapIntensity: 0.8
+			lightProbeIntensity: 1,
+			directionalLightIntensity: 0.25,
+			envMapIntensity: 0.9
 		};
 
 		var params = {
@@ -546,7 +546,7 @@
 
 			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.13);
 			dirLight.name = 'Dir. Light';
-			dirLight.position.set(500, 1200, -750);
+			dirLight.position.set(500, 500, 450);
 			dirLight.castShadow = true;
 			dirLight.shadow.camera.near = 0.1;
 			dirLight.shadow.camera.far = 5000;
@@ -566,11 +566,11 @@
 
 			scene.add(camera);
 
-			scene.add(new THREE.AmbientLight(0xffffff, 0.41));
-			// var dirLight = new THREE.DirectionalLight(0xffffff, 0.2);
-			// dirLight.position.set(-50, 100, -75);
+			scene.add(new THREE.AmbientLight(0xffffff, 0.32));
+			var dirLight = new THREE.DirectionalLight(0xffffff, 0.1);
+			dirLight.position.set(-50, 50, 50);
 
-			// scene.add(dirLight);
+			scene.add(dirLight);
 
 			initSky();
 
@@ -717,9 +717,9 @@
 					});
 
 				var material99 = new THREE.MeshStandardMaterial({
-					color: 0xffffff,
-					metalness: 0.3,
-					roughness: 0.7,
+					color: 0xcccccc,
+					// metalness: 0.3,
+					// roughness: 0.7,
 					envMap: cubeTexture,
 					envMapIntensity: API.envMapIntensity,
 					side: THREE.DoubleSide,
@@ -1350,9 +1350,10 @@
 			lightProbe = new THREE.LightProbe();
 			scene.add(lightProbe);
 
-			directionalLight = new THREE.DirectionalLight(0xffffff, API.directionalLightIntensity);
+			// directionalLight = new THREE.DirectionalLight(0xffffff, API.directionalLightIntensity);
+      directionalLight = new THREE.DirectionalLight(0xffffff, 0.34);
 
-			directionalLight.position.set(-50, 100, -75);
+			directionalLight.position.set(-50, 50, 45);
 			directionalLight.castShadow = true;
 			scene.add(directionalLight);
 
@@ -1428,7 +1429,8 @@
 				'Above Stairs': 'c7',
 				'Lower Stairs': 'c8',
 				'Site Section': 'c9',
-				'S Aerial': 'c10'
+				'S Aerial': 'c10',
+        'Site Section2': 'c11'
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
@@ -1759,25 +1761,25 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 27.8;
-					goaly = -11.3;
-					goalz = -183;
-					nextLookAtx = -20;
-					nextLookAty = 0;
+					goalx = 25.5
+					goaly = -27.8;
+					goalz = -159.5;
+					nextLookAtx = -40;
+					nextLookAty = 5;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c2') {
-					goalx = 157;
-					goaly = -16.5;
-					goalz = 280;
+					goalx = 141
+					goaly = -18;
+					goalz = 168;
 					nextLookAtx = 0;
 					nextLookAty = -16.5;
-					nextLookAtz = 0;
+					nextLookAtz = 130;
 
 				} else if (opts.Camera == 'c3') {
-					goalx = 198;
-					goaly = 350;
-					goalz = 1211;
+					goalx = 111;
+					goaly = 208;
+					goalz = 1254;
 					// goalx = -1660;
 					// goaly = 1080;
 					// goalz = 1520;
@@ -1839,6 +1841,14 @@
 					nextLookAty = 40;
 					nextLookAtz = 0;
 					//66.33958598391895, 359.7010046785748, -359.01371392434567
+				}else if (opts.Camera == 'c11') {
+					goalx = 39;
+					goaly = 10;
+					goalz = 281;
+					nextLookAtx = -100;
+					nextLookAty = 20;
+					nextLookAtz = -40;
+					
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
@@ -2973,7 +2983,7 @@
 			"S48": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c11',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,
@@ -2992,7 +3002,7 @@
 				"S49": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c11',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,
@@ -3011,7 +3021,7 @@
 				"S50": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c11',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,

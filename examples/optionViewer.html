@@ -227,14 +227,25 @@
 						RIGHT: THREE.MOUSE.ROTATE
 					}
 
-		var effectController = {
-			turbidity: 3,
+		// var effectController = {
+		// 	turbidity: 3,
+		// 	rayleigh: 4,
+		// 	mieCoefficient: 0.033,
+		// 	mieDirectionalG: 1,
+		// 	luminance: 0.9,
+		// 	inclination: 0.31, // elevation / inclination
+		// 	azimuth: 0.24, // Facing front,
+		// 	sun: ! true
+		// };
+
+    var effectController = {
+			turbidity: 3.2,
 			rayleigh: 4,
-			mieCoefficient: 0.033,
+			mieCoefficient: 0.068,
 			mieDirectionalG: 1,
-			luminance: 0.9,
-			inclination: 0.31, // elevation / inclination
-			azimuth: 0.24, // Facing front,
+			luminance: 1,
+			inclination: 0.0955, // elevation / inclination
+			azimuth: 0.25, // Facing front,
 			sun: ! true
 		};
 
@@ -544,9 +555,9 @@
 			// spotLight.shadow.bias = -0.002;
 			// spotLight.shadow.radius = 12;
 
-			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.13);
+			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.10);
 			dirLight.name = 'Dir. Light';
-			dirLight.position.set(500, 500, 450);
+			dirLight.position.set(500, 800, -550);
 			dirLight.castShadow = true;
 			dirLight.shadow.camera.near = 0.1;
 			dirLight.shadow.camera.far = 5000;
@@ -566,9 +577,9 @@
 
 			scene.add(camera);
 
-			scene.add(new THREE.AmbientLight(0xffffff, 0.32));
-			var dirLight = new THREE.DirectionalLight(0xffffff, 0.1);
-			dirLight.position.set(-50, 50, 50);
+			scene.add(new THREE.AmbientLight(0xffffff, 0.29));
+			var dirLight = new THREE.DirectionalLight(0xffffff, 0.18);
+			dirLight.position.set(-500, 50, 500);
 
 			scene.add(dirLight);
 
@@ -717,9 +728,9 @@
 					});
 
 				var material99 = new THREE.MeshStandardMaterial({
-					color: 0xcccccc,
-					// metalness: 0.3,
-					// roughness: 0.7,
+					color: 0xf6faff,
+					metalness: 0.25,
+					roughness: 0.5,
 					envMap: cubeTexture,
 					envMapIntensity: API.envMapIntensity,
 					side: THREE.DoubleSide,
@@ -754,9 +765,9 @@
 				// });
 
         var material = new THREE.MeshStandardMaterial({
-					color: 0xffffff,
-					metalness: 0.3,
-					roughness: 0.7,
+					color: 0xf6faff,
+					metalness: 0.25,
+					roughness: 0.5,
 					envMap: cubeTexture,
 					envMapIntensity: API.envMapIntensity,
 					side: THREE.DoubleSide,

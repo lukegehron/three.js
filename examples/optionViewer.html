@@ -230,6 +230,10 @@
 		var yTreePaths6 = [];
 		var zTreePaths6 = [];
 
+    var xTreePaths7 = [];
+		var yTreePaths7 = [];
+		var zTreePaths7 = [];
+
 		var xArray = [];
 		var yArray = [];
 		var zArray = [];
@@ -486,6 +490,39 @@
 					}
 					material = new THREE.PointsMaterial({
 						size: 150,
+						sizeAttenuation: true,
+						map: sprite,
+						transparent: true,
+						alphaTest: 0.5
+					});
+
+					var particles = new THREE.Points(geometry, material);
+
+					scene.add(particles);
+
+				});
+
+        new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				// .load( 'textures/planets/earth_atmos_2048.jpg?' + performance.now(), function ( image ) {
+				.load('textures/tree/tree5.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+
+					var geometry = new THREE.Geometry();
+
+					var sprite = new THREE.Texture(image);
+					sprite.needsUpdate = true;
+					for (var i = 0; i < zTreePaths7.length; i++) {
+						var vertex = new THREE.Vector3();
+						vertex.x = xTreePaths7[i];
+						vertex.y = yTreePaths7[i] + 5;
+						vertex.z = zTreePaths7[i];
+						geometry.vertices.push(vertex);
+					}
+					material = new THREE.PointsMaterial({
+						size: 40,
 						sizeAttenuation: true,
 						map: sprite,
 						transparent: true,
@@ -759,6 +796,19 @@
 							zTreePaths6.push(geometry.attributes.position.array[i] * -1);
 						} else {
 							yTreePaths6.push(geometry.attributes.position.array[i]);
+						}
+					}
+				});
+
+        var loader3 = new THREE.BufferGeometryLoader();
+				loader3.load('models/json/trees-7.json', function (geometry) {
+					for (let i = 0; i < geometry.attributes.position.array.length; i++) {
+						if (i % 3 == 0) {
+							xTreePaths7.push(geometry.attributes.position.array[i]);
+						} else if (i % 3 == 1) {
+							zTreePaths7.push(geometry.attributes.position.array[i] * -1);
+						} else {
+							yTreePaths7.push(geometry.attributes.position.array[i]);
 						}
 					}
 				});

@@ -2012,7 +2012,7 @@
 
 			// if(prevOpts.Rendering != opts.Rendering){
         //&& camera.position.x == goalx
-				if(opts.Rendering ){
+				if(opts.Rendering && camera.position.x == goalx){
 					turnOnRendering = true;
 					blocker.style.opacity = currentOpacity;
 					blocker.style.display = 'block';

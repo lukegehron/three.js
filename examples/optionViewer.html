@@ -75,7 +75,7 @@
 				height: 100%;
 				z-index: 1;
 				opacity: 0.0;
-				/* background-image: url('http://placekitten.com/1500/1000'); */
+				
 				background-image: url('textures/tree/S42-03.jpg');
 				background-repeat: no-repeat;
 				background-position: 50% 0;
@@ -93,7 +93,7 @@
     var controlState = false;
     var prevControlState = false;
 
-    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S05-1", "S06", "S08",  "S10", "S11", "S13", "S14", "S15", "S16", "S20", "S21", "S22", "S23", "S24", "S25", "S25-1", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S45-1", "S46", "S47", "S48", "S49", "S50", "S51", "S52", "S53", "S54", "S55", "S56", "S59", "S60"
+    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42"
     ];
     function prevSlide() {
       sceneFinder--;
@@ -121,17 +121,11 @@
     <br/>
   </div>
 
-	<!-- <div id="info">
-	</div> -->
+	
 	<div id="my-container">
-    <!-- <h1>Scotch Scotch Scotch</h1> -->
-</div>
+  </div>
 
-	<!-- <div id="blocker"> -->
-
-		
-
-	<!-- </div> -->
+	
 
 	<script type="module">
 
@@ -157,8 +151,6 @@
 
 		var runUpdate = false;
 
-		
-
 		let multiplier = 5.0; //how fast the people walk
 
 		var gui;
@@ -167,7 +159,6 @@
 		var mapS;
 
 		var tMult = 4.0;
-
 
 		var startx = 111;
 		var goalx = 111;
@@ -191,8 +182,6 @@
 		var nowLookAtz = 0;
 
 		var clock = new THREE.Clock();
-
-		// var cameraOrtho, sceneOrtho;
 
 		var opts, prevOpts;
 
@@ -256,17 +245,6 @@
 						MIDDLE: THREE.MOUSE.ROTATE,
 						RIGHT: THREE.MOUSE.ROTATE
 					}
-
-		// var effectController = {
-		// 	turbidity: 3,
-		// 	rayleigh: 4,
-		// 	mieCoefficient: 0.033,
-		// 	mieDirectionalG: 1,
-		// 	luminance: 0.9,
-		// 	inclination: 0.31, // elevation / inclination
-		// 	azimuth: 0.24, // Facing front,
-		// 	sun: ! true
-		// };
 
     var effectController = {
 			turbidity: 3.2,
@@ -557,10 +535,7 @@
 
 		function init() {
 
-			// var blocker = document.getElementById( 'blocker' );
 			sceneText = document.getElementById( 'Scene' );
-	
-
 			blocker = document.getElementById( 'my-container' );
 			blocker.style.display = 'none';
 			
@@ -575,9 +550,6 @@
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
       pointControl = new PointerLockControls(camera, renderer.domElement);
 
-			// cameraOrtho = new THREE.OrthographicCamera(- width / 2, width / 2, height / 2, - height / 2, 1, 10);
-			// cameraOrtho.position.z = 10;
-
 			controls = new MapControls(camera, renderer.domElement);
 			controls.mouseButtons = keyControls;
 			
@@ -589,7 +561,6 @@
 			localPlane = new THREE.Plane(new THREE.Vector3(0, - 1, 0), 35);
 			globalPlane = new THREE.Plane( new THREE.Vector3( - 1, 0, .28 ), 65 );
 
-
 			camera.position.x = 111;
 			camera.position.y = 208;
 			camera.position.z = 1254;
@@ -598,25 +569,10 @@
 			camera.layers.enable(1);
 			camera.layers.enable(2);
 			camera.layers.enable(14); //Mclaughlin
-      camera.layers.enable(15); //Mclaughlin
+      camera.layers.enable(15); //Mclaughlin2
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
-
-			// sceneOrtho = new THREE.Scene();
-
-			// var spotLight = new THREE.SpotLight(0x888888);
-			// spotLight.name = 'Spot Light';
-			// spotLight.angle = Math.PI / 5;
-			// spotLight.penumbra = 0.3;
-			// spotLight.position.set(80, 200, 50);
-			// spotLight.castShadow = true;
-			// spotLight.shadow.camera.near = 80;
-			// spotLight.shadow.camera.far = 2000;
-			// spotLight.shadow.mapSize.width = 1024;
-			// spotLight.shadow.mapSize.height = 1024;
-			// spotLight.shadow.bias = -0.002;
-			// spotLight.shadow.radius = 12;
 
 			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.14);
 			dirLight.name = 'Dir. Light';
@@ -634,29 +590,17 @@
 			dirLight.shadow.bias = -0.002;
 			scene.add(dirLight);
 
-			// var dirGroup = new THREE.Group();
-			// dirGroup.add(dirLight);
-			// scene.add(dirGroup);
-
 			scene.add(camera);
 
 			scene.add(new THREE.AmbientLight(0xffffff, 0.26));
 			var dirLight = new THREE.DirectionalLight(0xeeeeff, 0.12);
 			dirLight.position.set(-64, 222, -370);
       dirLight.castShadow = true;
-
-      // var helper = new THREE.DirectionalLightHelper( dirLight, 15 );
-      // scene.add( helper );
-
 			scene.add(dirLight);
 
       var dirLight = new THREE.DirectionalLight(0xffcccc, 0.17);
 			dirLight.position.set(1303, 557, 120);
       dirLight.castShadow = true;
-
-      // var helper = new THREE.DirectionalLightHelper( dirLight, 15 );
-      // scene.add( helper );
-
 			scene.add(dirLight);
 
 
@@ -813,24 +757,11 @@
 					}
 				});
 
-
-
-
-
         
 
         var material98 = new THREE.MeshPhongMaterial({
 					color: 0xdddddd,
-					// metalness: 0.3,
-					// roughness: 0.7,
-					// envMap: cubeTexture,
-					// envMapIntensity: 0.9,
-					// side: THREE.DoubleSide,
-          // clippingPlanes: [localPlane]
 				});
-
-
-        
 						new OBJLoader()
 							// .setMaterials(materialz)
 							.setPath('models/obj/')
@@ -844,7 +775,6 @@
 								scene.add(object);
 							});
 					
-
 
 				new MTLLoader()
 					.setPath('models/obj/')
@@ -1139,7 +1069,6 @@
 
 
 				//END OF OPTION 1
-
 				//BUILDING OPTION 2
 
 				var material5 = new THREE.LineBasicMaterial({
@@ -1512,9 +1441,6 @@
 				scene.add(b[i]);
 			}
 
-			// var textureLoader = new THREE.TextureLoader();
-			// textureLoader.load("textures/tree/S42-03.jpg", createHUDSprites);
-
 			renderer.setPixelRatio(window.devicePixelRatio);
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			container.appendChild(renderer.domElement);
@@ -1525,9 +1451,6 @@
 			renderer.localClippingEnabled = true;
 			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 			
-			// renderer.clippingPlanes = [globalPlane];
-
-
 
 			var width = window.innerWidth;
 			var height = window.innerHeight;
@@ -1576,7 +1499,6 @@
 				CamRotZ: 0
 			};
 
-
 			// saveValues: gui.remember must be executed before gui.add
 			gui.remember(opts);
 		
@@ -1602,7 +1524,8 @@
 				'Lower Stairs': 'c8',
 				'Site Section': 'c9',
 				'S Aerial': 'c10',
-        'Site Section2': 'c11'
+        'Site Section2': 'c11',
+        'Top View2': 'c12'
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
@@ -2034,6 +1957,50 @@
 					nextLookAty = 20;
 					nextLookAtz = -40;
 					
+				}else if (opts.Camera == 'c12') { //top-down
+					goalx = -9;
+					goaly = 779;
+					goalz = 54;
+					nextLookAtx = -24;
+					nextLookAty = 0;
+					nextLookAtz = 2;
+
+          startx = goalx;
+          starty = goaly;
+          startz = goalz;
+
+				camera.position.x = goalx;
+				camera.position.y = goaly;
+				camera.position.z = goalz;
+
+        nowLookAtx = prevLookAtx;
+				nowLookAty = prevLookAty;
+				nowLookAtz = prevLookAtz;
+
+				nowLookAtx = nextLookAtx;
+				nowLookAty = nextLookAty;
+				nowLookAtz = nextLookAtz;
+
+
+				// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
+				var geometry = new THREE.BoxGeometry(1, 1, 1);
+				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+				var cube = new THREE.Mesh(geometry, material);
+				scene.add(cube);
+				cube.position.x = nowLookAtx;
+				cube.position.y = nowLookAty;
+				cube.position.z = nowLookAtz;
+				// camera.up.set( 0, 1,0 );
+				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+				// console.log(cube.position.y);
+				camera.lookAt((cube.position));
+				scene.remove(cube);
+
+        timer = 0.99;
+
+        // camera.rotation.z = 0.28;
+        runUpdate = false;
+
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
@@ -2318,7 +2285,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S05-1": {
+				"S06": {
 					"0": {
 						"Clipping": 'ground',
 						"Camera": 'c4',
@@ -2337,32 +2304,13 @@
 						"CamRotZ": 0
 					}
 				},
-			"S06": {
+			"S07": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},	
-				"S07": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c7',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": false,
 						"Rendering": false,
 						"Image": 'opt1sec',
 						"People": true,
@@ -2401,25 +2349,6 @@
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S10": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c8',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": false,
 						"Rendering": false,
 						"Image": 'opt1sec',
 						"People": true,
@@ -2432,7 +2361,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S11": {
+			"S10": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -2440,6 +2369,25 @@
 						"Site": true,
 						"Mclaughlin": false,
 						"Rendering": true,
+						"Image": 'opt1stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S11": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
 						"Image": 'opt1stair',
 						"People": true,
 						"Orbit": false,
@@ -2452,44 +2400,6 @@
 					}
 				},
 				"S12": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": true,
-						"Image": 'opt1stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S13": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S14": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c9',
@@ -2508,7 +2418,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S15": {
+				"S13": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c1',
@@ -2527,7 +2437,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S16": {
+				"S14": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -2545,16 +2455,109 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
+				},"S15": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt1bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S16": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c12',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
 				},
-				"S17": {
+			"S17": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S18": {
+					"0": {
+						"Clipping": 'six',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S19": {
+					"0": {
+						"Clipping": 'three',
+						"Camera": 'c4',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S20": {
 					"0": {
 						"Clipping": 'ground',
-						"Camera": 'c10',
-						"Option": 'opt1',
+						"Camera": 'c4',
+						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
-						"Image": 'opt1bal',
+						"Image": 'opt2sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2565,65 +2568,11 @@
 						"CamRotZ": 0
 					}
 				},
-				"S18": {
+			"S21": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S19": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": true,
-						"Image": 'opt1bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S20": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt1',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S21": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c6',
-						"Option": 'opt1',
+						"Camera": 'c7',
+						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
@@ -2641,11 +2590,11 @@
 			"S22": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c6',
+						"Camera": 'c8',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
+						"Mclaughlin": false,
+						"Rendering": true,
 						"Image": 'opt2sec',
 						"People": true,
 						"Orbit": false,
@@ -2657,13 +2606,13 @@
 						"CamRotZ": 0
 					}
 				},
-			"S23": {
+				"S23": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c4',
+						"Camera": 'c8',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": false,
 						"Image": 'opt2sec',
 						"People": true,
@@ -2678,13 +2627,13 @@
 				},
 			"S24": {
 					"0": {
-						"Clipping": 'six',
-						"Camera": 'c4',
+						"Clipping": 'none',
+						"Camera": 'c2',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt2stair',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2697,46 +2646,27 @@
 				},
 				"S25": {
 					"0": {
-						"Clipping": 'three',
-						"Camera": 'c4',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S25-1": {
-					"0": {
-						"Clipping": 'ground',
-						"Camera": 'c4',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-			"S26": {
-					"0": {
 						"Clipping": 'none',
-						"Camera": 'c7',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S26": {
+					"0": {
+						"Clipping": 'siteSection',
+						"Camera": 'c9',
 						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
@@ -2751,16 +2681,16 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},	
+				},
 				"S27": {
 					"0": {
-						"Clipping": 'none',
-						"Camera": 'c7',
+						"Clipping": 'siteSection',
+						"Camera": 'c1',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": false,
-						"Image": 'opt2sec',
+						"Image": 'opt2bal',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2771,34 +2701,15 @@
 						"CamRotZ": 0
 					}
 				},
-			"S28": {
+				"S28": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c1',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S29": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c8',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": true,
-						"Image": 'opt2sec',
+						"Image": 'opt2bal',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2808,16 +2719,33 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},
-				"S30": {
+				},"S29": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c1',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": false,
-						"Image": 'opt2sec',
+						"Image": 'opt2bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S30": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c12',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -2831,213 +2759,7 @@
 			"S31": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S32": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": true,
-						"Image": 'opt2stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S33": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2stair',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S34": {
-					"0": {
-						"Clipping": 'siteSection',
-						"Camera": 'c9',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S35": {
-					"0": {
-						"Clipping": 'siteSection',
-						"Camera": 'c1',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S36": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S37": {
-					"0": {
-						"Clipping": 'ground',
-						"Camera": 'c10',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S38": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S39": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": true,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S40": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S41": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c6',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-			"S42": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c6',
+						"Camera": 'c4',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": true,
@@ -3053,26 +2775,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S43": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c4', 
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-			"S44": {
+			"S32": {
 					"0": {
 						"Clipping": 'six',
 						"Camera": 'c4',
@@ -3091,7 +2794,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S45": {
+				"S32": {
 					"0": {
 						"Clipping": 'three',
 						"Camera": 'c4',
@@ -3110,7 +2813,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S45-1": {
+				"S33": {
 					"0": {
 						"Clipping": 'ground',
 						"Camera": 'c4',
@@ -3129,7 +2832,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S46": {
+			"S34": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
@@ -3147,49 +2850,11 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},	
-				"S47": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c7',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
 				},
-			"S48": {
+			"S35": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c11',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S49": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c11',
+						"Camera": 'c8',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,
@@ -3205,10 +2870,10 @@
 						"CamRotZ": 0
 					}
 				},
-				"S50": {
+				"S36": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c11',
+						"Camera": 'c8',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,
@@ -3224,32 +2889,13 @@
 						"CamRotZ": 0
 					}
 				},
-			"S51": {
+			"S37": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
 						"Option": 'opt3',
 						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S52": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": true,
 						"Image": 'opt3stair',
 						"People": true,
@@ -3262,7 +2908,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S53": {
+				"S38": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -3281,7 +2927,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S54": {
+				"S39": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c9',
@@ -3300,7 +2946,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S55": {
+				"S40": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c1',
@@ -3319,63 +2965,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S56": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S57": {
-					"0": {
-						"Clipping": 'ground',
-						"Camera": 'c10',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S58": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c1',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3bal',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},"S59": {
+				"S41": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3393,7 +2983,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S60": {
+				},"S42": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',

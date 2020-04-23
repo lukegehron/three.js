@@ -1529,9 +1529,9 @@
 			});
 			folder1.add(opts, 'Option', {
 				'Existing': 'opt0',
-				'Tall Bar': 'opt1',
-				'Opt 2': 'opt2',
-				'Jewel': 'opt3'
+				'Loft': 'opt1',
+				'Hive': 'opt2',
+				'Pavilion': 'opt3'
 			});
 			folder1.add(opts, 'Site');
 			folder1.add(opts, 'Mclaughlin');
@@ -1699,13 +1699,13 @@
 			var onKeyUp = function (event) {
 
         if(opts.Option == 'opt0'){
-				showText = '00';
+				showText = 'NONE';
 			}else if(opts.Option == 'opt1'){
-				showText = '01';
+				showText = 'LOFT';
 			}else if(opts.Option == 'opt2'){
-				showText = '02';
+				showText = 'HIVE';
 			}else if(opts.Option == 'opt3'){
-				showText = '03';
+				showText = 'PAVILION';
 			}
 
 			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;

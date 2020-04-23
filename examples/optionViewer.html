@@ -1694,11 +1694,8 @@
 			}
 		};
 
-		
-
-			var onKeyUp = function (event) {
-
-        if(opts.Option == 'opt0'){
+		function changeDivText(){
+      if(opts.Option == 'opt0'){
 				showText = 'NONE';
 			}else if(opts.Option == 'opt1'){
 				showText = 'LOFT';
@@ -1709,6 +1706,13 @@
 			}
 
 			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
+    }
+
+			var onKeyUp = function (event) {
+
+        changeDivText();
+
+        
 
 				switch (event.keyCode) {
 					case 16: //shift
@@ -1732,6 +1736,7 @@
 		};
 
 		update();
+    changeDivText();
 
 		
 
@@ -1747,6 +1752,7 @@
         prevSceneFinder = sceneFinder;
         gui.preset = scenes[sceneFinder];
 					runUpdate = true;
+          changeDivText();
       }
 
 

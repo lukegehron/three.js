@@ -570,6 +570,7 @@
 			camera.layers.enable(2);
 			camera.layers.enable(14); //Mclaughlin
       camera.layers.enable(15); //Mclaughlin2
+      camera.layers.enable(16); //Mclaughlin2
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
@@ -846,6 +847,29 @@
 					scene.add(object);
 				});
 
+        var material95 = new THREE.MeshStandardMaterial({
+					color: 0xf6faff,
+					metalness: 0.3,
+					roughness: 0.7,
+					envMap: cubeTexture,
+					envMapIntensity: 0.9,
+					side: THREE.DoubleSide,
+          // clippingPlanes: [localPlane]
+				});
+
+        var loader9 = new OBJLoader();
+				loader9.load('models/obj/oneContext-1.obj', function (obj) { //MGLAUF3
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material95;
+					});
+					var object = obj.children[0].clone();
+					object.layers.set(16);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
         var loader = new FBXLoader();
 				loader.load('models/fbx/linework-bldg2-1.fbx', function (object) {
 					object.traverse(function (child) {
@@ -868,7 +892,7 @@
 				});
 
 				var loader10 = new OBJLoader();
-				loader10.load('models/obj/allContextBldgs3.obj', function (obj) { //ALL CONTEXT
+				loader10.load('models/obj/allContextBldgs4.obj', function (obj) { //ALL CONTEXT
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
@@ -885,7 +909,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-bldgs1-3.fbx', function (object) {
+				loader.load('models/fbx/linework-bldgs1-5.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material16;
 						child.layers.set(1)
@@ -1874,12 +1898,13 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 18;
-					goaly = -22;
-					goalz = -169.5;
-					nextLookAtx = -30;
+					goalx = 1.8;
+					goaly = -25.5;
+					goalz = -179.5;
+					nextLookAtx = -50;
 					nextLookAty = -8;
 					nextLookAtz = 0;
+          camera.layers.disable(16);
 
 				} else if (opts.Camera == 'c2') {
 					goalx = 144.5;
@@ -1945,6 +1970,7 @@
 					nextLookAtx = 0;
 					nextLookAty = 0;
 					nextLookAtz = 40;
+          camera.layers.disable(16);
 					
 				}else if (opts.Camera == 'c10') { //S Aerial
 					goalx = 66;
@@ -1954,13 +1980,15 @@
 					nextLookAty = 40;
 					nextLookAtz = 0;
 					//66.33958598391895, 359.7010046785748, -359.01371392434567
-				}else if (opts.Camera == 'c11') {
+				}else if (opts.Camera == 'c11') { //siteSection 
 					goalx = 39;
 					goaly = 10;
 					goalz = 281;
 					nextLookAtx = -100;
 					nextLookAty = 20;
 					nextLookAtz = -40;
+
+          camera.layers.disable(16);
 					
 				}else if (opts.Camera == 'c12') { //top-down
 					goalx = -9;
@@ -1985,6 +2013,8 @@
 				nowLookAtx = nextLookAtx;
 				nowLookAty = nextLookAty;
 				nowLookAtz = nextLookAtz;
+
+        camera.layers.enable(16);
 
 
 				// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
@@ -2055,7 +2085,7 @@
 
 			// if(prevOpts.Rendering != opts.Rendering){
         //&& camera.position.x == goalx
-				if(opts.Rendering && camera.position.x == goalx){
+				if(opts.Rendering ){
 					turnOnRendering = true;
 					blocker.style.opacity = currentOpacity;
 					blocker.style.display = 'block';
@@ -2353,7 +2383,7 @@
 						"Camera": 'c8',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": false,
 						"Image": 'opt1sec',
 						"People": true,
@@ -2372,7 +2402,7 @@
 						"Camera": 'c2',
 						"Option": 'opt1',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": true,
 						"Image": 'opt1stair',
 						"People": true,

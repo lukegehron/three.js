@@ -315,16 +315,38 @@
 						RIGHT: THREE.MOUSE.ROTATE
 					}
 
-    var effectController = {
-			turbidity: 3.2,
-			rayleigh: 4,
-			mieCoefficient: 0.068,
-			mieDirectionalG: 1,
-			luminance: 1,
-			inclination: 0.0955, // elevation / inclination
-			azimuth: 0.25, // Facing front,
+          var effectController = {
+			turbidity: 1,
+			rayleigh: 0.555,
+			mieCoefficient: 0.018,
+			mieDirectionalG: 0.998,
+			luminance: 0.2,
+			inclination: 0.3448, // elevation / inclination
+			azimuth: 0.3123, // Facing front,
 			sun: ! true
 		};
+
+    // var effectController = {
+		// 	turbidity: 1,
+		// 	rayleigh: 0.686,
+		// 	mieCoefficient: 0.043,
+		// 	mieDirectionalG: 0.865,
+		// 	luminance: 1,
+		// 	inclination: 0.3448, // elevation / inclination
+		// 	azimuth: 0.3123, // Facing front,
+		// 	sun: ! true
+		// };
+
+    // var effectController = {
+		// 	turbidity: 3.2,
+		// 	rayleigh: 4,
+		// 	mieCoefficient: 0.068,
+		// 	mieDirectionalG: 1,
+		// 	luminance: 1,
+		// 	inclination: 0.0955, // elevation / inclination
+		// 	azimuth: 0.25, // Facing front,
+		// 	sun: ! true
+		// };
 
 		var API = {
 			lightProbeIntensity: 1,
@@ -644,7 +666,7 @@
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
 
-			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.14);
+			var dirLight = new THREE.DirectionalLight(0xFFFFFF, 0.21);
 			dirLight.name = 'Dir. Light';
 			dirLight.position.set(500, 800, -550);
 			dirLight.castShadow = true;
@@ -656,21 +678,21 @@
 			dirLight.shadow.camera.bottom = - 1370;
 			dirLight.shadow.mapSize.width = 2048;
 			dirLight.shadow.mapSize.height = 2048;
-			dirLight.shadow.radius = 12;
-			dirLight.shadow.bias = -0.002;
+			dirLight.shadow.radius = 4;
+			dirLight.shadow.bias = -0.003;
 			scene.add(dirLight);
 
 			scene.add(camera);
 
 			scene.add(new THREE.AmbientLight(0xffffff, 0.26));
-			var dirLight = new THREE.DirectionalLight(0xeeeeff, 0.12);
+			var dirLight = new THREE.DirectionalLight(0xeeeeff, 0.10);
 			dirLight.position.set(-64, 222, -370);
-      dirLight.castShadow = true;
+      // dirLight.castShadow = true;
 			scene.add(dirLight);
 
-      var dirLight = new THREE.DirectionalLight(0xffcccc, 0.17);
+      var dirLight = new THREE.DirectionalLight(0xffcccc, 0.12);
 			dirLight.position.set(1303, 557, 120);
-      dirLight.castShadow = true;
+      // dirLight.castShadow = true;
 			scene.add(dirLight);
 
 
@@ -887,7 +909,7 @@
 				});
 
 				var material15 = new THREE.LineBasicMaterial({
-					color: 0xeeeeee, linewidth: 1, clippingPlanes: [localPlane],
+					color: 0x777777, linewidth: 1, clippingPlanes: [localPlane],
 					clipShadows: true
 				});
 
@@ -974,7 +996,7 @@
 				});
 
         var material16 = new THREE.LineBasicMaterial({
-					color: 0xeeeeee, linewidth: 1,
+					color: 0x777777, linewidth: 1,
 				});
 
 				var loader = new FBXLoader();
@@ -991,15 +1013,15 @@
 
 				//BUILDING OPTION 1
 
-				var material5 = new THREE.LineBasicMaterial({
-					color: 0x444444, linewidth: 0.5, clippingPlanes: [localPlane],
-					clipShadows: true
+				var material6 = new THREE.LineBasicMaterial({
+					color: 0x000000, linewidth: 1, clippingPlanes: [localPlane],
+					// clipShadows: true
 				});
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/linework-opt1-4.fbx', function (object) {
 					object.traverse(function (child) {
-						child.material = material5;
+						child.material = material6;
 						child.layers.set(2)
 					});
 
@@ -1789,7 +1811,7 @@
 
 		function changeDivText(){
       if(opts.Option == 'opt0'){
-				showText = 'EXISING';
+				showText = 'EXISTING';
 			}else if(opts.Option == 'opt1'){
 				showText = 'LOFT';
 			}else if(opts.Option == 'opt2'){

@@ -141,10 +141,10 @@
     var prevSceneFinder = 0;
     var sceneFinder = 0;
 
-    var controlState = false;
-    var prevControlState = false;
+    var controlState = true;
+    var prevControlState = true;
 
-    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42"
+    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S32-1", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42"
     ];
 
     var ExistingOn = false;
@@ -1177,7 +1177,7 @@
         
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 1_LEVEL 02.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R01_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1207,7 +1207,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 1_LEVEL 01.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R01_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1236,7 +1236,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 1_GROUND LEVEL.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R01_GROUND.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1349,7 +1349,7 @@
 
           new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 2_R01_Artboard 4.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R01_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1379,7 +1379,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 2_R01_Artboard 2.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R01_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1408,7 +1408,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('models/obj/diagrams/Scheme 2_R01_Artboard 1.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R01_GROUND.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1518,107 +1518,93 @@
 							}, onProgress, onError);
 					});
 
-          // new MTLLoader()
-					// .setPath('models/obj/diagrams/')
-					// .load('opt3-1-flr6.mtl', function (materials) {
-					// 	materials.preload();
-					// 	new OBJLoader()
-					// 		.setMaterials(materials)
-					// 		.setPath('models/obj/diagrams/')
-					// 		.load('opt3-1-flr6.obj', function (obj) {
-					// 			//'SiteW-4.obj'
+          new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				.load('textures/diagram/3_R01_05.png?' + performance.now(), function (image) {
 
-					// 			obj.traverse(function (child) {
-					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
-          //         if (child.isMesh) child.material.clipShadows = true;
-					// 				if (child.isMesh) child.material.alphaTest = 0.5;
-          //         if (child.isMesh) child.material.transparent = true;
-					// 			});
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+			
+						new OBJLoader()
+							.setPath('models/obj/diagrams/')
+							.load('opt2-1-flr6.obj', function (obj) {
 
-					// 			var object = obj.children[0].clone()
-					// 			object.traverse(function (child) {
-					// 				if (child.isMesh) {
-					// 					for (var i = 0; i < child.material.length; i++) {
-					// 						child.material[i].clippingPlanes = [localPlane];
-					// 						child.material[i].clipShadows = true;
-					// 					}
-					// 				}
-					// 			});
+								obj.traverse(function (child) {
+                  if (child.isMesh) child.material = material;
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+                  if (child.isMesh) child.material.clipShadows = true;
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+								});
 
-					// 			object.layers.set(11);
-					// 			object.rotation.x = -3.1415926787 / 2;
-					// 			object.castShadow = false;
-					// 			object.receiveShadow = false;
-					// 			scene.add(object);
-					// 		}, onProgress, onError);
-					// });
+								var object = obj.children[0].clone()
+								
+								object.layers.set(11);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = false;
+								object.receiveShadow = false;
+								scene.add(object);
+							}, onProgress, onError);
+				});
 
-          // new MTLLoader()
-					// .setPath('models/obj/diagrams/')
-					// .load('opt3-1-flr3.mtl', function (materials) {
-					// 	materials.preload();
-					// 	new OBJLoader()
-					// 		.setMaterials(materials)
-					// 		.setPath('models/obj/diagrams/')
-					// 		.load('opt3-1-flr3.obj', function (obj) {
-							
-					// 			obj.traverse(function (child) {
-					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
-          //         if (child.isMesh) child.material.clipShadows = true;
-					// 				if (child.isMesh) child.material.alphaTest = 0.5;
-          //         if (child.isMesh) child.material.transparent = true;
-					// 			});
 
-					// 			var object = obj.children[0].clone()
-					// 			object.traverse(function (child) {
-					// 				if (child.isMesh) {
-					// 					for (var i = 0; i < child.material.length; i++) {
-					// 						child.material[i].clippingPlanes = [localPlane];
-					// 						child.material[i].clipShadows = true;
-					// 					}
-					// 				}
-					// 			});
+        new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				.load('textures/diagram/3_R01_02.png?' + performance.now(), function (image) {
 
-					// 			object.layers.set(12);
-					// 			object.rotation.x = -3.1415926787 / 2;
-					// 			object.castShadow = false;
-					// 			object.receiveShadow = false;
-					// 			scene.add(object);
-					// 		}, onProgress, onError);
-					// });
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+			
+						new OBJLoader()
+							.setPath('models/obj/diagrams/')
+							.load('opt2-1-flr3.obj', function (obj) {
 
-          // new MTLLoader()
-					// .setPath('models/obj/diagrams/')
-					// .load('opt3-1-flr0.mtl', function (materials) {
-					// 	materials.preload();
-					// 	new OBJLoader()
-					// 		.setMaterials(materials)
-					// 		.setPath('models/obj/diagrams/')
-					// 		.load('opt3-1-flr0.obj', function (obj) {
-					// 			obj.traverse(function (child) {
-					// 				if (child.isMesh) child.material.clippingPlanes = [localPlane];
-          //         if (child.isMesh) child.material.clipShadows = true;
-					// 				if (child.isMesh) child.material.alphaTest = 0.5;
-          //         if (child.isMesh) child.material.transparent = true;
-					// 			});
+								obj.traverse(function (child) {
+                  if (child.isMesh) child.material = material;
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+                  if (child.isMesh) child.material.clipShadows = true;
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+								});
 
-					// 			var object = obj.children[0].clone()
-					// 			object.traverse(function (child) {
-					// 				if (child.isMesh) {
-					// 					for (var i = 0; i < child.material.length; i++) {
-					// 						child.material[i].clippingPlanes = [localPlane];
-					// 						child.material[i].clipShadows = true;
-					// 					}
-					// 				}
-					// 			});
+								var object = obj.children[0].clone()
+								
+								object.layers.set(12);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = false;
+								object.receiveShadow = false;
+								scene.add(object);
+							}, onProgress, onError);
+				});
 
-					// 			object.layers.set(13);
-					// 			object.rotation.x = -3.1415926787 / 2;
-					// 			object.castShadow = false;
-					// 			object.receiveShadow = false;
-					// 			scene.add(object);
-					// 		}, onProgress, onError);
-					// });
+        new THREE.ImageLoader()
+				.setCrossOrigin('*')
+				.load('textures/diagram/3_R01_GROUND.png?' + performance.now(), function (image) {
+
+					var texture = new THREE.CanvasTexture(image);
+					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+			
+						new OBJLoader()
+							.setPath('models/obj/diagrams/')
+							.load('opt2-1-flr0.obj', function (obj) {
+
+								obj.traverse(function (child) {
+                  if (child.isMesh) child.material = material;
+									if (child.isMesh) child.material.clippingPlanes = [localPlane];
+                  if (child.isMesh) child.material.clipShadows = true;
+									if (child.isMesh) child.material.alphaTest = 0.5;
+                  if (child.isMesh) child.material.transparent = true;
+								});
+
+								var object = obj.children[0].clone()
+								
+								object.layers.set(13);
+								object.rotation.x = -3.1415926787 / 2;
+								object.castShadow = false;
+								object.receiveShadow = false;
+								scene.add(object);
+							}, onProgress, onError);
+				});
 
 				//END OF OPTION 3
 			});
@@ -2274,11 +2260,11 @@
 
 			boxyPosIndex++;
 			if (peopleOn) {
-        multiplier = 2;
+        // multiplier = 2;
 
 				for (let j = 0; j < zPaths.length; j++) {
 
-					let currentIndex = boxyPosIndex % ((zPaths[j].length * deltaTime) - 1);
+					let currentIndex = boxyPosIndex % ((zPaths[j].length * multiplier) - 1);
 					// console.log(zPaths[j].length);
 					b[j].position.x = xPaths[j][parseInt(currentIndex / multiplier)];
 					b[j].position.y = yPaths[j][parseInt(currentIndex / multiplier)] + 3;
@@ -3094,7 +3080,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S32": {
+				"S32-1": {
 					"0": {
 						"Clipping": 'three',
 						"Camera": 'c4',

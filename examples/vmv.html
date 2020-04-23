@@ -146,6 +146,74 @@
 
     var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42"
     ];
+
+    var ExistingOn = false;
+    var LoftOn = false;
+    var HiveOn = false;
+    var PavilionOn = false;
+
+    var fullBldg = true;
+    var fifthFlr = false;
+    var secondFlr = false;
+    var groundFlr = false;
+
+    function toggleExisting(){
+      ExistingOn = true;
+      LoftOn = false;
+      HiveOn = false;
+      PavilionOn = false;
+    }
+
+    function toggleLoft(){
+      ExistingOn = false;
+      LoftOn = true;
+      HiveOn = false;
+      PavilionOn = false;
+    }
+    function toggleHive(){
+      ExistingOn = false;
+      LoftOn = false;
+      HiveOn = true;
+      PavilionOn = false;
+    }
+    function togglePavilion(){
+      ExistingOn = false;
+      LoftOn = false;
+      HiveOn = false;
+      PavilionOn = true;
+    }
+    
+    function toggleFull(){
+      fullBldg = true;
+      fifthFlr = false;
+      secondFlr = false;
+      groundFlr = false;
+    }
+
+    function toggleFith(){
+      fullBldg = false;
+      fifthFlr = true;
+      secondFlr = false;
+      groundFlr = false;
+    }
+    function toggleSecond(){
+      fullBldg = false;
+      fifthFlr = false;
+      secondFlr = true;
+      groundFlr = false;
+    }
+    function toggleGround(){
+      fullBldg = false;
+      fifthFlr = false;
+      secondFlr = false;
+      groundFlr = true;
+     }
+
+
+
+
+
+
     function prevSlide() {
       sceneFinder--;
     }
@@ -380,6 +448,9 @@
 		var blocker;
 
 		var sceneText;
+
+
+    // var prevSceneFinder;
 
 
 		init();
@@ -1743,6 +1814,24 @@
 
       // YOUR FRAME CODE HERE!
 
+      // if(prevSceneFinder != sceneFinder){
+      //   prevSceneFinder = sceneFinder;
+      //   fifthFlr = false;
+      //   secondFlr = false;
+      //   groundFlr = false;
+      // }
+
+
+
+      if(LoftOn){
+        opts.Option = 'opt1';
+      }else if(HiveOn){
+        opts.Option = 'opt2';
+      }else if(PavilionOn){
+        opts.Option = 'opt3';
+      }
+      
+
       if(controlState != prevControlState){
         controls.enabled = controlState;
         prevControlState = controlState;
@@ -1750,6 +1839,12 @@
       }
 
       if(sceneFinder!= prevSceneFinder){
+        fifthFlr = false;
+        secondFlr = false;
+        groundFlr = false;
+        LoftOn = false;
+        HiveOn = false;
+        PavilionOn = false;
         prevSceneFinder = sceneFinder;
         gui.preset = scenes[sceneFinder];
 					runUpdate = true;
@@ -1780,12 +1875,12 @@
 
       
 
-			if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option) {
+			if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option || !fullBldg) {
 				if(opts.Clipping == 'none'){
 					localPlane.constant = 200;
 				}
 
-				if (opts.Clipping == 'six') {
+				if (opts.Clipping == 'six' || fifthFlr) {
 					localPlane.constant =  8;
 
           if (opts.Option == 'opt1') {
@@ -1806,7 +1901,7 @@
 						camera.layers.disable(11);
 					}
 					
-				} else if(opts.Clipping == 'three'){
+				} else if(opts.Clipping == 'three' || secondFlr){
 					localPlane.constant =  -22;
           if (opts.Option == 'opt1') {
 						camera.layers.enable(6);
@@ -1826,7 +1921,7 @@
 						camera.layers.disable(12);
 					}
 				}
-				else if(opts.Clipping == 'ground'){
+				else if(opts.Clipping == 'ground' || groundFlr){
 					localPlane.constant =  -40;
           if (opts.Option == 'opt1') {
 						camera.layers.enable(7);
@@ -3081,7 +3176,7 @@
 						"Camera": 'c2',
 						"Option": 'opt3',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": false,
 						"Image": 'opt3sec',
 						"People": true,

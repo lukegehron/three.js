@@ -25,8 +25,9 @@
 
 		#instructions {
 			position: absolute;
-			width: 90%;
-			height: 10%;
+      
+			width: 100%;
+			height: 8%;
       z-index: 5;
 
 			display: -webkit-box;
@@ -46,6 +47,53 @@
 			box-align: center;
 
 			/* color: #ffffff; */
+			text-align: center;
+			font-family: Arial;
+			font-size: 14px;
+			line-height: 24px;
+
+			/* cursor: pointer; */
+		}
+
+    .button {
+  background-color: #444444;
+  border: none;
+  color: white;
+  width: 80%;
+  height: 30px;
+  /* padding: 15px 5px 15px; */
+  margin: 5px 5px 5px 5px;
+  /* text-align: center; */
+  /* text-decoration: none; */
+  /* display: inline-block; */
+  /* font-size: 16px; */
+}
+
+    #UI {
+      /* float: right; */
+      background-color: rgba(0, 0, 0, 0.3);
+			position: absolute;
+			width: 8%;
+			height: 100%;
+      z-index: 5;
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+
+			-webkit-box-orient: horizontal;
+			-moz-box-orient: horizontal;
+			box-orient: horizontal;
+
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			box-pack: center;
+
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			box-align: center;
+
+			color: #ffffff;
 			text-align: center;
 			font-family: Arial;
 			font-size: 14px;
@@ -76,7 +124,7 @@
 				z-index: 1;
 				opacity: 0.0;
 				
-				background-image: url('textures/tree/S42-03.jpg');
+				background-image: url('textures/renderings/S03_Option3b.jpg');
 				background-repeat: no-repeat;
 				background-position: 50% 0;
 				-ms-background-size: 100% 100%;
@@ -112,17 +160,38 @@
 <body>
 
   <div id="instructions">
-    <span style="font-size:26px" id="Scene">Scene: 00 // Option: 01</span>
-    <br>
-    <button onclick="prevSlide()">PREV</button>&nbsp;
-    <button onclick="toggleOrbit()">ORBIT</button>&nbsp;
-    <button onclick="toggleLook()">LOOK</button>&nbsp;
+    <span style="font-size:26px" id="Scene">00 // 00</span>
+    <!-- <br>
+    <button onclick="prevSlide()">PREV</button><br>
+    <button onclick="toggleOrbit()">ORBIT</button><br>
+    <button onclick="toggleLook()">LOOK</button><br>
     <button onclick="nextSlide()"> NEXT</button>
-    <br/>
+    <br/> -->
   </div>
 
 	
 	<div id="my-container">
+  </div>
+
+  <div id="UI">
+    Buttons<br>
+    <button class="button" onclick="prevSlide()">PREV</button><br>
+    <button class="button" onclick="nextSlide()"> NEXT</button><br><br>
+    Controls<br>
+    <button class="button" onclick="toggleOrbit()">ORBIT</button><br>
+    <button class="button" onclick="toggleLook()">LOOK</button><br><br>
+    Options<br>
+    <button class="button" onclick="toggleOrbit()">NONE</button><br>
+    <button class="button" onclick="toggleLook()">LOFT</button><br>
+    <button class="button" onclick="toggleOrbit()">HIVE</button><br>
+    <button class="button" onclick="toggleLook()">PAVILION</button><br><br>
+    Plan<br>
+    <button class="button" onclick="toggleOrbit()">FULL BLDG</button><br>
+    <button class="button" onclick="toggleLook()">4TH FLOOR</button><br>
+    <button class="button" onclick="toggleOrbit()">2ND FLOOR</button><br>
+    <button class="button" onclick="toggleLook()">GROUND FLOOR</button><br>
+
+    
   </div>
 
 	
@@ -134,7 +203,7 @@
 		import { OBJLoader } from './jsm/loaders/OBJLoader.js';
 		import { MTLLoader } from './jsm/loaders/MTLLoader.js';
 		import { MapControls } from './jsm/controls/OrbitControls.js';
-		import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
+		// import { EffectComposer } from './jsm/postprocessing/EffectComposer.js';
 		import { Sky } from './jsm/objects/Sky.js';
 		import { LightProbeGenerator } from './jsm/lights/LightProbeGenerator.js';
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
@@ -1587,8 +1656,8 @@
 	
 			gui.add(opts, 'Orbit');
 
-			// gui.hide();
-      gui.close();
+			gui.hide();
+      // gui.close();
 			
 
 
@@ -1720,7 +1789,7 @@
 
 		function changeDivText(){
       if(opts.Option == 'opt0'){
-				showText = 'NONE';
+				showText = 'EXISING';
 			}else if(opts.Option == 'opt1'){
 				showText = 'LOFT';
 			}else if(opts.Option == 'opt2'){
@@ -1729,7 +1798,7 @@
 				showText = 'PAVILION';
 			}
 
-			sceneText.innerText = "Scene: " + scenes[sceneFinder].substr(1) + " Option: " + showText;
+			sceneText.innerText =  scenes[sceneFinder].substr(1) + " // " + showText;
     }
 
 			var onKeyUp = function (event) {

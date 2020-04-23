@@ -765,7 +765,7 @@
 						new OBJLoader()
 							// .setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site51-Terrain.obj', function (obj) { //NEW TERRAIN FROM SKP
+							.load('Site52-Terrain.obj', function (obj) { //NEW TERRAIN FROM SKP
 								var object = obj.children[0].clone()
                 object.material = material98;
 								object.layers.set(1);
@@ -778,12 +778,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/')
-					.load('Site50-Terrain.mtl', function (materialz) { //FULL TERRAIN
+					.load('Site60-Terrain.mtl', function (materialz) { //FULL TERRAIN
 						materialz.preload();
 						new OBJLoader()
 							.setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site50-Terrain.obj', function (obj) {
+							.load('Site60-Terrain.obj', function (obj) {
 								var object = obj.children[0].clone()
 								object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;
@@ -2617,7 +2617,7 @@
 						"Camera": 'c8',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": false,
 						"Image": 'opt2sec',
 						"People": true,
@@ -2636,7 +2636,7 @@
 						"Camera": 'c2',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": true,
 						"Image": 'opt2stair',
 						"People": true,

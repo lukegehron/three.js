@@ -20,7 +20,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
+			background-color: rgba(255, 255, 255, 0.5);
 		}
 
 		#instructions {
@@ -56,11 +56,14 @@
 		}
 
     .button {
-  background-color: #444444;
-  border: none;
+  background-color: #999999;
+  /* border: none; */
+  border-color: black;
+  border-width: 1px;
+  border-radius: 4px;
   color: white;
-  width: 80%;
-  height: 30px;
+  width: 75%;
+  height: 32px;
   /* padding: 15px 5px 15px; */
   margin: 5px 5px 5px 5px;
   /* text-align: center; */
@@ -71,7 +74,7 @@
 
     #UI {
       /* float: right; */
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(255, 255, 255, 0.5);
 			position: absolute;
 			width: 8%;
 			height: 100%;
@@ -93,7 +96,7 @@
 			-moz-box-align: center;
 			box-align: center;
 
-			color: #ffffff;
+			/* color: #ffffff; */
 			text-align: center;
 			font-family: Arial;
 			font-size: 14px;
@@ -174,22 +177,22 @@
   </div>
 
   <div id="UI">
-    Buttons<br>
+    Slides<br>
     <button class="button" onclick="prevSlide()">PREV</button><br>
     <button class="button" onclick="nextSlide()"> NEXT</button><br><br>
     Controls<br>
     <button class="button" onclick="toggleOrbit()">ORBIT</button><br>
     <button class="button" onclick="toggleLook()">LOOK</button><br><br>
     Options<br>
-    <button class="button" onclick="toggleOrbit()">NONE</button><br>
-    <button class="button" onclick="toggleLook()">LOFT</button><br>
-    <button class="button" onclick="toggleOrbit()">HIVE</button><br>
-    <button class="button" onclick="toggleLook()">PAVILION</button><br><br>
-    Plan<br>
-    <button class="button" onclick="toggleOrbit()">FULL BLDG</button><br>
-    <button class="button" onclick="toggleLook()">4TH FLOOR</button><br>
-    <button class="button" onclick="toggleOrbit()">2ND FLOOR</button><br>
-    <button class="button" onclick="toggleLook()">GROUND FLOOR</button><br>
+    <button class="button" onclick="toggleExisting()">NONE</button><br>
+    <button class="button" onclick="toggleLoft()">LOFT</button><br>
+    <button class="button" onclick="toggleHive()">HIVE</button><br>
+    <button class="button" onclick="togglePavilion()">PAVILION</button><br><br>
+    Plans<br>
+    <button class="button" onclick="toggleFull()">FULL BLDG</button><br>
+    <button class="button" onclick="toggleFith()">5TH FLOOR</button><br>
+    <button class="button" onclick="toggleSecond()">2ND FLOOR</button><br>
+    <button class="button" onclick="toggleGround()">GROUND FLOOR</button><br>
 
     
   </div>
@@ -209,7 +212,13 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+    const perfectFrameTime = 1000 / 60;
+    let deltaTime = 0;
+    let lastTimestamp = 0;
+
     var pointControl;
+
+    var animationDone = false;
 
 		var currentOpacity = 0.0;
 		var turnOnRendering = false;
@@ -220,7 +229,7 @@
 
 		var runUpdate = false;
 
-		let multiplier = 5.0; //how fast the people walk
+		let multiplier = 3.0; //how fast the people walk
 
 		var gui;
 
@@ -374,7 +383,8 @@
 
 
 		init();
-		animate();
+		// animate();
+    
 
 		function addImage() {
 
@@ -1709,6 +1719,8 @@
 			}
 
 			window.addEventListener('resize', onWindowResize, false);
+
+      requestAnimationFrame(update);
 		}
 
 
@@ -1724,137 +1736,12 @@
 
 		}
 
-		function animatePlayer(delta) {
-			if (timer <= tMult) {
-				timer += delta; // Increase the timer value
-				// console.log(nextLookAtx);
-				// console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
-				//Use interpolation to move from the start towards the goal, by 'timer' percentage;
-				var camPosx = THREE.Math.lerp(startx, goalx, Math.min(1.0, timer/tMult));
-				var camPosy = THREE.Math.lerp(starty, goaly, Math.min(1.0, timer/tMult));
-				var camPosz = THREE.Math.lerp(startz, goalz, Math.min(1.0, timer/tMult));
-				camera.position.x = camPosx;
-				camera.position.y = camPosy;
-				camera.position.z = camPosz;
+    function update(timestamp) {
+      requestAnimationFrame(update);
+      deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
+      lastTimestamp = timestamp;
 
-				nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, Math.min(1.0, timer/tMult));
-				nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, Math.min(1.0, timer/tMult));
-				nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, Math.min(1.0, timer/tMult));
-
-
-				// var myBox = new THREE.BoxGeometry(1.2,6,1.2);
-				var geometry = new THREE.BoxGeometry(1, 1, 1);
-				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-				var cube = new THREE.Mesh(geometry, material);
-				scene.add(cube);
-				cube.position.x = nowLookAtx;
-				cube.position.y = nowLookAty;
-				cube.position.z = nowLookAtz;
-				// camera.up.set( 0, 1,0 );
-				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
-				// console.log(cube.position.y);
-				camera.lookAt((cube.position));
-				scene.remove(cube);
-			}
-		}
-
-		var onKeyDown = function (event) {
-
-			
-
-			switch (event.keyCode) {
-
-				case 87: // w
-          // controls.reset();
-					controls.enabled = true;
-          
-					controls = pointControl;
-					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
-					scene.add(controls.getObject());
-					controls.lock();
-					break;
-
-
-				
-				case 16: //shift
-					
-					keyControls = {
-						LEFT: THREE.MOUSE.PAN,
-						MIDDLE: THREE.MOUSE.PAN,
-						RIGHT: THREE.MOUSE.ROTATE
-					}
-          controlState = true;
-					controls.enabled = controlState;
-					opts.Orbit = true;
-					// console.log("ShiftPressed");
-					break;
-				
-					case 39: // --> arrow
-					sceneFinder++;
-					if(sceneFinder > scenes.length){
-						sceneFinder = 0;
-					} 
-					gui.preset = scenes[sceneFinder];
-					runUpdate = true;
-					break;
-
-					case 37: // <-- arrow
-					sceneFinder--;
-					if(sceneFinder < 0){
-						sceneFinder = scenes.length;
-					} 
-					gui.preset = scenes[sceneFinder];
-					runUpdate = true;
-					break;
-			}
-		};
-
-		function changeDivText(){
-      if(opts.Option == 'opt0'){
-				showText = 'EXISTING';
-			}else if(opts.Option == 'opt1'){
-				showText = 'LOFT';
-			}else if(opts.Option == 'opt2'){
-				showText = 'HIVE';
-			}else if(opts.Option == 'opt3'){
-				showText = 'PAVILION';
-			}
-
-			sceneText.innerText =  scenes[sceneFinder].substr(1) + " // " + showText;
-    }
-
-			var onKeyUp = function (event) {
-
-        changeDivText();
-
-        
-
-				switch (event.keyCode) {
-					case 16: //shift
-						keyControls = {
-							LEFT: THREE.MOUSE.PAN,
-							MIDDLE: THREE.MOUSE.ROTATE,
-							RIGHT: THREE.MOUSE.ROTATE
-						}
-						break;
-				}
-			};
-
-		var update = function() {
-			requestAnimationFrame(update);
-			opts.CamX = camera.position.x;
-			opts.CamY = camera.position.y;
-			opts.CamZ = camera.position.z;
-			opts.CamRotX = camera.rotation.x;
-			opts.CamRotY = camera.rotation.y;
-			opts.CamRotZ = camera.rotation.z;
-		};
-
-		update();
-    changeDivText();
-
-
-		function animate() {
+      // YOUR FRAME CODE HERE!
 
       if(controlState != prevControlState){
         controls.enabled = controlState;
@@ -1871,13 +1758,13 @@
 
 
 			if(turnOnRendering){
-				currentOpacity += 0.04;
+				currentOpacity += deltaTime/60.0;
 				if(currentOpacity >= 1){
 					currentOpacity = 1;
 				}
 			}else{
 				if(currentOpacity != 0){
-					currentOpacity -= 0.04;
+					currentOpacity -= deltaTime/40.0;
 					if(currentOpacity <= 0){
 						currentOpacity = 0;
 					}
@@ -1889,6 +1776,9 @@
 			// console.log(gui.saveToLocalStorageIfPossible);
 			// console.log(gui.'[[Scopes]]'[3].params.load.remembered.Default;
 			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z);
+
+
+      
 
 			if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option) {
 				if(opts.Clipping == 'none'){
@@ -2132,6 +2022,49 @@
 				runUpdate = false;
 			}
 
+      var delta = clock.getDelta();
+			animatePlayer(delta);
+
+
+			var width = window.innerWidth / 2;
+			var height = window.innerHeight / 2;
+
+			requestAnimationFrame(animate);
+
+
+
+      if(sceneFinder == 13 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+      if(sceneFinder == 9 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+      if(sceneFinder == 23 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+      if(sceneFinder == 27 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+      if(sceneFinder == 36 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+
+      if(sceneFinder == 40 && camera.position.x == goalx){
+        sceneFinder++;
+      }
+
+
+
+
+
+
+
+
 			if(prevOpts.Option != opts.Option){
 				if(opts.Option == 'opt0'){
 					camera.layers.disable(2);
@@ -2176,7 +2109,7 @@
 
 			// if(prevOpts.Rendering != opts.Rendering){
         //&& camera.position.x == goalx
-				if(opts.Rendering && camera.position.x == goalx){
+				if(opts.Rendering && animationDone){
 					turnOnRendering = true;
 					blocker.style.opacity = currentOpacity;
 					blocker.style.display = 'block';
@@ -2236,25 +2169,21 @@
 			document.addEventListener('keyup', onKeyUp, false);
 			// document.addEventListener('mousedown', onMouseDown, false);
 
-			var delta = clock.getDelta();
-			animatePlayer(delta);
-
-
-			var width = window.innerWidth / 2;
-			var height = window.innerHeight / 2;
-
-			requestAnimationFrame(animate);
+			
 			// opts.CamX = camera.position.x;
 			// opts.CamY = camera.position.y;
 			// opts.CamZ = camera.position.z;
 			// console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z );
 
+      // console.log(deltaTime);
+
 			boxyPosIndex++;
 			if (peopleOn) {
+        multiplier = 2;
 
 				for (let j = 0; j < zPaths.length; j++) {
 
-					let currentIndex = boxyPosIndex % ((zPaths[j].length * multiplier) - 1);
+					let currentIndex = boxyPosIndex % ((zPaths[j].length * deltaTime) - 1);
 					// console.log(zPaths[j].length);
 					b[j].position.x = xPaths[j][parseInt(currentIndex / multiplier)];
 					b[j].position.y = yPaths[j][parseInt(currentIndex / multiplier)] + 3;
@@ -2271,6 +2200,156 @@
 				}
 			}
 			render();
+
+    }
+
+		function animatePlayer(delta) {
+      if(camera.position.x != goalx){
+          animationDone = false;
+        
+        if (timer <= tMult) {
+          
+          timer += delta; // Increase the timer value
+          // console.log(nextLookAtx);
+          // console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
+          //Use interpolation to move from the start towards the goal, by 'timer' percentage;
+          var camPosx = THREE.Math.lerp(startx, goalx, Math.min(1.0, timer/tMult));
+          var camPosy = THREE.Math.lerp(starty, goaly, Math.min(1.0, timer/tMult));
+          var camPosz = THREE.Math.lerp(startz, goalz, Math.min(1.0, timer/tMult));
+          camera.position.x = camPosx;
+          camera.position.y = camPosy;
+          camera.position.z = camPosz;
+
+          if(camera.position.x != goalx){
+            animationDone = false;
+          }
+
+          nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, Math.min(1.0, timer/tMult));
+          nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, Math.min(1.0, timer/tMult));
+          nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, Math.min(1.0, timer/tMult));
+
+
+          // var myBox = new THREE.BoxGeometry(1.2,6,1.2);
+          var geometry = new THREE.BoxGeometry(1, 1, 1);
+          var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+          var cube = new THREE.Mesh(geometry, material);
+          scene.add(cube);
+          cube.position.x = nowLookAtx;
+          cube.position.y = nowLookAty;
+          cube.position.z = nowLookAtz;
+          // camera.up.set( 0, 1,0 );
+          // camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+          // console.log(cube.position.y);
+          camera.lookAt((cube.position));
+          scene.remove(cube);
+        }else{
+          animationDone = true;
+        }
+      }else{
+          animationDone = true;
+      }
+      
+		}
+
+		var onKeyDown = function (event) {
+
+			
+
+			switch (event.keyCode) {
+
+				case 87: // w
+          // controls.reset();
+					controls.enabled = true;
+          
+					controls = pointControl;
+					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
+					scene.add(controls.getObject());
+					controls.lock();
+					break;
+
+
+				
+				case 16: //shift
+					
+					keyControls = {
+						LEFT: THREE.MOUSE.PAN,
+						MIDDLE: THREE.MOUSE.PAN,
+						RIGHT: THREE.MOUSE.ROTATE
+					}
+          controlState = true;
+					controls.enabled = controlState;
+					opts.Orbit = true;
+					// console.log("ShiftPressed");
+					break;
+				
+					case 39: // --> arrow
+					sceneFinder++;
+					if(sceneFinder > scenes.length){
+						sceneFinder = 0;
+					} 
+					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
+					break;
+
+					case 37: // <-- arrow
+					sceneFinder--;
+					if(sceneFinder < 0){
+						sceneFinder = scenes.length;
+					} 
+					gui.preset = scenes[sceneFinder];
+					runUpdate = true;
+					break;
+			}
+		};
+
+		function changeDivText(){
+      if(opts.Option == 'opt0'){
+				showText = 'EXISTING';
+			}else if(opts.Option == 'opt1'){
+				showText = 'LOFT';
+			}else if(opts.Option == 'opt2'){
+				showText = 'HIVE';
+			}else if(opts.Option == 'opt3'){
+				showText = 'PAVILION';
+			}
+
+			sceneText.innerText =  scenes[sceneFinder].substr(1) + " // " + showText;
+    }
+
+			var onKeyUp = function (event) {
+
+        changeDivText();
+
+        
+
+				switch (event.keyCode) {
+					case 16: //shift
+						keyControls = {
+							LEFT: THREE.MOUSE.PAN,
+							MIDDLE: THREE.MOUSE.ROTATE,
+							RIGHT: THREE.MOUSE.ROTATE
+						}
+						break;
+				}
+			};
+
+		var updateMe = function() {
+			// requestAnimationFrame(update);
+			opts.CamX = camera.position.x;
+			opts.CamY = camera.position.y;
+			opts.CamZ = camera.position.z;
+			opts.CamRotX = camera.rotation.x;
+			opts.CamRotY = camera.rotation.y;
+			opts.CamRotZ = camera.rotation.z;
+		};
+
+		updateMe();
+    changeDivText();
+
+
+		function animate() {
+
+      
 		}
 
 
@@ -2471,7 +2550,7 @@
 				"S09": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c2',
 						"Option": 'opt1',
 						"Site": true,
 						"Mclaughlin": true,
@@ -2735,7 +2814,7 @@
 				"S23": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c2',
 						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
@@ -2999,7 +3078,7 @@
 				"S36": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c2',
 						"Option": 'opt3',
 						"Site": true,
 						"Mclaughlin": false,

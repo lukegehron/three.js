@@ -324,12 +324,13 @@
 
 		var tMult = 4.0;
 
-		var startx = 111;
-		var goalx = 111;
-		var starty = 208;
-		var goaly = 208;
-		var startz = 1254;
-		var goalz = 1254;
+
+		var startx = 129;
+		var goalx = 129;
+		var starty = 244;
+		var goaly = 244;
+		var startz = 1462;
+		var goalz = 1462;
 
 		var timer = 0;
 
@@ -737,7 +738,7 @@
 			var width = window.innerWidth / 2;
 			var height = window.innerHeight / 2;
 
-			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
+			camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 1, 9000);
       pointControl = new PointerLockControls(camera, renderer.domElement);
       pointControl.enabled = false;
 
@@ -752,9 +753,10 @@
 			localPlane = new THREE.Plane(new THREE.Vector3(0, - 1, 0), 35);
 			globalPlane = new THREE.Plane( new THREE.Vector3( - 1, 0, .28 ), 65 );
 
-			camera.position.x = 111;
-			camera.position.y = 208;
-			camera.position.z = 1254;
+
+			camera.position.x = 129;
+			camera.position.y = 244;
+			camera.position.z = 1462;
 
 			camera.layers.enable(0); // enabled by default
 			camera.layers.enable(1);
@@ -1874,11 +1876,11 @@
       }
       
 
-      // if(controlState){
-        controls.enabled = controlState;
+      if(controlState){
+        controls.enabled = true;
         prevControlState = controlState;
-        opts.Orbit = controlState;
-      // }
+        opts.Orbit = true;
+      }
 
       if(sceneFinder!= prevSceneFinder){
         fifthFlr = false;
@@ -2041,7 +2043,8 @@
 			// }
 
 			if (prevOpts.Camera != opts.Camera || runUpdate) {
-				timer = 0;
+        timer = 0;
+        prevOpts.Camera = opts.Camera;
 
 				startx = camera.position.x;
 				starty = camera.position.y;
@@ -2052,39 +2055,52 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 1.8;
-					goaly = -25.5;
-					goalz = -179.5;
-					nextLookAtx = -50;
-					nextLookAty = -8;
+					goalx = 0.9;
+					goaly = -32;
+					goalz = -264;
+					nextLookAtx = -55;
+					nextLookAty = 30;
 					nextLookAtz = 0;
           camera.layers.disable(16);
 
 				} else if (opts.Camera == 'c2') {
-					goalx = 144.5;
-					goaly = -28.9;
-					goalz = 264;
+					goalx = 150;
+					goaly = -30;
+					goalz = 298;
 					nextLookAtx = -48;
-					nextLookAty = 0;
+					nextLookAty = 25;
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c3') {
-					goalx = 111;
-					goaly = 208;
-					goalz = 1254;
+					goalx = 129;
+					goaly = 244;
+					goalz = 1462;
 					// goalx = -1660;
 					// goaly = 1080;
 					// goalz = 1520;
 					nextLookAtx = 0;
 					nextLookAty = 0;
-					nextLookAtz = 0;
+          nextLookAtz = 0;
+          
+          var geometry = new THREE.BoxGeometry(1, 1, 1);
+				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+				var cube = new THREE.Mesh(geometry, material);
+				scene.add(cube);
+				cube.position.x = nowLookAtx;
+				cube.position.y = nowLookAty;
+				cube.position.z = nowLookAtz;
+				// camera.up.set( 0, 1,0 );
+				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+				// console.log(cube.position.y);
+				camera.lookAt((cube.position));
+				scene.remove(cube);
 
 				} else if (opts.Camera == 'c4') {
-					goalx = 120;
-					goaly = 480;
-					goalz = 350;
+					goalx = 120*1.1;
+					goaly = 480*1.1;
+					goalz = 350*1.1;
 					nextLookAtx = -50;
-					nextLookAty = 31;
+					nextLookAty = -10;
 					nextLookAtz = 51;
 
 				} else if (opts.Camera == 'c5') {
@@ -2096,24 +2112,24 @@
 					nextLookAtz = 0;
 
 				} else if (opts.Camera == 'c6') { //top-down
-					goalx = -9;
-					goaly = 779;
-					goalz = 54;
-					nextLookAtx = -24;
+					goalx = -25;
+					goaly = 800;
+					goalz = 152;
+					nextLookAtx = -40;
 					nextLookAty = 0;
-					nextLookAtz = 2;
+					nextLookAtz = 100;
 
 				}else if (opts.Camera == 'c7') {
-					goalx = 230;
-					goaly = 85;
-					goalz = 415;
+					goalx = 230*1.1;
+					goaly = 85*1.1;
+					goalz = 415*1.1;
 					nextLookAtx = -120;
-					nextLookAty = 21;
+					nextLookAty = 0;
 					nextLookAtz = 51;
 				}else if (opts.Camera == 'c8') {
-					goalx = -40;
-					goaly = -18;
-					goalz = 311;
+					goalx = -37;
+					goaly = -25;
+					goalz = 387;
 					nextLookAtx = -50;
 					nextLookAty = -5;
 					nextLookAtz = 0;
@@ -2194,6 +2210,8 @@
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
 			}
+
+      console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z)
 
       var delta = clock.getDelta();
 			animatePlayer(delta);
@@ -2335,8 +2353,10 @@
 			if(prevOpts.Orbit != opts.Orbit || controls.enabled){
 				if(opts.Orbit){
 					controls.enabled = true;
-				}else{
-					controls.enabled = false;
+          controlState = true;
+				// }else{
+				// 	controls.enabled = false;
+        //   controlState = false;
 				}
 				// console.log("somethingChanged");
 				prevOpts.Orbit = opts.Orbit;
@@ -2387,7 +2407,7 @@
     }
 
 		function animatePlayer(delta) {
-      if(camera.position.x != goalx){
+      if(camera.position.x != goalx && opts.Orbit == false){
           animationDone = false;
         
         if (timer <= tMult) {

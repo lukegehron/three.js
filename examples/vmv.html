@@ -222,20 +222,23 @@
 
     function prevSlide() {
       sceneFinder--;
+      controlState = false;
       forwards = false;
     }
 
     function nextSlide() {
       sceneFinder++;
+      controlState = false;
       forwards = true;
     }
 
     function toggleOrbit(){
-      controlState = !controlState;
+      controlState = true;
     }
 
     function toggleLook(){
       lookC = true;
+      controlState = true;
     }
 
 
@@ -1669,7 +1672,7 @@
 				Rendering: false,
 				Image: 'opt1sec',
 				People: true,
-				Orbit: false,
+				Orbit: true,
 				CamX: 0,
 				CamY: 0,
 				CamZ: 0,
@@ -1687,7 +1690,7 @@
 				Rendering: true,
 				Image: 'opt1stair',
 				People: false,
-				Orbit: true,
+				Orbit: false,
 				CamX: 0,
 				CamY: 0,
 				CamZ: 0,
@@ -1840,14 +1843,16 @@
         opts.Option = 'opt2';
       }else if(PavilionOn){
         opts.Option = 'opt3';
+      }else if(ExistingOn){
+        opts.Option = 'opt0';
       }
       
 
-      if(controlState != prevControlState){
+      // if(controlState){
         controls.enabled = controlState;
         prevControlState = controlState;
         opts.Orbit = controlState;
-      }
+      // }
 
       if(sceneFinder!= prevSceneFinder){
         fifthFlr = false;
@@ -2436,6 +2441,7 @@
 				
 					case 39: // --> arrow
 					sceneFinder++;
+          controlState = false;
           forwards = true;
 					if(sceneFinder > scenes.length){
 						sceneFinder = 0;
@@ -2446,6 +2452,7 @@
 
 					case 37: // <-- arrow
 					sceneFinder--;
+          controlState = false;
           forwards = false;
 					if(sceneFinder < 0){
 						sceneFinder = scenes.length;

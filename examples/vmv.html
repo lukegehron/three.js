@@ -1047,6 +1047,22 @@
           // clippingPlanes: [localPlane]
 				});
 
+        var material19 = new THREE.LineBasicMaterial({
+					color: 0x777777, linewidth: 1
+				});
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/linework-bldgs1-6.fbx', function (object) {
+					object.traverse(function (child) {
+						child.material = material19;
+						child.layers.set(16)
+					});
+
+					object.layers.set(16);
+					scene.add(object);
+
+				});
+
         var loader9 = new OBJLoader();
 				loader9.load('models/obj/oneContext-1.obj', function (obj) { //MGLAUF3
 					obj.traverse(function (child) {

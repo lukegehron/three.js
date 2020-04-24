@@ -969,12 +969,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/')
-					.load('Site60-Terrain.mtl', function (materialz) { //FULL TERRAIN
+					.load('Site70-Terrain.mtl', function (materialz) { //FULL TERRAIN
 						materialz.preload();
 						new OBJLoader()
 							.setMaterials(materialz)
 							.setPath('models/obj/')
-							.load('Site60-Terrain.obj', function (obj) {
+							.load('Site70-Terrain.obj', function (obj) {
 								var object = obj.children[0].clone()
 								object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;

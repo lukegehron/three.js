@@ -739,6 +739,7 @@
 
 			camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 9000);
       pointControl = new PointerLockControls(camera, renderer.domElement);
+      pointControl.enabled = false;
 
 			controls = new MapControls(camera, renderer.domElement);
 			controls.mouseButtons = keyControls;
@@ -2459,7 +2460,7 @@
 						RIGHT: THREE.MOUSE.ROTATE
 					}
           controlState = true;
-					controls.enabled = controlState;
+					controls.enabled = true;
 					opts.Orbit = true;
 					// console.log("ShiftPressed");
 					break;

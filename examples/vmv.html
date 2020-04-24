@@ -1294,7 +1294,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt2-4.fbx', function (object) {
+				loader.load('models/fbx/linework-opt2-7.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(3)
@@ -1305,46 +1305,46 @@
 
 				});
 
-				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+				// var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
 
-				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
-					let material1 = new THREE.MeshPhysicalMaterial({
-						color: 0xffffff,
-						clearcoat: 1,
-						reflectivity: 1,
-						metalness: 1,
-						roughness: 0,
-						transparency: 0.9,
-						transparent: true,
-						envMap: cubeTexture1,
-						envMapIntensity: API.envMapIntensity,
-						clippingPlanes: [localPlane],
-						clipShadows: true,
-						side: THREE.DoubleSide,
-					})
+				// new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+				// 	let material1 = new THREE.MeshPhysicalMaterial({
+				// 		color: 0xffffff,
+				// 		clearcoat: 1,
+				// 		reflectivity: 1,
+				// 		metalness: 1,
+				// 		roughness: 0,
+				// 		transparency: 0.9,
+				// 		transparent: true,
+				// 		envMap: cubeTexture1,
+				// 		envMapIntensity: API.envMapIntensity,
+				// 		clippingPlanes: [localPlane],
+				// 		clipShadows: true,
+				// 		side: THREE.DoubleSide,
+				// 	})
 
-					var loader = new OBJLoader();
-					loader.load('models/obj/opts/opt2-4Glass.obj', function (obj) {
-						obj.traverse(function (child) {
-							if (child.isMesh) child.material = material1;
-						});
-						var object = obj.children[0].clone();
-						object.layers.set(3);
-						object.rotation.x = -3.1415926787 / 2;
-						object.castShadow = true;
-						object.receiveShadow = true;
-						scene.add(object);
-					});
-				});
+				// 	var loader = new OBJLoader();
+				// 	loader.load('models/obj/opts/opt2-4Glass.obj', function (obj) {
+				// 		obj.traverse(function (child) {
+				// 			if (child.isMesh) child.material = material1;
+				// 		});
+				// 		var object = obj.children[0].clone();
+				// 		object.layers.set(3);
+				// 		object.rotation.x = -3.1415926787 / 2;
+				// 		object.castShadow = true;
+				// 		object.receiveShadow = true;
+				// 		scene.add(object);
+				// 	});
+				// });
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-4.mtl', function (materials) {
+					.load('opt2-6.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-4.obj', function (obj) {
+							.load('opt2-6.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1468,7 +1468,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt3-4.fbx', function (object) {
+				loader.load('models/fbx/linework-opt3-6.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(4)
@@ -1479,46 +1479,46 @@
 
 				});
 
-				var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
+				// var urls1 = genCubeUrls('textures/cube/skyboxsun25deg1/', '.jpg');
 
-				new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
-					let material1 = new THREE.MeshPhysicalMaterial({
-						color: 0xffffff,
-						clearcoat: 1,
-						reflectivity: 1,
-						metalness: 1,
-						roughness: 0,
-						transparency: 0.9,
-						transparent: true,
-						envMap: cubeTexture1,
-						envMapIntensity: API.envMapIntensity,
-						clippingPlanes: [localPlane],
-						clipShadows: true,
-						side: THREE.DoubleSide,
-					})
+				// new THREE.CubeTextureLoader().load(urls1, function (cubeTexture1) {
+				// 	let material1 = new THREE.MeshPhysicalMaterial({
+				// 		color: 0xffffff,
+				// 		clearcoat: 1,
+				// 		reflectivity: 1,
+				// 		metalness: 1,
+				// 		roughness: 0,
+				// 		transparency: 0.9,
+				// 		transparent: true,
+				// 		envMap: cubeTexture1,
+				// 		envMapIntensity: API.envMapIntensity,
+				// 		clippingPlanes: [localPlane],
+				// 		clipShadows: true,
+				// 		side: THREE.DoubleSide,
+				// 	})
 
-					var loader = new OBJLoader();
-					loader.load('models/obj/opts/opt3-4Glass.obj', function (obj) {
-						obj.traverse(function (child) {
-							if (child.isMesh) child.material = material1;
-						});
-						var object = obj.children[0].clone();
-						object.layers.set(4);
-						object.rotation.x = -3.1415926787 / 2;
-						object.castShadow = true;
-						object.receiveShadow = true;
-						scene.add(object);
-					});
-				});
+				// 	var loader = new OBJLoader();
+				// 	loader.load('models/obj/opts/opt3-4Glass.obj', function (obj) {
+				// 		obj.traverse(function (child) {
+				// 			if (child.isMesh) child.material = material1;
+				// 		});
+				// 		var object = obj.children[0].clone();
+				// 		object.layers.set(4);
+				// 		object.rotation.x = -3.1415926787 / 2;
+				// 		object.castShadow = true;
+				// 		object.receiveShadow = true;
+				// 		scene.add(object);
+				// 	});
+				// });
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-4.mtl', function (materials) {
+					.load('opt3-6.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-4.obj', function (obj) {
+							.load('opt3-6.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;

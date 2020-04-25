@@ -63,13 +63,14 @@
   border-radius: 4px;
   color: white;
   width: 75%;
-  height: 32px;
-  /* padding: 15px 5px 15px; */
+  height: 29px;
+  padding: 5px;
   margin: 5px 5px 5px 5px;
+  text-align: center;
   /* text-align: center; */
   /* text-decoration: none; */
   /* display: inline-block; */
-  /* font-size: 16px; */
+  font-size: 8px;
 }
 
     #UI {
@@ -228,10 +229,6 @@
      var forwards = true;
 
 
-
-
-
-
     function prevSlide() {
       sceneFinder--;
       controlState = false;
@@ -251,6 +248,19 @@
     function toggleLook(){
       lookC = true;
       controlState = true;
+    }
+
+    var extSite = true;
+    var mPlan = false;
+
+    function toggleSite(){
+      extSite = true;
+      mPlan = false;
+    }
+
+    function toggleMP(){
+      extSite = false;
+      mPlan = true;
     }
 
 
@@ -290,7 +300,10 @@
     <button class="buttons" onclick="toggleFull()">FULL BLDG</button><br>
     <button class="buttons" onclick="toggleFith()">5TH FLOOR</button><br>
     <button class="buttons" onclick="toggleSecond()">2ND FLOOR</button><br>
-    <button class="buttons" onclick="toggleGround()">GROUND FLOOR</button><br>
+    <button class="buttons" onclick="toggleGround()">GROUND FLOOR</button><br><br>
+    Site<br>
+    <button class="buttons" onclick="toggleSite()">EXISTING</button><br>
+    <button class="buttons" onclick="toggleMP()">MASTER PLAN</button><br><br>
 
     
   </div>

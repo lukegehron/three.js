@@ -2069,7 +2069,8 @@
 					goalz = 298;
 					nextLookAtx = -48;
 					nextLookAty = 25;
-					nextLookAtz = 0;
+          nextLookAtz = 0;
+          camera.layers.enable(16);
 
 				} else if (opts.Camera == 'c3') {
 					goalx = 129;
@@ -2093,7 +2094,8 @@
 				// camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
 				// console.log(cube.position.y);
 				camera.lookAt((cube.position));
-				scene.remove(cube);
+        scene.remove(cube);
+        camera.layers.enable(16);
 
 				} else if (opts.Camera == 'c4') {
 					goalx = 120*1.1;
@@ -2101,7 +2103,8 @@
 					goalz = 350*1.1;
 					nextLookAtx = -50;
 					nextLookAty = -10;
-					nextLookAtz = 51;
+          nextLookAtz = 51;
+          camera.layers.enable(16);
 
 				} else if (opts.Camera == 'c5') {
 					goalx = 247;
@@ -2109,7 +2112,8 @@
 					goalz = 240;
 					nextLookAtx = 0;
 					nextLookAty = 0;
-					nextLookAtz = 0;
+          nextLookAtz = 0;
+          camera.layers.enable(16);
 
 				} else if (opts.Camera == 'c6') { //top-down
 					goalx = -25;
@@ -2117,7 +2121,8 @@
 					goalz = 152;
 					nextLookAtx = -40;
 					nextLookAty = 0;
-					nextLookAtz = 100;
+          nextLookAtz = 100;
+          camera.layers.enable(16);
 
 				}else if (opts.Camera == 'c7') {
 					goalx = 230*1.1;
@@ -2125,14 +2130,16 @@
 					goalz = 415*1.1;
 					nextLookAtx = -120;
 					nextLookAty = 0;
-					nextLookAtz = 51;
+          nextLookAtz = 51;
+          camera.layers.enable(16);
 				}else if (opts.Camera == 'c8') {
 					goalx = -37;
 					goaly = -25;
 					goalz = 387;
 					nextLookAtx = -50;
 					nextLookAty = -5;
-					nextLookAtz = 0;
+          nextLookAtz = 0;
+          camera.layers.enable(16);
 				}else if (opts.Camera == 'c9') {
 					goalx = 320;
 					goaly = 1;
@@ -2149,7 +2156,8 @@
 					nextLookAtx = 0;
 					nextLookAty = 40;
 					nextLookAtz = 0;
-					//66.33958598391895, 359.7010046785748, -359.01371392434567
+          //66.33958598391895, 359.7010046785748, -359.01371392434567
+          camera.layers.enable(16);
 				}else if (opts.Camera == 'c11') { //siteSection 
 					goalx = 66;
 					goaly = -27;
@@ -2159,6 +2167,7 @@
 					nextLookAtz = -20;
 
           // camera.layers.disable(16);
+          camera.layers.enable(16);
 					
 				}else if (opts.Camera == 'c12') { //top-down
 					// goalx = -9;
@@ -2222,6 +2231,7 @@
 					nextLookAtz = 0;
 
           // camera.layers.disable(16);
+          camera.layers.enable(16);
 					
 				}
 				prevOpts.Camera = opts.Camera;
@@ -2371,9 +2381,10 @@
 				if(opts.Orbit){
 					controls.enabled = true;
           controlState = true;
-				// }else{
-				// 	controls.enabled = false;
-        //   controlState = false;
+          camera.layers.enable(16);
+				}else{
+					controls.enabled = false;
+          controlState = false;
 				}
 				// console.log("somethingChanged");
 				prevOpts.Orbit = opts.Orbit;

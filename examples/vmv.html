@@ -159,7 +159,7 @@
 
     var lookC = false;
 
-    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43"
+    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S08-1","S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S22-1","S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S36-1", "S37", "S38", "S39", "S40", "S41", "S42", "S43"
     ];
 
     var ExistingOn = false;
@@ -2326,28 +2326,28 @@
 
 
 
-      if(sceneFinder == 13 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 14 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 9 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 10 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 23 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 25 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 27 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 29 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 37 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 40 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
 
-      if(sceneFinder == 41 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 44 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
@@ -2422,10 +2422,16 @@
 
 			if(opts.Image == "opt1sec"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_1_2.jpg')";
+			}if(opts.Image == "opt1sec1"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_1_2.jpg')";
 			}else if(opts.Image == "opt2sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
+			}else if(opts.Image == "opt2sec1"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
 			}else if(opts.Image == "opt3sec"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_3_2.jpg')";
+			}else if(opts.Image == "opt3sec1"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
 			}else if(opts.Image == "opt1stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
 			}else if(opts.Image == "opt1bal"){
@@ -2854,6 +2860,24 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
+				},"S08-1": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c8',
+						"Option": 'opt1',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt1sec1',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
 				},
 				"S09": {
 					"0": {
@@ -3119,6 +3143,25 @@
 						"CamRotZ": 0
 					}
 				},
+				"S22-1": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c13',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
 				"S23": {
 					"0": {
 						"Clipping": 'none',
@@ -3365,6 +3408,25 @@
 					}
 				},
 			"S36": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c11',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S36-1": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c11',

@@ -1214,7 +1214,7 @@
         
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/1_R01_05.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R02_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1247,7 +1247,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/1_R01_02.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R02_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1276,7 +1276,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/1_R01_GROUND.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R02_GROUND.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1313,7 +1313,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt2-7.fbx', function (object) {
+				loader.load('models/fbx/linework-opt2-8.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(3)
@@ -1358,12 +1358,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-6.mtl', function (materials) {
+					.load('opt2-7.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-6.obj', function (obj) {
+							.load('opt2-7.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1389,7 +1389,7 @@
 
           new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/2_R01_05.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R03_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1422,7 +1422,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/2_R01_02.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R03_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1451,7 +1451,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/2_R01_GROUND.png?' + performance.now(), function (image) {
+				.load('textures/diagram/2_R03_GROUND.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1563,7 +1563,7 @@
 
           new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/3_R01_05.png?' + performance.now(), function (image) {
+				.load('textures/diagram/3_R02_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1596,7 +1596,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/3_R01_02.png?' + performance.now(), function (image) {
+				.load('textures/diagram/3_R02_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -1625,7 +1625,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/3_R01_GROUND.png?' + performance.now(), function (image) {
+				.load('textures/diagram/3_R02_GROUND.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -2213,12 +2213,22 @@
         // camera.rotation.z = 0.28;
         runUpdate = false;
 
+        }else if (opts.Camera == 'c13') { //siteSection 
+					goalx = 28;
+					goaly = -24;
+					goalz = 345;
+					nextLookAtx = -80;
+					nextLookAty = 0;
+					nextLookAtz = 0;
+
+          // camera.layers.disable(16);
+					
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
 			}
 
-      // console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z)
+      console.log(camera.position.x + ", " + camera.position.y + ", " + camera.position.z)
 
       var delta = clock.getDelta();
 			animatePlayer(delta);
@@ -2334,17 +2344,17 @@
 			}else if(opts.Image == "opt3sec"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_3_2.jpg')";
 			}else if(opts.Image == "opt1stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/Plaza-S_1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/new/North_1-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/Scheme1-A.jpg')";
 			}else if(opts.Image == "opt2stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/Plaza-N_2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/Scheme2-A.jpg')";
 			}else if(opts.Image == "opt3stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-3-2.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/Plaza-N_3.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/Scheme3-A.jpg')";
 			}
 
 
@@ -3009,7 +3019,7 @@
 			"S22": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c8',
+						"Camera": 'c13',
 						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": false,
@@ -3314,7 +3324,7 @@
 						"Camera": 'c2',
 						"Option": 'opt3',
 						"Site": true,
-						"Mclaughlin": false,
+						"Mclaughlin": true,
 						"Rendering": true,
 						"Image": 'opt3stair',
 						"People": true,

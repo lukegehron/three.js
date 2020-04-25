@@ -263,6 +263,39 @@
       mPlan = true;
     }
 
+    function fullscreen() {
+        var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
+          (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+          (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+          (document.msFullscreenElement && document.msFullscreenElement !== null);
+
+        var docElm = document.documentElement;
+        if (!isInFullScreen) {
+          if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+          } else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+          } else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+          } else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+          }
+        } else {
+          if (docElm.exitFullscreen) {
+            docElm.exitFullscreen();
+          } else if (docElm.webkitExitFullscreen) {
+            docElm.webkitExitFullscreen();
+          } else if (docElm.mozCancelFullScreen) {
+            docElm.mozCancelFullScreen();
+          } else if (docElm.msExitFullscreen) {
+            docElm.msExitFullscreen();
+          }else{
+            alert('Press F11 or ESC to exit fullscreen');
+          }
+          
+        }
+      }
+
 
 
   </script>
@@ -285,6 +318,7 @@
   </div>
 
   <div id="UI">
+    <button class="buttons" onclick="fullscreen()">Fullscreen</button><br><br>
     Slides<br>
     <button class="buttons" onclick="prevSlide()">PREV</button><br>
     <button class="buttons" onclick="nextSlide()"> NEXT</button><br><br>
@@ -491,7 +525,9 @@
 
 		var blocker;
 
-		var sceneText;
+    var sceneText;
+    
+    var isFullScreen = 0;
 
 
     // var prevSceneFinder;
@@ -750,6 +786,13 @@
 		}
 
 		function init() {
+
+      // var viewFullScreen = document.getElementById("view-fullscreen");
+      // if (viewFullScreen) {
+      //   fullscreen()
+      // }
+
+      
 
 			sceneText = document.getElementById( 'Scene' );
 			blocker = document.getElementById( 'my-container' );
@@ -1879,13 +1922,18 @@
       // }
 
       if(lookC){
-        lookC = false;
+        console.log("clocked");
+        
         controls.enabled = true;
+        pointControl.enabled = true;
           
-					controls = pointControl;
-					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
-					scene.add(controls.getObject());
-					controls.lock();
+        controls = pointControl;
+        pointControl.enabled = true;
+        controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
+        scene.add(controls.getObject());
+        controls.lock();
+        
+        lookC = false;
       }
 
 

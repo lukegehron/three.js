@@ -159,7 +159,7 @@
 
     var lookC = false;
 
-    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08","S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22","S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47"
+    var scenes = [ "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08","S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22","S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47"
     ];
 
     var ExistingOn = false;
@@ -1853,7 +1853,7 @@
 
 			gui = new GUI({
 				load: getPresetJSON(),
-				preset: 'S00'
+				preset: 'S01'
 			});
 
 			opts = {
@@ -2430,7 +2430,7 @@
 
       // console.log(sceneFinder + ", " + prevSceneFinder);
 
-			if(sceneFinder == 12 && forwards){
+			if(sceneFinder == 11 && forwards){
 				if(isTwelve){
 					setTimeout(moveScene, 1300);
 					isTwelve = false;
@@ -2438,7 +2438,7 @@
 				isTwelve = false;
       }
 
-			if(sceneFinder == 13 && forwards){
+			if(sceneFinder == 12 && forwards){
 				if(isThirteen){
 					setTimeout(moveScene, 5300);
 					isThirteen = false;
@@ -2446,7 +2446,7 @@
         isThirteen = false;
       }
 
-			if(sceneFinder == 27 && forwards){
+			if(sceneFinder == 26 && forwards){
 				if(is27){
 					setTimeout(moveScene, 1300);
 					is27 = false;
@@ -2454,7 +2454,7 @@
 				is27 = false;
       }
 
-			if(sceneFinder == 28 && forwards){
+			if(sceneFinder == 27 && forwards){
 				if(is28){
 					setTimeout(moveScene, 5300);
 					is28 = false;
@@ -2462,7 +2462,7 @@
         is28 = false;
       }
 
-			if(sceneFinder == 42 && forwards){
+			if(sceneFinder == 41 && forwards){
 				if(is42){
 					setTimeout(moveScene, 1300);
 					is42 = false;
@@ -2470,7 +2470,7 @@
 				is42 = false;
       }
 
-			if(sceneFinder == 43 && forwards){
+			if(sceneFinder == 42 && forwards){
 				if(is43){
 					setTimeout(moveScene, 5300);
 					is43 = false;
@@ -2479,7 +2479,7 @@
       }
 
 
-			if(sceneFinder == 16 && forwards){
+			if(sceneFinder == 17 && forwards){
 				if(is16){
 					setTimeout(moveScene, 1300);
 					is16 = false;
@@ -2487,7 +2487,7 @@
         is16 = false;
       }
 
-			if(sceneFinder == 31 && forwards){
+			if(sceneFinder == 30 && forwards){
 				if(is31){
 					setTimeout(moveScene, 1300);
 					is31 = false;
@@ -2495,7 +2495,7 @@
 				is31 = false;
       }
 
-			if(sceneFinder == 46 && forwards){
+			if(sceneFinder == 45 && forwards){
 				if(is46){
 					setTimeout(moveScene, 1300);
 					is46 = false;
@@ -2505,28 +2505,28 @@
 
 
 
-      if(sceneFinder == 14 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 13 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 10 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 9 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 25 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 24 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 29 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 28 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
-      if(sceneFinder == 40 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 39 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
 
-      if(sceneFinder == 44 && camera.position.x == goalx && forwards){
+      if(sceneFinder == 43 && camera.position.x == goalx && forwards){
         sceneFinder++;
       }
 
@@ -2873,10 +2873,10 @@
 
 	function getPresetJSON() {
 		return {
-			"preset": "S00",
+			"preset": "S01",
 			"closed": false,
 			"remembered": {
-				"S00": {
+				"S01": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c3',
@@ -2887,25 +2887,6 @@
 						"Image": 'opt1sec',
 						"People": true,
 						"Orbit": true,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S01": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c6',
-						"Option": 'opt0',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt1sec',
-						"People": true,
-						"Orbit": false,
 						"CamX": 0,
 						"CamY": 0,
 						"CamZ": 0,

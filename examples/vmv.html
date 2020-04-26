@@ -1231,7 +1231,7 @@
 				});
 
 				var loader10 = new OBJLoader();
-				loader10.load('models/obj/oldMPMassing1.obj', function (obj) { //OLD CONTEXT
+				loader10.load('models/obj/oldMPMassing2.obj', function (obj) { //OLD CONTEXT
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
@@ -1246,7 +1246,7 @@
         
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/oldMPLines.fbx', function (object) {
+				loader.load('models/fbx/oldMPLines2.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material16;
 						child.layers.set(17)

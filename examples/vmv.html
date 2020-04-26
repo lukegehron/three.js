@@ -159,7 +159,7 @@
 
     var lookC = false;
 
-    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S08-1","S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S22-1","S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S36-1", "S37", "S38", "S39", "S40", "S41", "S42", "S43"
+    var scenes = ["S00", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08","S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22","S23", "S24", "S25", "S26", "S27", "S28", "S29", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S39", "S40", "S41", "S42", "S43", "S44", "S45", "S46", "S47"
     ];
 
     var ExistingOn = false;
@@ -1205,7 +1205,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt1-6.fbx', function (object) {
+				loader.load('models/fbx/linework-opt1-9.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material6;
 						child.layers.set(2)
@@ -1249,12 +1249,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt1-6.mtl', function (materials) {
+					.load('opt1-9.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt1-6.obj', function (obj) {
+							.load('opt1-9.obj', function (obj) {
 								//'SiteW-4.obj'
 
 								obj.traverse(function (child) {
@@ -1381,7 +1381,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt2-8.fbx', function (object) {
+				loader.load('models/fbx/linework-opt2-9.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(3)
@@ -1426,12 +1426,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-8.mtl', function (materials) {
+					.load('opt2-9.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-8.obj', function (obj) {
+							.load('opt2-9.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1555,7 +1555,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt3-6.fbx', function (object) {
+				loader.load('models/fbx/linework-opt3-9.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(4)
@@ -1600,12 +1600,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-6.mtl', function (materials) {
+					.load('opt3-9.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-6.obj', function (obj) {
+							.load('opt3-9.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -2425,9 +2425,9 @@
 			}if(opts.Image == "opt1sec1"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_1_2.jpg')";
 			}else if(opts.Image == "opt2sec"){
-				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_3.jpg')";
 			}else if(opts.Image == "opt2sec1"){
-				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_3.jpg')";
 			}else if(opts.Image == "opt3sec"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/Section_3_2.jpg')";
 			}else if(opts.Image == "opt3sec1"){
@@ -2435,15 +2435,15 @@
 			}else if(opts.Image == "opt1stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/Scheme1-A.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_1-2.jpg')";
 			}else if(opts.Image == "opt2stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/Scheme2-A.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_2-2.jpg')";
 			}else if(opts.Image == "opt3stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-3-2.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/Scheme3-A.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_3-2.jpg')";
 			}
 
 
@@ -2860,7 +2860,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S08-1": {
+				},"S09": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c8',
@@ -2879,7 +2879,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S09": {
+				"S10": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -2898,7 +2898,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S10": {
+			"S11": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -2917,7 +2917,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S11": {
+				"S12": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c2',
@@ -2936,7 +2936,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S12": {
+				"S13": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c9',
@@ -2955,7 +2955,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S13": {
+				"S14": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c1',
@@ -2974,7 +2974,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S14": {
+				"S15": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -2992,7 +2992,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S15": {
+				},"S16": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3010,7 +3010,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S16": {
+				},"S17": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c12',
@@ -3029,7 +3029,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S17": {
+			"S18": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c4',
@@ -3048,28 +3048,9 @@
 						"CamRotZ": 0
 					}
 				},
-			"S18": {
+			"S19": {
 					"0": {
 						"Clipping": 'six',
-						"Camera": 'c4',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S19": {
-					"0": {
-						"Clipping": 'three',
 						"Camera": 'c4',
 						"Option": 'opt2',
 						"Site": true,
@@ -3088,7 +3069,7 @@
 				},
 				"S20": {
 					"0": {
-						"Clipping": 'ground',
+						"Clipping": 'three',
 						"Camera": 'c4',
 						"Option": 'opt2',
 						"Site": true,
@@ -3105,10 +3086,10 @@
 						"CamRotZ": 0
 					}
 				},
-			"S21": {
+				"S21": {
 					"0": {
-						"Clipping": 'none',
-						"Camera": 'c7',
+						"Clipping": 'ground',
+						"Camera": 'c4',
 						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
@@ -3127,45 +3108,7 @@
 			"S22": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c13',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S22-1": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c13',
-						"Option": 'opt2',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt2sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S23": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
+						"Camera": 'c7',
 						"Option": 'opt2',
 						"Site": true,
 						"Mclaughlin": true,
@@ -3181,15 +3124,34 @@
 						"CamRotZ": 0
 					}
 				},
-			"S24": {
+			"S23": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c2',
+						"Camera": 'c13',
 						"Option": 'opt2',
 						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": true,
-						"Image": 'opt2stair',
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S24": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c13',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt2sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -3208,6 +3170,25 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt2sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S26": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
 						"Image": 'opt2stair',
 						"People": true,
 						"Orbit": false,
@@ -3219,7 +3200,26 @@
 						"CamRotZ": 0
 					}
 				},
-				"S26": {
+				"S27": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt2',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt2stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S28": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c9',
@@ -3238,7 +3238,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S27": {
+				"S29": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c1',
@@ -3257,7 +3257,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S28": {
+				"S30": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3275,7 +3275,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S29": {
+				},"S31": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3293,7 +3293,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S30": {
+				},"S32": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c12',
@@ -3312,7 +3312,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S31": {
+			"S33": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c4',
@@ -3331,7 +3331,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S32": {
+			"S34": {
 					"0": {
 						"Clipping": 'six',
 						"Camera": 'c4',
@@ -3350,7 +3350,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S33": {
+				"S35": {
 					"0": {
 						"Clipping": 'three',
 						"Camera": 'c4',
@@ -3369,7 +3369,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S34": {
+				"S36": {
 					"0": {
 						"Clipping": 'ground',
 						"Camera": 'c4',
@@ -3388,7 +3388,7 @@
 						"CamRotZ": 0
 					}
 				},
-			"S35": {
+			"S37": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c7',
@@ -3407,72 +3407,15 @@
 						"CamRotZ": 0
 					}
 				},
-			"S36": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c11',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S36-1": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c11',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": false,
-						"Rendering": true,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
-				"S37": {
-					"0": {
-						"Clipping": 'none',
-						"Camera": 'c2',
-						"Option": 'opt3',
-						"Site": true,
-						"Mclaughlin": true,
-						"Rendering": false,
-						"Image": 'opt3sec',
-						"People": true,
-						"Orbit": false,
-						"CamX": 0,
-						"CamY": 0,
-						"CamZ": 0,
-						"CamRotX": 0,
-						"CamRotY": 0,
-						"CamRotZ": 0
-					}
-				},
 			"S38": {
 					"0": {
 						"Clipping": 'none',
-						"Camera": 'c2',
+						"Camera": 'c11',
 						"Option": 'opt3',
 						"Site": true,
-						"Mclaughlin": true,
+						"Mclaughlin": false,
 						"Rendering": true,
-						"Image": 'opt3stair',
+						"Image": 'opt3sec',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,
@@ -3486,6 +3429,63 @@
 				"S39": {
 					"0": {
 						"Clipping": 'none',
+						"Camera": 'c11',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": false,
+						"Rendering": true,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S40": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": false,
+						"Image": 'opt3sec',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+			"S41": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c2',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
+						"Image": 'opt3stair',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},
+				"S42": {
+					"0": {
+						"Clipping": 'none',
 						"Camera": 'c2',
 						"Option": 'opt3',
 						"Site": true,
@@ -3502,7 +3502,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S40": {
+				"S43": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c9',
@@ -3521,7 +3521,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S41": {
+				"S44": {
 					"0": {
 						"Clipping": 'siteSection',
 						"Camera": 'c1',
@@ -3540,7 +3540,7 @@
 						"CamRotZ": 0
 					}
 				},
-				"S42": {
+				"S45": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3558,7 +3558,7 @@
 						"CamRotY": 0,
 						"CamRotZ": 0
 					}
-				},"S43": {
+				},"S46": {
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
@@ -3566,6 +3566,24 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": false,
+						"Image": 'opt3bal',
+						"People": true,
+						"Orbit": false,
+						"CamX": 0,
+						"CamY": 0,
+						"CamZ": 0,
+						"CamRotX": 0,
+						"CamRotY": 0,
+						"CamRotZ": 0
+					}
+				},"S47": {
+					"0": {
+						"Clipping": 'none',
+						"Camera": 'c1',
+						"Option": 'opt3',
+						"Site": true,
+						"Mclaughlin": true,
+						"Rendering": true,
 						"Image": 'opt3bal',
 						"People": true,
 						"Orbit": false,

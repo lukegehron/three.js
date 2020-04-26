@@ -2224,22 +2224,22 @@
 				prevLookAtz = nextLookAtz;
 
 				if (opts.Camera == 'c1') {
-					goalx = 0.9;
-					goaly = -32;
-					goalz = -264;
-					nextLookAtx = -55;
-					nextLookAty = 30;
+					goalx = 6;
+					goaly = -30;
+					goalz = -222;
+					nextLookAtx = -35;
+					nextLookAty = 10;
 					nextLookAtz = 0;
           camera.layers.disable(16);
 
 				} else if (opts.Camera == 'c2') {
-					goalx = 150;
-					goaly = -30;
-					goalz = 298;
-					nextLookAtx = -48;
-					nextLookAty = 25;
+					goalx = 137;
+					goaly = -27;
+					goalz = 288;
+					nextLookAtx = -32;
+					nextLookAty = 30;
           nextLookAtz = 0;
-          camera.layers.enable(16);
+          // camera.layers.enable(16);
 
 				} else if (opts.Camera == 'c3') {
 					goalx = 129;
@@ -2558,7 +2558,7 @@
 				if(opts.Orbit){
 					controls.enabled = true;
           controlState = true;
-          camera.layers.enable(16);
+          camera.layers.enable(16); //orbitorbitorbit
 				}else{
 					controls.enabled = false;
           controlState = false;

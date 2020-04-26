@@ -363,6 +363,9 @@
 		import { FBXLoader } from './jsm/loaders/FBXLoader.js';
 		import { PointerLockControls } from './jsm/controls/PointerLockControls.js';
 
+		var isTwelve = true;
+		var isThirteen = true;
+
     const perfectFrameTime = 1000 / 60;
     let deltaTime = 0;
     let lastTimestamp = 0;
@@ -2420,6 +2423,22 @@
 
       // console.log(sceneFinder + ", " + prevSceneFinder);
 
+			if(sceneFinder == 12 && forwards){
+				if(isTwelve){
+					setTimeout(moveScene, 1300);
+					isTwelve = false;
+				}
+				isTwelve = false;
+      }
+
+			if(sceneFinder == 13 && forwards){
+				if(isThirteen){
+					setTimeout(moveScene, 5300);
+					isThirteen = false;
+				}
+        isThirteen = false;
+      }
+
 
 
       if(sceneFinder == 14 && camera.position.x == goalx && forwards){
@@ -2758,6 +2777,10 @@
 
 		updateMe();
     changeDivText();
+
+		function moveScene(){
+			sceneFinder++;
+		}
 
 
 		function animate() {

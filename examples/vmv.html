@@ -832,6 +832,7 @@
 			camera.layers.enable(14); //Mclaughlin
       camera.layers.enable(15); //Mclaughlin2
       camera.layers.enable(16); //Mclaughlin2
+			camera.layers.enable(17); //oldContext
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf0f0f0);
@@ -907,7 +908,7 @@
 				// });
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/path2.fbx', function (object) {
+				loader.load('models/fbx/path3.fbx', function (object) {
 
 					for (let j = 0; j < object.children.length; j++) {
 						xArray = [];
@@ -1030,7 +1031,7 @@
 							.load('Site52-Terrain.obj', function (obj) { //NEW TERRAIN FROM SKP
 								var object = obj.children[0].clone()
                 object.material = material98;
-								object.layers.set(1);
+								// object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = true;
 								object.receiveShadow = true;
@@ -1047,7 +1048,7 @@
 							.setPath('models/obj/')
 							.load('Site70-Terrain.obj', function (obj) {
 								var object = obj.children[0].clone()
-								object.layers.set(1);
+								// object.layers.set(1);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = true;
 								object.receiveShadow = true;
@@ -1169,7 +1170,7 @@
 				});
 
 				var loader10 = new OBJLoader();
-				loader10.load('models/obj/allContextBldgs5.obj', function (obj) { //ALL CONTEXT
+				loader10.load('models/obj/allContextBldgs9.obj', function (obj) { //ALL CONTEXT
 					obj.traverse(function (child) {
 						if (child.isMesh) child.material = material;
 					});
@@ -1186,13 +1187,67 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-bldgs1-8.fbx', function (object) {
+				loader.load('models/fbx/allContextLines.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material16;
 						child.layers.set(1)
 					});
 
 					object.layers.set(1);
+					scene.add(object);
+
+				});
+
+				var loader10 = new OBJLoader();
+				loader10.load('models/obj/oldMPMassing1.obj', function (obj) { //OLD CONTEXT
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material;
+					});
+					var object = obj.children[0].clone();
+					object.layers.set(17);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
+        
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/oldMPLines.fbx', function (object) {
+					object.traverse(function (child) {
+						child.material = material16;
+						child.layers.set(17)
+					});
+
+					object.layers.set(17);
+					scene.add(object);
+
+				});
+
+				var loader10 = new OBJLoader();
+				loader10.load('models/obj/newMPMassing.obj', function (obj) { //NEW CONTEXT
+					obj.traverse(function (child) {
+						if (child.isMesh) child.material = material;
+					});
+					var object = obj.children[0].clone();
+					object.layers.set(18);
+					object.rotation.x = -3.1415926787 / 2;
+					object.castShadow = true;
+					object.receiveShadow = true;
+					scene.add(object);
+				});
+
+        
+
+				var loader = new FBXLoader();
+				loader.load('models/fbx/newMPLines.fbx', function (object) {
+					object.traverse(function (child) {
+						child.material = material16;
+						child.layers.set(18)
+					});
+
+					object.layers.set(18);
 					scene.add(object);
 
 				});
@@ -1555,7 +1610,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt3-9.fbx', function (object) {
+				loader.load('models/fbx/linework-opt3-91.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(4)
@@ -1911,6 +1966,15 @@
       requestAnimationFrame(update);
       deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
       lastTimestamp = timestamp;
+
+			if(extSite){
+				camera.layers.enable(17);
+				camera.layers.disable(18);
+			}else{
+				camera.layers.disable(17);
+				camera.layers.enable(18);
+			}
+      
 
       // YOUR FRAME CODE HERE!
 

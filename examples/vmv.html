@@ -1441,7 +1441,7 @@
 
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
-				.load('textures/diagram/1_R02_GROUND.png?' + performance.now(), function (image) {
+				.load('textures/diagram/1_R03_02.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -2481,7 +2481,7 @@
 
 			if(sceneFinder == 16 && forwards){
 				if(is16){
-					setTimeout(moveScene, 2300);
+					setTimeout(moveScene, 1300);
 					is16 = false;
 				}
         is16 = false;
@@ -2489,7 +2489,7 @@
 
 			if(sceneFinder == 31 && forwards){
 				if(is31){
-					setTimeout(moveScene, 2300);
+					setTimeout(moveScene, 1300);
 					is31 = false;
 				}
 				is31 = false;
@@ -2497,7 +2497,7 @@
 
 			if(sceneFinder == 46 && forwards){
 				if(is46){
-					setTimeout(moveScene, 2300);
+					setTimeout(moveScene, 1300);
 					is46 = false;
 				}
         is46 = false;

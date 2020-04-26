@@ -365,6 +365,13 @@
 
 		var isTwelve = true;
 		var isThirteen = true;
+		var is27 = true;
+		var is28 = true;
+		var is42 = true;
+		var is43 = true;
+		var is16 = true;
+		var is31 = true;
+		var is46 = true;
 
     const perfectFrameTime = 1000 / 60;
     let deltaTime = 0;
@@ -2437,6 +2444,63 @@
 					isThirteen = false;
 				}
         isThirteen = false;
+      }
+
+			if(sceneFinder == 27 && forwards){
+				if(is27){
+					setTimeout(moveScene, 1300);
+					is27 = false;
+				}
+				is27 = false;
+      }
+
+			if(sceneFinder == 28 && forwards){
+				if(is28){
+					setTimeout(moveScene, 5300);
+					is28 = false;
+				}
+        is28 = false;
+      }
+
+			if(sceneFinder == 42 && forwards){
+				if(is42){
+					setTimeout(moveScene, 1300);
+					is42 = false;
+				}
+				is42 = false;
+      }
+
+			if(sceneFinder == 43 && forwards){
+				if(is43){
+					setTimeout(moveScene, 5300);
+					is43 = false;
+				}
+        is43 = false;
+      }
+
+
+			if(sceneFinder == 16 && forwards){
+				if(is16){
+					setTimeout(moveScene, 2300);
+					is16 = false;
+				}
+        is16 = false;
+      }
+
+			if(sceneFinder == 31 && forwards){
+				if(is31){
+					setTimeout(moveScene, 2300);
+					is31 = false;
+				}
+				is31 = false;
+      }
+
+			if(sceneFinder == 46 && forwards){
+				if(is46){
+					setTimeout(moveScene, 2300);
+					is46 = false;
+				}
+        is46 = false;
       }
 
 

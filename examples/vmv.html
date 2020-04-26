@@ -231,12 +231,18 @@
 
     function prevSlide() {
       sceneFinder--;
+			if(sceneFinder < 0){
+						sceneFinder = scenes.length;
+					} 
       controlState = false;
       forwards = false;
     }
 
     function nextSlide() {
       sceneFinder++;
+			if(sceneFinder >= scenes.length){
+						sceneFinder = 1;
+					} 
       controlState = false;
       forwards = true;
     }
@@ -797,6 +803,32 @@
 			sceneText = document.getElementById( 'Scene' );
 			blocker = document.getElementById( 'my-container' );
 			blocker.style.display = 'none';
+
+			// if(opts.Image == "opt1sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_1_2.jpg')";
+			// }if(opts.Image == "opt1sec1"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_1_2.jpg')";
+			// }else if(opts.Image == "opt2sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_3.jpg')";
+			// }else if(opts.Image == "opt2sec1"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_3.jpg')";
+			// }else if(opts.Image == "opt3sec"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_3_2.jpg')";
+			// }else if(opts.Image == "opt3sec1"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/Section_2_2.jpg')";
+			// }else if(opts.Image == "opt1stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
+			// }else if(opts.Image == "opt1bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_1-2.jpg')";
+			// }else if(opts.Image == "opt2stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/South-2-2.jpg')";
+			// }else if(opts.Image == "opt2bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_2-2.jpg')";
+			// }else if(opts.Image == "opt3stair"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/South-3-2.jpg')";
+			// }else if(opts.Image == "opt3bal"){
+				blocker.style.backgroundImage = "url('textures/renderings/new/North_3-2.jpg')";
+			// }
 			
 			renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -1655,12 +1687,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-9.mtl', function (materials) {
+					.load('opt3-93.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-9.obj', function (obj) {
+							.load('opt3-93.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -2508,6 +2540,8 @@
 				blocker.style.backgroundImage = "url('textures/renderings/new/South-3-2.jpg')";
 			}else if(opts.Image == "opt3bal"){
 				blocker.style.backgroundImage = "url('textures/renderings/new/North_3-2.jpg')";
+			}else if(opts.Image == "last"){
+				blocker.style.backgroundImage = "url('textures/renderings/lastSlide.png')";
 			}
 
 
@@ -2660,8 +2694,8 @@
 					sceneFinder++;
           controlState = false;
           forwards = true;
-					if(sceneFinder > scenes.length){
-						sceneFinder = 0;
+					if(sceneFinder >= scenes.length){
+						sceneFinder = 1;
 					} 
 					gui.preset = scenes[sceneFinder];
 					runUpdate = true;
@@ -2669,6 +2703,7 @@
 
 					case 37: // <-- arrow
 					sceneFinder--;
+					
           controlState = false;
           forwards = false;
 					if(sceneFinder < 0){
@@ -3648,7 +3683,7 @@
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": true,
-						"Image": 'opt3bal',
+						"Image": 'last',
 						"People": true,
 						"Orbit": false,
 						"CamX": 0,

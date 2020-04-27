@@ -25,7 +25,7 @@
 
 		#instructions {
 			position: absolute;
-      
+
 			width: 97%;
 			height: 8%;
       z-index: 5;
@@ -127,7 +127,7 @@
 				height: 100%;
 				z-index: 1;
 				opacity: 0.0;
-				
+
 				background-image: url('textures/renderings/S03_Option3b.jpg');
 				background-repeat: no-repeat;
 				background-position: 50% 50%;
@@ -199,7 +199,7 @@
       HiveOn = false;
       PavilionOn = true;
     }
-    
+
     function toggleFull(){
       fullBldg = true;
       fifthFlr = false;
@@ -233,7 +233,7 @@
       sceneFinder--;
 			if(sceneFinder < 0){
 						sceneFinder = scenes.length;
-					} 
+					}
       controlState = false;
       forwards = false;
     }
@@ -242,7 +242,7 @@
       sceneFinder++;
 			if(sceneFinder >= scenes.length){
 						sceneFinder = 1;
-					} 
+					}
       controlState = false;
       forwards = true;
     }
@@ -298,7 +298,7 @@
           }else{
             alert('Press F11 or ESC to exit fullscreen');
           }
-          
+
         }
       }
 
@@ -319,7 +319,7 @@
     <br/> -->
   </div>
 
-	
+
 	<div id="my-container">
   </div>
 
@@ -345,10 +345,10 @@
     <button class="buttons" onclick="toggleSite()">EXISTING</button><br>
     <button class="buttons" onclick="toggleMP()">MASTER PLAN</button>
 
-    
+
   </div>
 
-	
+
 
 	<script type="module">
 
@@ -542,7 +542,7 @@
 		var blocker;
 
     var sceneText;
-    
+
     var isFullScreen = 0;
 
 
@@ -551,7 +551,7 @@
 
 		init();
 		// animate();
-    
+
 
 		function addImage() {
 
@@ -808,7 +808,7 @@
       //   fullscreen()
       // }
 
-      
+
 
 			sceneText = document.getElementById( 'Scene' );
 			blocker = document.getElementById( 'my-container' );
@@ -839,7 +839,7 @@
 			// // }else if(opts.Image == "opt3bal"){
 			// 	blocker.style.backgroundImage = "url('textures/renderings/new/North_3-2.jpg')";
 			// // }
-			
+
 			renderer = new THREE.WebGLRenderer({ antialias: true });
 
 			container = document.createElement('div');
@@ -854,7 +854,7 @@
 
 			controls = new MapControls(camera, renderer.domElement);
 			controls.mouseButtons = keyControls;
-			
+
 			controls.screenSpacePanning = true;
 			controls.enableKeys = false;
 
@@ -941,7 +941,7 @@
 				cubeTexture.encoding = THREE.sRGBEncoding;
 				lightProbe.copy(LightProbeGenerator.fromCubeTexture(cubeTexture));
 				scene.envionment = cubeTexture;
-				
+
 				render();
 
 				// var loader = new FBXLoader();
@@ -1062,7 +1062,7 @@
 					}
 				});
 
-        
+
 
         var material98 = new THREE.MeshPhongMaterial({
 					color: 0xdddddd,
@@ -1079,7 +1079,7 @@
 								object.receiveShadow = true;
 								scene.add(object);
 							});
-					
+
 
 				new MTLLoader()
 					.setPath('models/obj/')
@@ -1253,7 +1253,7 @@
 					scene.add(object);
 				});
 
-        
+
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/oldMPLines2.fbx', function (object) {
@@ -1280,7 +1280,7 @@
 					scene.add(object);
 				});
 
-        
+
 
 				var loader = new FBXLoader();
 				loader.load('models/fbx/newMPLines.fbx', function (object) {
@@ -1376,14 +1376,14 @@
 								scene.add(object);
 							}, onProgress, onError);
 					});
-        
+
         new THREE.ImageLoader()
 				.setCrossOrigin('*')
 				.load('textures/diagram/1_R02_05.png?' + performance.now(), function (image) {
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('5thFlr.obj', function (obj) {
@@ -1397,7 +1397,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(5);
 								object.rotation.x = -3.1415926787 / 2;
                 object.position.y = 1;
@@ -1416,7 +1416,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('2ndFlr.obj', function (obj) {
@@ -1430,7 +1430,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(6);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1445,7 +1445,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('gndFlr.obj', function (obj) {
@@ -1459,7 +1459,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(7);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1558,7 +1558,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('5thFlr.obj', function (obj) {
@@ -1572,7 +1572,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(8);
 								object.rotation.x = -3.1415926787 / 2;
                 object.position.y = 1;
@@ -1591,7 +1591,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('2ndFlr.obj', function (obj) {
@@ -1605,7 +1605,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(9);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1620,7 +1620,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('gndFlr.obj', function (obj) {
@@ -1634,7 +1634,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(10);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1732,7 +1732,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('5thFlr.obj', function (obj) {
@@ -1746,7 +1746,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(11);
 								object.rotation.x = -3.1415926787 / 2;
                 object.position.y = 1;
@@ -1765,7 +1765,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('2ndFlr.obj', function (obj) {
@@ -1779,7 +1779,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(12);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1794,7 +1794,7 @@
 
 					var texture = new THREE.CanvasTexture(image);
 					var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-			
+
 						new OBJLoader()
 							.setPath('models/obj/opts/')
 							.load('gndFlr.obj', function (obj) {
@@ -1808,7 +1808,7 @@
 								});
 
 								var object = obj.children[0].clone()
-								
+
 								object.layers.set(13);
 								object.rotation.x = -3.1415926787 / 2;
 								object.castShadow = false;
@@ -1843,7 +1843,7 @@
 			// renderer.localClippingEnabled = false;
 			renderer.localClippingEnabled = true;
 			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
-			
+
 
 			var width = window.innerWidth;
 			var height = window.innerHeight;
@@ -1894,7 +1894,7 @@
 
 			// saveValues: gui.remember must be executed before gui.add
 			gui.remember(opts);
-		
+
 
 			var folder1 = gui.addFolder('SETTINGS');
 
@@ -1954,12 +1954,12 @@
 			folder2.add(opts, 'CamRotY', -4, 4, 0.001).listen();
 			folder2.add(opts, 'CamRotZ', -4, 4, 0.001).listen();
 
-	
+
 			gui.add(opts, 'Orbit');
 
 			gui.hide();
       // gui.close();
-			
+
 
 
 			guiChanged();
@@ -2017,7 +2017,7 @@
 				camera.layers.disable(17);
 				camera.layers.enable(18);
 			}
-      
+
 
       // YOUR FRAME CODE HERE!
 
@@ -2030,16 +2030,16 @@
 
       if(lookC){
         console.log("clocked");
-        
+
         controls.enabled = true;
         pointControl.enabled = true;
-          
+
         controls = pointControl;
         pointControl.enabled = true;
         controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
         scene.add(controls.getObject());
         controls.lock();
-        
+
         lookC = false;
       }
 
@@ -2054,7 +2054,7 @@
       }else if(ExistingOn){
         opts.Option = 'opt0';
       }
-      
+
 
       if(controlState){
         controls.enabled = true;
@@ -2102,7 +2102,7 @@
       // console.log(fullBldg);
 
 
-      
+
 
 			// if (prevOpts.Clipping != opts.Clipping || prevOpts.Option != opts.Option || !fullBldg || fullBldg) {
 				if(opts.Clipping == 'none' || fullBldg){
@@ -2149,7 +2149,7 @@
           // camera.layers.disable(11);
           camera.layers.disable(12);
           camera.layers.disable(13);
-					
+
 				} if(opts.Clipping == 'three' || secondFlr){
           opts.Clipping = 'three';
 					localPlane.constant =  -22;
@@ -2178,7 +2178,7 @@
           camera.layers.disable(10);
           camera.layers.disable(11);
           // camera.layers.disable(12);
-          camera.layers.disable(13);      
+          camera.layers.disable(13);
 
 				}
 				if(opts.Clipping == 'ground' || groundFlr){
@@ -2209,9 +2209,9 @@
           // camera.layers.disable(10);
           camera.layers.disable(11);
           camera.layers.disable(12);
-          // camera.layers.disable(13);    
+          // camera.layers.disable(13);
 				}
-				
+
 
 				if(opts.Clipping == 'siteSection'){
 					renderer.clippingPlanes = [globalPlane];
@@ -2262,7 +2262,7 @@
 					nextLookAtx = 0;
 					nextLookAty = 0;
           nextLookAtz = 0;
-          
+
           var geometry = new THREE.BoxGeometry(1, 1, 1);
 				var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 				var cube = new THREE.Mesh(geometry, material);
@@ -2328,7 +2328,7 @@
 					nextLookAty = 0;
 					nextLookAtz = 40;
           camera.layers.disable(16);
-					
+
 				}else if (opts.Camera == 'c10') { //S Aerial
 					goalx = 66;
 					goaly = 360;
@@ -2338,7 +2338,7 @@
 					nextLookAtz = 0;
           //66.33958598391895, 359.7010046785748, -359.01371392434567
           camera.layers.enable(16);
-				}else if (opts.Camera == 'c11') { //siteSection 
+				}else if (opts.Camera == 'c11') { //siteSection
 					goalx = 66;
 					goaly = -27;
 					goalz = 344;
@@ -2348,7 +2348,7 @@
 
           // camera.layers.disable(16);
           camera.layers.enable(16);
-					
+
 				}else if (opts.Camera == 'c12') { //top-down
 					// goalx = -9;
 					// goaly = 779;
@@ -2356,7 +2356,7 @@
 					// nextLookAtx = -24;
 					// nextLookAty = 0;
           // nextLookAtz = 2;
-          
+
           goalx = -25;
 					goaly = 800;
 					goalz = 152;
@@ -2402,7 +2402,7 @@
         // camera.rotation.z = 0.28;
         runUpdate = false;
 
-        }else if (opts.Camera == 'c13') { //siteSection 
+        }else if (opts.Camera == 'c13') { //siteSection
 					goalx = 28;
 					goaly = -24;
 					goalz = 345;
@@ -2412,7 +2412,7 @@
 
           // camera.layers.disable(16);
           camera.layers.enable(16);
-					
+
 				}
 				prevOpts.Camera = opts.Camera;
 				runUpdate = false;
@@ -2615,15 +2615,15 @@
 			}else if(opts.Image == "opt1stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/S1-2.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N1-2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N1-3.jpg')";
 			}else if(opts.Image == "opt2stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/S2-2.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N2-2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N2-3.jpg')";
 			}else if(opts.Image == "opt3stair"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/S3-2.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N3-2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N3-3.jpg')";
 			}else if(opts.Image == "last"){
 				blocker.style.backgroundImage = "url('textures/renderings/lastSlide4.jpg')";
 			}
@@ -2655,13 +2655,13 @@
       // prevFullBldg = fullBldg;
       fullBldg = false;
       prevExistingOn = ExistingOn;
-				
-				
+
+
 			document.addEventListener('keydown', onKeyDown, false);
 			document.addEventListener('keyup', onKeyUp, false);
 			// document.addEventListener('mousedown', onMouseDown, false);
 
-			
+
 			// opts.CamX = camera.position.x;
 			// opts.CamY = camera.position.y;
 			// opts.CamZ = camera.position.z;
@@ -2698,9 +2698,9 @@
 		function animatePlayer(delta) {
       if(camera.position.x != goalx && opts.Orbit == false){
           animationDone = false;
-        
+
         if (timer <= tMult) {
-          
+
           timer += delta; // Increase the timer value
           // console.log(nextLookAtx);
           // console.log(prevLookAtx + ", " + nextLookAty + ", " + nowLookAtz);
@@ -2740,19 +2740,19 @@
       }else{
           animationDone = true;
       }
-      
+
 		}
 
 		var onKeyDown = function (event) {
 
-			
+
 
 			switch (event.keyCode) {
 
 				case 87: // w
           // controls.reset();
 					controls.enabled = true;
-          
+
 					controls = pointControl;
 					controls.getObject().position.set(camera.position.x, camera.position.y, camera.position.z);
 					scene.add(controls.getObject());
@@ -2760,9 +2760,9 @@
 					break;
 
 
-				
+
 				case 16: //shift
-					
+
 					keyControls = {
 						LEFT: THREE.MOUSE.PAN,
 						MIDDLE: THREE.MOUSE.PAN,
@@ -2773,26 +2773,26 @@
 					opts.Orbit = true;
 					// console.log("ShiftPressed");
 					break;
-				
+
 					case 39: // --> arrow
 					sceneFinder++;
           controlState = false;
           forwards = true;
 					if(sceneFinder >= scenes.length){
 						sceneFinder = 1;
-					} 
+					}
 					gui.preset = scenes[sceneFinder];
 					runUpdate = true;
 					break;
 
 					case 37: // <-- arrow
 					sceneFinder--;
-					
+
           controlState = false;
           forwards = false;
 					if(sceneFinder < 0){
 						sceneFinder = scenes.length;
-					} 
+					}
 					gui.preset = scenes[sceneFinder];
 					runUpdate = true;
 					break;
@@ -2819,7 +2819,7 @@
 
         changeDivText();
 
-        
+
 
 				switch (event.keyCode) {
 					case 16: //shift
@@ -2852,7 +2852,7 @@
 
 		function animate() {
 
-      
+
 		}
 
 
@@ -3765,7 +3765,7 @@
 						"CamRotZ": 0
 					}
 				},
-			},	
+			},
 			"folders": {
 				"SETTINGS": {
 					"preset": "Default",

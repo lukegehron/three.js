@@ -1346,12 +1346,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt1-9.mtl', function (materials) {
+					.load('opt1-99.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt1-9.obj', function (obj) {
+							.load('opt1-99.obj', function (obj) {
 								//'SiteW-4.obj'
 
 								obj.traverse(function (child) {
@@ -1523,12 +1523,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-9.mtl', function (materials) {
+					.load('opt2-99.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-9.obj', function (obj) {
+							.load('opt2-99.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -1697,12 +1697,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-98.mtl', function (materials) {
+					.load('opt3-99.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-98.obj', function (obj) {
+							.load('opt3-99.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -2625,7 +2625,7 @@
 			}else if(opts.Image == "opt3bal"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/N3-2.jpg')";
 			}else if(opts.Image == "last"){
-				blocker.style.backgroundImage = "url('textures/renderings/lastSlide3.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/lastSlide4.jpg')";
 			}
 
 

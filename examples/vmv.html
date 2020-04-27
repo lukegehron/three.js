@@ -1924,7 +1924,8 @@
 				'Existing': 'opt0',
 				'Loft': 'opt1',
 				'Hive': 'opt2',
-				'Pavilion': 'opt3'
+				'Pavilion': 'opt3',
+				'Schemes': 'opt4'
 			});
 			folder1.add(opts, 'Site');
 			folder1.add(opts, 'Mclaughlin');
@@ -2612,19 +2613,19 @@
 			}else if(opts.Image == "opt3sec1"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/aSectionB3-1.jpg')";
 			}else if(opts.Image == "opt1stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/S1-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/S1-2.jpg')";
 			}else if(opts.Image == "opt1bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N1-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N1-2.jpg')";
 			}else if(opts.Image == "opt2stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/S2-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/S2-2.jpg')";
 			}else if(opts.Image == "opt2bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N2-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N2-2.jpg')";
 			}else if(opts.Image == "opt3stair"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/S3-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/S3-2.jpg')";
 			}else if(opts.Image == "opt3bal"){
-				blocker.style.backgroundImage = "url('textures/renderings/final/N3-1.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/final/N3-2.jpg')";
 			}else if(opts.Image == "last"){
-				blocker.style.backgroundImage = "url('textures/renderings/lastSlide.png')";
+				blocker.style.backgroundImage = "url('textures/renderings/lastSlide2.jpg')";
 			}
 
 
@@ -2807,6 +2808,8 @@
 				showText = 'HIVE';
 			}else if(opts.Option == 'opt3'){
 				showText = 'PAVILION';
+			}else{
+				showText = "SCHEMES";
 			}
 
 			sceneText.innerText =  scenes[sceneFinder].substr(1) + " // " + showText;
@@ -3747,7 +3750,7 @@
 					"0": {
 						"Clipping": 'none',
 						"Camera": 'c1',
-						"Option": 'opt3',
+						"Option": 'opt4',
 						"Site": true,
 						"Mclaughlin": true,
 						"Rendering": true,

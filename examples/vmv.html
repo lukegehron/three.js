@@ -1523,12 +1523,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt2-99.mtl', function (materials) {
+					.load('opt2-999.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt2-99.obj', function (obj) {
+							.load('opt2-999.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;

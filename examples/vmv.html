@@ -1652,7 +1652,7 @@
 				});
 
 				var loader = new FBXLoader();
-				loader.load('models/fbx/linework-opt3-91.fbx', function (object) {
+				loader.load('models/fbx/linework-opt3-97.fbx', function (object) {
 					object.traverse(function (child) {
 						child.material = material5;
 						child.layers.set(4)
@@ -1697,12 +1697,12 @@
 
 				new MTLLoader()
 					.setPath('models/obj/opts/')
-					.load('opt3-93.mtl', function (materials) {
+					.load('opt3-98.mtl', function (materials) {
 						materials.preload();
 						new OBJLoader()
 							.setMaterials(materials)
 							.setPath('models/obj/opts/')
-							.load('opt3-93.obj', function (obj) {
+							.load('opt3-98.obj', function (obj) {
 								obj.traverse(function (child) {
 									if (child.isMesh) child.material.clippingPlanes = [localPlane];
 									if (child.isMesh) child.material.clipShadows = true;
@@ -2625,7 +2625,7 @@
 			}else if(opts.Image == "opt3bal"){
 				blocker.style.backgroundImage = "url('textures/renderings/final/N3-2.jpg')";
 			}else if(opts.Image == "last"){
-				blocker.style.backgroundImage = "url('textures/renderings/lastSlide2.jpg')";
+				blocker.style.backgroundImage = "url('textures/renderings/lastSlide3.jpg')";
 			}
 
 

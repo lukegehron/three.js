@@ -21,6 +21,33 @@
 
 			import { PLYLoader } from './jsm/loaders/PLYLoader.js';
 
+			var startx = 0;
+			var goalx = 0;
+
+			var starty = 0;
+			var goaly = 0;
+
+			var startz = 0;
+			var goalz = 0;
+
+			var timer = 0;
+
+			var prevLookAtx = 0;
+			var nextLookAtx = 0;
+			var nowLookAtx = 0;
+
+			var prevLookAty = 0;
+			var nextLookAty = 0;
+			var nowLookAty = 0;
+
+			var prevLookAtz = 0;
+			var nextLookAtz = 0;
+			var nowLookAtz = 0;
+
+
+
+			var clock = new THREE.Clock();
+
 			var container, stats;
 
 			var camera, cameraTarget, scene, renderer;
@@ -159,23 +186,67 @@
 
 			}
 
+			function animatePlayer(delta) {
+				if (timer < 1.0) {
+					timer += delta; // Increase the timer value
+					// console.log(nextLookAtx);
+					console.log(prevLookAtx + ", " + nextLookAtx + ", " + nowLookAtx);
+					//Use interpolation to move from the start towards the goal, by 'timer' percentage;
+					camera.position.x = THREE.Math.lerp(startx, goalx, timer);
+					camera.position.y = THREE.Math.lerp(starty, goaly, timer);
+					camera.position.z = THREE.Math.lerp(startz, goalz, timer);
+
+					nowLookAtx = THREE.Math.lerp(prevLookAtx, nextLookAtx, timer);
+					nowLookAty = THREE.Math.lerp(prevLookAty, nextLookAty, timer);
+					nowLookAtz = THREE.Math.lerp(prevLookAtz, nextLookAtz, timer);
+					camera.lookAt((nowLookAtx, nowLookAty, nowLookAtz));
+
+					// camera.rotation.y = THREE.Math.lerp(start, goal, timer);
+				}
+			}
+
+			// Can set this however you want, but the idea is to store the start, goal and reset the timer.
+			window.addEventListener('keydown', function(key){
+				timer = 0;
+				startx = camera.position.x;
+				starty = camera.position.y;
+				startz = camera.position.z;
+				goalx = startx - .1;
+				goaly = starty + .1;
+				goalz = startz - 1;
+
+				prevLookAtx = nextLookAtx;
+				prevLookAty = nextLookAty;
+				prevLookAtz = nextLookAtz;
+
+				nextLookAtx = prevLookAtx + 0.1;
+				nextLookAty = prevLookAty + 0.1;
+				nextLookAtz = prevLookAtz + 0.1;
+			});
+
 			function animate() {
 
-				requestAnimationFrame( animate );
-
 				render();
-				stats.update();
+				var delta = clock.getDelta();
+				animatePlayer(delta);
+				requestAnimationFrame(animate);
+				// camera.lookAt(scene.position);
+				//
+				// requestAnimationFrame( animate );
+				//
+				// render();
+				// stats.update();
 
 			}
 
 			function render() {
 
-				var timer = Date.now() * 0.0005;
-
-				camera.position.x = Math.sin( timer ) * 2.5;
-				camera.position.z = Math.cos( timer ) * 2.5;
-
-				camera.lookAt( cameraTarget );
+				// var timer = Date.now() * 0.0005;
+				//
+				// camera.position.x = Math.sin( timer ) * 2.5;
+				// camera.position.z = Math.cos( timer ) * 2.5;
+				//
+				// camera.lookAt( cameraTarget );
 
 				renderer.render( scene, camera );
 

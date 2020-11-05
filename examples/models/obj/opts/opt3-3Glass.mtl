@@ -1,0 +1,9 @@
+# Rhino
+newmtl Fencing_Construction
+Ka 0.0000 0.0000 0.0000
+Kd 0.9490 0.8549 0.8392
+Ks 0.3294 0.3294 0.3294
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd Fencing_Construction.png

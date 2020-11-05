@@ -1,0 +1,343 @@
+# Rhino
+newmtl 09 29 GYPSUM BOARD - WALL LAYER
+Ka 0.1176 0.1176 0.1176
+Kd 0.9686 0.9686 0.9686
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Default White
+Ka 0.1176 0.1176 0.1176
+Kd 0.8706 0.8706 0.8706
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl NORA DARK GREY
+Ka 0.1176 0.1176 0.1176
+Kd 0.3137 0.3137 0.3137
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd norament_926_grano_4881_321263_large.jpg
+newmtl Default Wall
+Ka 0.1176 0.1176 0.1176
+Kd 0.5020 0.5020 0.5020
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Glass
+Ka 0.1176 0.1176 0.1176
+Kd 0.4863 0.8196 0.9608
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 0.2500
+Ns 153.0000
+newmtl Laminate - White Ash
+Ka 0.1176 0.1176 0.1176
+Kd 0.3137 0.3137 0.3137
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd mgh_option_a_laminate_formica_8841 white ash full sheet.jpg
+newmtl Wood - Bernhardt Design - Maple
+Ka 0.1176 0.1176 0.1176
+Kd 0.6157 0.5255 0.4275
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd woods & plastics.finish carpentry.wood.maple.png
+newmtl Acoustic Ceiling Tile 24" x 24"
+Ka 0.1176 0.1176 0.1176
+Kd 0.9098 0.9098 0.9098
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd ceiling tile.jpg
+newmtl White
+Ka 0.1176 0.1176 0.1176
+Kd 1.0000 1.0000 1.0000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Floor - Carpet - MGH
+Ka 0.1176 0.1176 0.1176
+Kd 0.3137 0.3137 0.3137
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd b602_102917_caspian_50cmx50cm_nondirectional.jpg
+newmtl Steelcase - 2730 Arctic White
+Ka 0.1176 0.1176 0.1176
+Kd 0.9608 0.9608 0.9608
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl 09 51 CEILING TILE 2x6 RENDER
+Ka 0.1176 0.1176 0.1176
+Kd 0.6000 0.6000 0.6000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd act2x6.jpg
+newmtl Cover Plate - White
+Ka 0.1176 0.1176 0.1176
+Kd 0.9686 0.9686 0.9686
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl 09 51 CEILING GWB
+Ka 0.1176 0.1176 0.1176
+Kd 0.6000 0.6000 0.6000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Wood Slat - wall
+Ka 0.1176 0.1176 0.1176
+Kd 0.9608 0.8078 0.6196
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd mgh_option_a_laminate_formica_8844 aged ash full sheet.jpg
+newmtl Aluminium
+Ka 0.1176 0.1176 0.1176
+Kd 0.4706 0.4706 0.4706
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl EQ Default
+Ka 0.1176 0.1176 0.1176
+Kd 0.5020 0.5020 0.5020
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Floor - LVT - MGH - Natural Wood Grain
+Ka 0.1176 0.1176 0.1176
+Kd 0.3137 0.3137 0.3137
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd natural-woodgrains_a00208_sanddune_tilelayout_r.jpg
+newmtl Fabric- Blue- dark
+Ka 0.1176 0.1176 0.1176
+Kd 0.8118 0.8118 0.8118
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd furnishings.fabrics.linen.white.jpg
+newmtl Glass-Pattern-gradient-stripe
+Ka 0.1176 0.1176 0.1176
+Kd 0.4706 0.4706 0.4706
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd pattern-dense-marsh-min.jpg
+newmtl Fixture Illumination low
+Ka 0.1176 0.1176 0.1176
+Kd 0.9098 0.9098 0.9098
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Default
+Ka 0.1176 0.1176 0.1176
+Kd 1.0000 1.0000 1.0000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl 09 29 GYPSUM BOARD TYPE X - WALL LAYER
+Ka 0.1176 0.1176 0.1176
+Kd 0.9686 0.9686 0.9686
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl 09 22 METAL FRAMING NON-STRUCTURAL
+Ka 0.1176 0.1176 0.1176
+Kd 1.0000 1.0000 1.0000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Paint_Lucky Strike Paint
+Ka 0.1176 0.1176 0.1176
+Kd 0.1961 0.2275 0.2549
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Paint - Blue - MGH
+Ka 0.1176 0.1176 0.1176
+Kd 0.0039 0.5882 0.7176
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Carpet - Walk off mat
+Ka 0.1176 0.1176 0.1176
+Kd 0.4353 0.4353 0.4353
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Steelcase - 2536 Blackwood
+Ka 0.1176 0.1176 0.1176
+Kd 0.5216 0.4118 0.2941
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Wood Slat Painted
+Ka 0.1176 0.1176 0.1176
+Kd 0.7333 0.4078 0.3255
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd doors - windows.wood doors.ash.jpg
+newmtl Stainless Steel, Brushed
+Ka 0.1176 0.1176 0.1176
+Kd 0.4706 0.4706 0.4706
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Stainless Steel
+Ka 0.1176 0.1176 0.1176
+Kd 0.4980 0.4980 0.4980
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 162.0313
+newmtl BRICK PEDESTRIAN
+Ka 0.1176 0.1176 0.1176
+Kd 0.8706 0.8000 0.7961
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd cmu_running_200x400_light_gray.png
+newmtl Wood Slat - wall - Reveal
+Ka 0.1176 0.1176 0.1176
+Kd 0.9608 0.8078 0.6196
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd mgh_option_a_laminate_formica_8844 aged ash full sheet.jpg
+newmtl Granite Pedestrian
+Ka 0.1176 0.1176 0.1176
+Kd 0.5255 0.5216 0.5686
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd finishes.masonry flooring.granite.grey speckled.png
+newmtl Corian
+Ka 0.1176 0.1176 0.1176
+Kd 0.5216 0.6980 0.1725
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+newmtl Site - Grass
+Ka 0.1176 0.1176 0.1176
+Kd 0.0902 0.3843 0.0863
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd rdk$0200-0200-E85FCDA5.png
+newmtl Bleached Legno
+Ka 0.1176 0.1176 0.1176
+Kd 0.5216 0.6980 0.1725
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Metal - Steel
+Ka 0.1176 0.1176 0.1176
+Kd 0.7804 0.7804 0.7804
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl GRASS
+Ka 0.1176 0.1176 0.1176
+Kd 0.1216 0.5216 0.1529
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 0.0000
+map_Kd sitework.planting.grass.thick.jpg
+newmtl FROSTED GLASS
+Ka 0.1176 0.1176 0.1176
+Kd 0.7529 0.7529 0.7529
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Plastic - White
+Ka 0.1176 0.1176 0.1176
+Kd 1.0000 1.0000 1.0000
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Metal - Aluminum
+Ka 0.1176 0.1176 0.1176
+Kd 0.9569 0.9569 0.9569
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+newmtl Wood Slat
+Ka 0.1176 0.1176 0.1176
+Kd 0.9608 0.8078 0.6196
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd doors - windows.wood doors.ash.jpg
+newmtl Floor - Marble
+Ka 0.1176 0.1176 0.1176
+Kd 0.3137 0.3137 0.3137
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd designindustry-raw-mix_r_1500x750_dark.jpg
+newmtl Floor - LVT - Stone
+Ka 0.1176 0.1176 0.1176
+Kd 0.7255 0.7255 0.7020
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd stria_ash_ar0sms13-20161206004717.jpg
+newmtl Frame-Stone
+Ka 0.1176 0.1176 0.1176
+Kd 0.3020 0.2784 0.2745
+Ks 0.7529 0.7529 0.7529
+Tf 0.0000 0.0000 0.0000
+d 1.0000
+Ns 153.0000
+map_Kd finishes.masonry flooring.granite.brown-black.jpg

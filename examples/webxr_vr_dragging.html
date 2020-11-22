@@ -200,9 +200,9 @@ window.addEventListener( 'resize', onWindowResize, false );
 function progressText( xhr ) {
 var progress, textNode, text;
 
-if (document.getElementById('progress')) {
-  document.getElementById('progress').remove();
-}
+// if (document.getElementById('progress')) {
+//   document.getElementById('progress').remove();
+// }
 
 if (xhr.lengthComputable) {
   text = 'loading: ' + Math.round((xhr.loaded / xhr.total * 100)) + '%'
@@ -210,7 +210,7 @@ if (xhr.lengthComputable) {
   text = 'loading: ' + Math.round(xhr.loaded / 1000) + 'kb'
 }
 
-console.log(text);
+// console.log(text);
 
 			}
 
@@ -319,10 +319,10 @@ console.log(text);
 
 			function render() {
 
-// 				cleanIntersected();
+				// cleanIntersected();
 
-// 				intersectObjects( controller1 );
-// 				intersectObjects( controller2 );
+				// intersectObjects( controller1 );
+				// intersectObjects( controller2 );
 
 				renderer.render( scene, camera );
 

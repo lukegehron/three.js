@@ -12,8 +12,6 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> vr - dragging
 		</div>
 
-		<script src="js/vr/HelioWebXRPolyfill.js"></script>
-
 		<script type="module">
 
 			import * as THREE from '../build/three.module.js';
@@ -42,8 +40,8 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0x808080 );
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 10 );
-				camera.position.set( 0, 1.6, 3 );
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 10000 );
+				camera.position.set( 40, 40, 40 );
 
 				controls = new OrbitControls( camera, container );
 				controls.target.set( 0, 1.6, 0 );
@@ -79,7 +77,7 @@
 					new THREE.BoxBufferGeometry( 0.2, 0.2, 0.2 ),
 					new THREE.ConeBufferGeometry( 0.2, 0.2, 64 ),
 					new THREE.CylinderBufferGeometry( 0.2, 0.2, 0.2, 64 ),
-					new THREE.IcosahedronBufferGeometry( 0.2, 3 ),
+					new THREE.IcosahedronBufferGeometry( 0.2, 8 ),
 					new THREE.TorusBufferGeometry( 0.2, 0.04, 64, 32 )
 				];
 
@@ -162,6 +160,58 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
+				// this is only required when using RectAreaLight
+//   THREE.RectAreaLightUniformsLib.init();
+
+// load scene
+var loader = new THREE.ObjectLoader();
+// loader.setLibraryPath( 'jsm/libs/rhino3dm/' );
+
+loader.load(
+	// resource URL
+	"./models/json/house.json",
+
+	// onLoad callback
+	function ( obj ) {
+	// remove the loading text
+	// document.getElementById('progress').remove();
+
+		// assign the loaded object to the scene variable
+		scene = obj;
+	},
+
+	// onProgress callback
+	function ( xhr ) {
+	progressText( xhr ) // delete this if you don't want the progress text
+	},
+
+	// onError callback
+	function ( err ) {
+		console.error( 'An error happened' );
+	}
+);
+
+// listen for changes to the window size to update the canvas
+window.addEventListener( 'resize', onWindowResize, false );
+
+}
+
+// adds progress text while the model is loading
+function progressText( xhr ) {
+var progress, textNode, text;
+
+if (document.getElementById('progress')) {
+  document.getElementById('progress').remove();
+}
+
+if (xhr.lengthComputable) {
+  text = 'loading: ' + Math.round((xhr.loaded / xhr.total * 100)) + '%'
+} else {
+  text = 'loading: ' + Math.round(xhr.loaded / 1000) + 'kb'
+}
+
+console.log(text);
+
 			}
 
 			function onWindowResize() {
@@ -183,13 +233,9 @@
 
 					var intersection = intersections[ 0 ];
 
-					tempMatrix.getInverse( controller.matrixWorld );
-
 					var object = intersection.object;
-					object.matrix.premultiply( tempMatrix );
-					object.matrix.decompose( object.position, object.quaternion, object.scale );
 					object.material.emissive.b = 1;
-					controller.add( object );
+					controller.attach( object );
 
 					controller.userData.selected = object;
 
@@ -204,10 +250,8 @@
 				if ( controller.userData.selected !== undefined ) {
 
 					var object = controller.userData.selected;
-					object.matrix.premultiply( controller.matrixWorld );
-					object.matrix.decompose( object.position, object.quaternion, object.scale );
 					object.material.emissive.b = 0;
-					group.add( object );
+					group.attach( object );
 
 					controller.userData.selected = undefined;
 

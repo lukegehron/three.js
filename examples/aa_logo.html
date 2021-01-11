@@ -169,8 +169,8 @@
 			container.style.position = "fixed"
 			document.body.appendChild(container);
 
-			camera = new THREE.PerspectiveCamera(12, window.innerWidth / window.innerHeight, 1, 1000);
-			camera.position.set(290, -290, 290);
+			camera = new THREE.PerspectiveCamera(12, window.innerWidth / window.innerHeight, 1, 3000);
+			camera.position.set(590, -590, 590);
 			// camera.lookAt(100,140,0)
 
 			scene = new THREE.Scene();
@@ -276,8 +276,8 @@
 						// 	} );
 
 						object.children[i].material.color = new THREE.Color(0xffffff)
-						// object.children[i].position.x = -0.03
-						// object.children[i].position.y = -0.03
+						object.children[i].position.x = -0.03
+						object.children[i].position.y = -0.03
 						// object.children[i].position.z = 0.03
 
 						lineObjects.push(object.children[i])
@@ -381,16 +381,16 @@
 
 
 
-			// camera.position.x = ((currentScroll * 300) - 150) + 290
-			// camera.position.y = ((currentScroll * 300) - 150) - 290
-			// camera.position.z = 290
+			// camera.position.x = ((currentScroll * 300) - 150) + 590
+			// camera.position.y = ((currentScroll * 300) - 150) - 590
+			// camera.position.z = 590
 			// camera.lookAt(0,0,(currentScroll * 300) - 150)
 
 
 
 			// console.log(camera.position.z)
 
-			// 290, -290, 250
+			// 590, -590, 250
 
 			// camera.position.x += ( -mouseX - camera.position.x ) * .01;
 			// camera.position.z += (  mouseY - camera.position.z ) * .01;
@@ -398,9 +398,15 @@
 			// if(goTime){
 
 
-			camera.position.x += (290 + (-mouseX * 0.5) - camera.position.x) * .1 * currentScroll;
-			camera.position.y += (-290 + (-mouseX * 0.5) - camera.position.y) * .1 * currentScroll;
-			camera.position.z += (290 + (mouseY * 0.5) - camera.position.z) * .1 * currentScroll;
+			camera.position.x += (590 + (-mouseX * 0.5) - camera.position.x) * .1 * currentScroll;
+			camera.position.y += (-590 + (-mouseX * 0.5) - camera.position.y) * .1 * currentScroll;
+			camera.position.z += (590 + (mouseY * 0.5) - camera.position.z) * .1 * currentScroll;
+
+			// camera.position.x = (((-mouseX * 0.5)) * .5 * currentScroll)+590;
+			// camera.position.y = (((-mouseX * 0.5)) * .5 * currentScroll)-590;
+			// camera.position.z = (((-mouseY * 0.5)) * .5 * currentScroll)+590;
+
+			console.log((((-mouseX * 0.5)) * .5 * currentScroll)+590)
 
 			if (selectedObjects.length > 177) {
 				// console.log(selectedObjects.length)
@@ -418,13 +424,13 @@
 						// 100
 
 						selectedObjects[(i * 4) + j].rotation.x = zPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.x = xPos[i] * currentScroll
+						selectedObjects[(i * 4) + j].position.x = xPos[i] * currentScroll * 3.5
 
 						selectedObjects[(i * 4) + j].rotation.y = xPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.y = yPos[i] * currentScroll
+						selectedObjects[(i * 4) + j].position.y = yPos[i] * currentScroll * 3.5
 
 						selectedObjects[(i * 4) + j].rotation.z = yPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.z = zPos[i] * currentScroll
+						selectedObjects[(i * 4) + j].position.z = zPos[i] * currentScroll * 3.5
 						}
 
 						
@@ -448,7 +454,7 @@
 
 			// camera.p
 
-			// camera.position.set(290 + (-mouseX*0.05), -290  + (-mouseX*0.05), 250 + (mouseY*0.05))
+			// camera.position.set(590 + (-mouseX*0.05), -590  + (-mouseX*0.05), 250 + (mouseY*0.05))
 			// }
 
 			// camera.postion.z = 250 + (mouseY*0.05)

@@ -8,7 +8,7 @@
 	<link type="text/css" rel="stylesheet" href="main.css">
 	<style>
 		/* body {
-						background: #fff;
+						background: #aaa;
 					} */
 	</style>
 </head>
@@ -18,7 +18,7 @@
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - Rhino 3DM loader
 		</div> -->
 
-	<div class="header" style="height: 500vh;">
+	<div class="header" style="height: 400vh;">
 		<h1 class="header__title">Phenomenon</h1>
 		<p class="header__text">WebGL based transitions on scroll</p>
 	</div>
@@ -59,7 +59,7 @@
 
 		let currentScroll = 0;
 
-		uos(0, 1.00, p => (currentScroll = p*2))
+		uos(0, 1.00, p => (currentScroll = p*2)) // vh/2
 
 
 
@@ -176,6 +176,7 @@
 			scene = new THREE.Scene();
 
 			scene.background = new THREE.Color(0xffffff);
+			// scene.setClearColor( 0xffffff, 0);
 
 			const ambient = new THREE.AmbientLight(0xffffff, 1.50); //5
 			scene.add(ambient);
@@ -398,15 +399,31 @@
 			// if(goTime){
 
 
-			camera.position.x += (590 + (-mouseX * 0.5) - camera.position.x) * .1 * currentScroll;
-			camera.position.y += (-590 + (-mouseX * 0.5) - camera.position.y) * .1 * currentScroll;
-			camera.position.z += (590 + (mouseY * 0.5) - camera.position.z) * .1 * currentScroll;
+			// camera.position.x += (590 + (-mouseX * 0.5) - camera.position.x) * .1 * currentScroll;
+			// camera.position.y += (-590 + (-mouseX * 0.5) - camera.position.y) * .1 * currentScroll;
+			// camera.position.z += (590 + (mouseY * 0.5) - camera.position.z) * .1 * currentScroll;
 
 			// camera.position.x = (((-mouseX * 0.5)) * .5 * currentScroll)+590;
 			// camera.position.y = (((-mouseX * 0.5)) * .5 * currentScroll)-590;
 			// camera.position.z = (((-mouseY * 0.5)) * .5 * currentScroll)+590;
 
-			console.log((((-mouseX * 0.5)) * .5 * currentScroll)+590)
+			// console.log((((-mouseX * 0.5)) * .5 * currentScroll)+590)
+
+			console.log(currentScroll)
+
+			function map_range(value, low1, high1, low2, high2) {
+				return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+			}
+
+			if(currentScroll < 0.7)
+			{scene.background = new THREE.Color(0xffffff)}
+			else if(currentScroll < 1){
+				let myRGB = map_range(currentScroll, 1, 0.7, 0.2, 1)
+				scene.background = new THREE.Color(myRGB, myRGB, myRGB)
+			}else{
+
+				scene.background = new THREE.Color(0x333333)
+			}
 
 			if (selectedObjects.length > 177) {
 				// console.log(selectedObjects.length)
@@ -431,18 +448,12 @@
 
 						selectedObjects[(i * 4) + j].rotation.z = yPos[i] * currentScroll * .1
 						selectedObjects[(i * 4) + j].position.z = zPos[i] * currentScroll * 3.5
+						}else{
+							selectedObjects[(i * 4) + j].scale.x = 0
+							selectedObjects[(i * 4) + j].scale.y = 0
+							selectedObjects[(i * 4) + j].scale.z = 0
 						}
 
-						
-						// selectedObjects[(i*4)+j].rotation.x += (selectedObjects[(i*4)+j].rotation.x - xPos[i]) * 0.001
-						// selectedObjects[(i*4)+j].position.x += (selectedObjects[(i*4)+j].position.x - xPos[i]) * 0.01
-						// selectedObjects[(i*4)+j].rotation.y += (selectedObjects[(i*4)+j].rotation.y - yPos[i]) * 0.0006
-						// selectedObjects[(i*4)+j].position.y += (selectedObjects[(i*4)+j].position.y - yPos[i]) * 0.01
-						// selectedObjects[(i*4)+j].rotation.z += (selectedObjects[(i*4)+j].rotation.z - zPos[i]) * 0.0009
-						// selectedObjects[(i*4)+j].position.z += (selectedObjects[(i*4)+j].position.z - zPos[i]) * 0.01
-						// selectedObjects[(i*4)+j].scale.x-= 0.01
-						// selectedObjects[(i*4)+j].scale.y-= 0.01
-						// selectedObjects[(i*4)+j].scale.z-= 0.01
 					}
 				}
 				// }

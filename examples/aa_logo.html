@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>three.js webgl - loaders - Rhino 3DM loader</title>
+	<title>LUKE GEHRON // PROJECTS</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<link type="text/css" rel="stylesheet" href="main.css">
@@ -23,9 +23,22 @@ html {
 	height: 100%;
 }
 
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
 body {
 	height: 100%;
-	--color-text: #697c7e;
+	--color-text: #444;
 	--color-bg: #fff;
 	--color-link: #697c7e;
 	--color-link-hover: #fff;
@@ -58,19 +71,28 @@ a:focus {
 }
 
 .frame {
-	padding: 3rem 5vw;
+	/* background: rgba(255, 255, 255, 1); */
+	padding: 0rem 5vw;
 	text-align: center;
-	position: relative;
+	/* position: fixed; */
+	position: sticky;
+	margin: auto;
+	
 	z-index: 1000;
 }
 
+
+
 .frame__title {
-	font-size: 1rem;
+	font-size: 0rem;
 	margin: 0 0 1rem;
+	top:0;
 	font-weight: normal;
 }
 
 .frame__links {
+	/* text-align: center; */
+	/* float: right; */
 	display: inline;
 }
 
@@ -93,7 +115,7 @@ a:focus {
 .content {
 	display: flex;
 	flex-direction: column;
-	width: 100vw;
+	width: 98vw;
 	height: 100vh;
 	justify-content: center;
 	position: relative;
@@ -109,26 +131,29 @@ a:focus {
 	position: relative;
 	z-index: 1;
 	will-change: opacity;
-	opacity: 0;
+	/* opacity: 0; */
 }
 
 .header__title {
-	font-size: 2rem;
+	font-size: 4rem;
 	text-transform: uppercase;
-	margin-bottom: 0px;
+	margin-bottom: 5vh;
 	letter-spacing: 0.15rem;
-	background: linear-gradient(40deg, #fdf680 0%,#d6716d 50%, #a0fafb 100%);
+	/* background: linear-gradient(40deg, #fdf680 0%,#d6716d 50%, #a0fafb 100%); */
 	background-size: cover;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
+	/* -webkit-background-clip: text; */
+	/* -webkit-text-fill-color: transparent; */
+	/* background-clip: text; */
 	/* text-fill-color: transparent; */
-	font-weight: 100;
+	font-weight: 600;
 }
 
 .header__text {
-	font-size: 1.25rem;
-	color: #393c46;
+	max-width: 80%;
+	text-align: center;
+	font-size: 1.3rem;
+	color: #222;
+	/* color: #393c46; */
 }
 
 .heading {
@@ -140,12 +165,12 @@ a:focus {
 	z-index: 1;
 	will-change: opacity;
 	opacity: 0;
-	top: 0;
+	top: 200;
 	line-height: 1.2;
 	font-size: 1.5rem;
 	text-align: center;
 	color: black;
-	max-width: calc(100% - 80px);
+	max-width: calc(100% - 100px);
 	left: 50%;
 	transform: translateX(-50%);
 	padding: 0 40px;
@@ -156,9 +181,11 @@ a:focus {
 		display: none;
 	}
 	.frame {
+		background: rgba(255, 255, 255, 1);
 		position: fixed;
 		text-align: left;
-		z-index: 10000;
+		/* z-index: 10000; */
+		z-index: 1;
 		top: 0;
 		left: 0;
 		display: grid;
@@ -180,7 +207,9 @@ a:focus {
 	}
 	.frame__title {
 		margin: 0;
+		font-size: 1rem;
 	}
+	
 	.frame__github {
 		grid-area: github;
 		justify-self: start;
@@ -204,6 +233,7 @@ a:focus {
 		letter-spacing: 0.5vw;
 	}
 	.heading {
+		color:#000;
 		line-height: 1.2;
 		font-size: 2.5vw;
 	}
@@ -234,17 +264,42 @@ a:focus {
 </head>
 
 <body>
+	<main>
 
-	<div class="frame">
+
+	<div id="frame" class="frame">
 		<div class="frame__title-wrap">
-			<h1 class="frame__title">WebGL Transitions on Scroll</h1>
+			<h1 class="frame__title">LUKE GEHRON</h1>
 		</div>
 		<a class="frame__github" href="https://github.com/vaneenige/scroll-transitions-webgl">GitHub</a>
 		<div class="frame__links">
-			<a href="https://tympanus.net/Development/SVGImageHover/">Previous Demo</a>
-			<a href="https://tympanus.net/codrops/?p=38923">Article</a>
+			<a href="https://tympanus.net/Development/SVGImageHover/">Portfolio</a>
+			<a href="https://tympanus.net/codrops/?p=38923">Resume</a>
 		</div>
 	</div>
+
+
+	<div class="content content--canvas">
+		<div class="header">
+			<h1 class="header__title">LUKE GEHRON</h1>
+			<p class="header__text"> Developing <u>interactive web apps</u>, <u>AR/VR experiences</u>, and <u>computational tools</u> for the AEC industry</p>
+		</div>
+		<div class="heading">
+			
+		</div>
+		<div class="heading">
+			<p>Continue scrolling down for the 3D interactive portfolio web app<br><span style="font-size: 0.5em; top: -2vh"> or <u>click here</u> to view the static version</span></p>
+		</div>
+		<div class="heading">
+			<p><b>Treeeple:</b> <i>an AR treehouse design app with standard parts and no power tools</i></p>
+			
+		</div>
+		<div class="heading">
+			<p><b>Kaliedescope:</b> <i>an Embodied Carbon tool for more sustainable building facades</i></p>
+		</div>
+		<div class="heading">That's it, thank you for scrolling! :)</div>
+	</div>
+</main>
 	<!-- <div id="info">
 			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - Rhino 3DM loader
 		</div> -->
@@ -291,6 +346,28 @@ a:focus {
 		let currentScroll = 0;
 
 		uos(0, 1.00, p => (currentScroll = p*2)) // vh/2
+
+		const headings = document.querySelectorAll('.heading');
+		const header = document.querySelector('.header');
+
+		// uos(0, 1, p => render());
+
+		uos(0, 0.05, p => (header.style.opacity = 1 - p));
+
+		let instances = [0,1,2,3]
+
+		const step = 1 / instances.length;
+		for (let i = 0; i < instances.length; i += 1) {
+		const transitionBegin = i * step;
+		const transitionEnd = transitionBegin + step * 0.5;
+		const textEnd = (i + 1) * step;
+		// uos(transitionBegin, transitionEnd, p => (instances[i].uniforms.time.value = p));
+		uos(transitionEnd, textEnd, p => {
+			let np = p * 2.0 - 1.0;
+			np = 1.0 - np * np;
+			headings[i].style.opacity = i === instances.length - 1 ? p * 1.5 : np * 1.5;
+		});
+		}
 
 
 
@@ -388,6 +465,10 @@ a:focus {
 		let currentState = 0;
 
 		// let matLine;
+
+		let startOpactityChange = false;
+let mFrame = document.getElementById("frame")
+		let currentOpactity = 1.0;
 
 		init();
 		animate();
@@ -586,6 +667,19 @@ a:focus {
 
 		function animate() {
 
+			
+
+		setTimeout(function(){ 
+			startOpactityChange = true
+		}, 2000);
+
+		if(startOpactityChange){
+			if(currentOpactity > 0){
+				currentOpactity -= 0.05
+				mFrame.style.backgroundColor = "rgba(255,255,255," + currentOpactity + ")" 
+			}
+		}
+
 			var geometry = new THREE.BoxGeometry(1, 1, 1);
 			var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 			var cube = new THREE.Mesh(geometry, material);
@@ -647,39 +741,43 @@ a:focus {
 				return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 			}
 
-			if(currentScroll < 0.7)
+			if(currentScroll < 0.75)
 			{scene.background = new THREE.Color(0xffffff)}
 			else if(currentScroll < 1){
-				let myRGB = map_range(currentScroll, 1, 0.7, 0.2, 1)
+				let myRGB = map_range(currentScroll, 1, 0.75, 0.125, 1)
 				scene.background = new THREE.Color(myRGB, myRGB, myRGB)
 			}else{
 
-				scene.background = new THREE.Color(0x333333)
+				scene.background = new THREE.Color(0x222222)
 			}
 
 			if (selectedObjects.length > 177) {
 				// console.log(selectedObjects.length)
 				// if(selectedObjects[0].scale.x > 0){
 				// console.log(selectedObjects[0].scale.x)
+				let currentScroll1 = currentScroll - 0.1
+				if(currentScroll1 < 0){
+					currentScroll1 = 0
+				}
 				for (let i = 0; i < selectedObjects.length / 4; i++) {
 
 					for (let j = 0; j < 4; j++) {
 
-						if(currentScroll <= 1){
-							selectedObjects[(i * 4) + j].scale.x = 1 - currentScroll
-						selectedObjects[(i * 4) + j].scale.y = 1 - currentScroll
-						selectedObjects[(i * 4) + j].scale.z = 1 - currentScroll
+						if(currentScroll1 <= 1){
+						selectedObjects[(i * 4) + j].scale.x = 1 - currentScroll1
+						selectedObjects[(i * 4) + j].scale.y = 1 - currentScroll1
+						selectedObjects[(i * 4) + j].scale.z = 1 - currentScroll1
 
 						// 100
 
-						selectedObjects[(i * 4) + j].rotation.x = zPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.x = xPos[i] * currentScroll * 3.5
+						selectedObjects[(i * 4) + j].rotation.x = zPos[i] * currentScroll1 * .1
+						selectedObjects[(i * 4) + j].position.x = xPos[i] * currentScroll1 * 3.5
 
-						selectedObjects[(i * 4) + j].rotation.y = xPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.y = yPos[i] * currentScroll * 3.5
+						selectedObjects[(i * 4) + j].rotation.y = xPos[i] * currentScroll1 * .1
+						selectedObjects[(i * 4) + j].position.y = yPos[i] * currentScroll1 * 3.5
 
-						selectedObjects[(i * 4) + j].rotation.z = yPos[i] * currentScroll * .1
-						selectedObjects[(i * 4) + j].position.z = zPos[i] * currentScroll * 3.5
+						selectedObjects[(i * 4) + j].rotation.z = yPos[i] * currentScroll1 * .1
+						selectedObjects[(i * 4) + j].position.z = zPos[i] * currentScroll1 * 3.5
 						}else{
 							selectedObjects[(i * 4) + j].scale.x = 0
 							selectedObjects[(i * 4) + j].scale.y = 0
@@ -716,8 +814,13 @@ a:focus {
 			// 	composer.render(scene, camera);
 			// }else{
 
+				let currentScroll1 = currentScroll - 0.1
+				if(currentScroll1 < 0){
+					currentScroll1 = 0
+				}
+
 			if (lineObjects.length > 100) {
-				if (currentScroll > 0) {
+				if (currentScroll1 > 0) {
 					for (let i = 0; i < lineObjects.length; i++) {
 						// if (rhinoObject.children.type == "Line") {
 							// console.log("hello")

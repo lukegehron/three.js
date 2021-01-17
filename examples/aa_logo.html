@@ -443,6 +443,7 @@ a:focus {
 		});
 		}
 
+		let ambient, directionalLight;
 
 
 		let container, controls;
@@ -450,6 +451,9 @@ a:focus {
 		// let gui;
 		let selectedObjects = []
 		let lineObjects = [];
+
+		let treeObjects = []
+		let treeObject;
 
 		let goTime = false;
 
@@ -565,15 +569,24 @@ let mFrame = document.getElementById("frame")
 			scene.background = new THREE.Color(0xffffff);
 			// scene.setClearColor( 0xffffff, 0);
 
-			const ambient = new THREE.AmbientLight(0xffffff, 1.50); //5
+			ambient = new THREE.AmbientLight(0xffffff, 1.50); //5
 			scene.add(ambient);
 
-			const directionalLight = new THREE.DirectionalLight(0xffffff);
+			directionalLight = new THREE.DirectionalLight(0xffffff);
 			directionalLight.position.set(0, 0, 2);
 			directionalLight.castShadow = true;
 			directionalLight.intensity = 2;
 			scene.add(directionalLight);
 
+			
+			// ambient = new THREE.AmbientLight( 0xffffff, 0.7 );
+			// 	scene.add( ambient );
+
+			// 	directionalLight = new THREE.DirectionalLight( 0xffffff );
+			// 	directionalLight.position.set( 1, 3, 2 );
+			// 	directionalLight.castShadow = true;
+			// 	directionalLight.intensity = 0.8;
+			// 	scene.add( directionalLight );
 
 
 			const width = window.innerWidth;
@@ -693,6 +706,34 @@ let mFrame = document.getElementById("frame")
 
 			});
 
+			loader.load('models/3dm/Export40.3dm', function (object) { //13
+				for (let i = 0; i < object.children.length; i++) {
+				if (object.children[i].type == "Object3D") {
+						for (let j = 0; j < object.children[i].children.length; j++) {
+							object.children[i].children[j].material.opacity = 0
+							object.children[i].children[j].material.transparent = true
+							object.children[i].children[j].material.side = THREE.DoubleSide;
+							treeObjects.push(object.children[i].children[j])
+						}
+					} else if (object.children[i].type == "Line") {
+						object.children[i].material.opacity = 0
+						object.children[i].material.transparent = true
+						treeObjects.push(object.children[i])
+					} else if (object.children[i].type == "Mesh") {
+						object.children[i].material.opacity = 0
+						object.children[i].material.transparent = true
+						object.children[i].material.side = THREE.DoubleSide;
+						treeObjects.push(object.children[i])
+					}
+				}
+
+				treeObject = object
+
+				console.log(treeObjects)
+			
+				scene.add(object);
+			});
+
 			// scene.add(selectedObjects)
 
 			// console.log(selectedObjects)
@@ -742,6 +783,35 @@ let mFrame = document.getElementById("frame")
 		function animate() {
 
 			
+				
+
+
+			if(currentScroll > 1.2){
+				ambient.intensity = 0.8;
+				directionalLight.position.set( 1, 3, 2 );
+				directionalLight.castShadow = true;
+				directionalLight.intensity = 0.8;
+
+				
+			camera.position.x += ( 590 + (-mouseX*0.05) - camera.position.x ) * .2;
+			camera.position.y += ( -590 + (-mouseX*0.05) - camera.position.y ) * .2;
+			camera.position.z += ( 590 + (mouseY*0.1) - camera.position.z ) * .2;
+
+			camera.lookAt( scene.position );
+
+			}else{
+				ambient.intensity = 1.5;
+				directionalLight.position.set( 0, 0, 2 );
+				directionalLight.castShadow = true;
+				directionalLight.intensity = 2;
+
+				camera.position.x = 590;
+			camera.position.y = -590;
+			camera.position.z = 590;
+
+			camera.lookAt( scene.position );
+			}
+			
 
 		setTimeout(function(){ 
 			startOpactityChange = true
@@ -754,62 +824,34 @@ let mFrame = document.getElementById("frame")
 			}
 		}
 
-			var geometry = new THREE.BoxGeometry(1, 1, 1);
-			var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-			var cube = new THREE.Mesh(geometry, material);
-			scene.add(cube);
-			cube.position.x = 0;
-			cube.position.y = 0;
-			cube.position.z = 0;
-	
-			camera.lookAt((cube.position));
-
-			scene.remove(cube);
-
-			// var geometry = new THREE.BoxGeometry(1, 1, 1);
-			// var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-			// var cube = new THREE.Mesh(geometry, material);
-			// scene.add(cube);
-			// cube.position.x = 0;
-			// cube.position.y = 0;
-
-			// camera.lookAt((cube.position));
-
-			// scene.remove(cube);
+		
 
 
-			// console.log(currentScroll)
+			if(currentScroll > 1.5 && currentScroll < 1.75){
+				console.log(currentScroll)
 
+				if (treeObjects.length > 964) {
+				let currentScroll2 = currentScroll - 1.5
+				if(currentScroll2 < 0){
+					currentScroll1 = 0
+				}
+				for (let i = 0; i < treeObjects.length; i++) {
 
+					// for (let j = 0; j < 4; j++) {
 
-			// camera.position.x = ((currentScroll * 300) - 150) + 590
-			// camera.position.y = ((currentScroll * 300) - 150) - 590
-			// camera.position.z = 590
-			// camera.lookAt(0,0,(currentScroll * 300) - 150)
+						if(currentScroll2 <= 0.25){
+						treeObjects[i].material.opacity = currentScroll2 * 4
+						treeObjects[i].scale.x =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
+						treeObjects[i].scale.y =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
+						treeObjects[i].scale.z =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
+						// treeObjects[i].material.transparent = false
 
-
-
-			// console.log(camera.position.z)
-
-			// 590, -590, 250
-
-			// camera.position.x += ( -mouseX - camera.position.x ) * .01;
-			// camera.position.z += (  mouseY - camera.position.z ) * .01;
-
-			// if(goTime){
-
-
-			// camera.position.x += (590 + (-mouseX * 0.5) - camera.position.x) * .1 * currentScroll;
-			// camera.position.y += (-590 + (-mouseX * 0.5) - camera.position.y) * .1 * currentScroll;
-			// camera.position.z += (590 + (mouseY * 0.5) - camera.position.z) * .1 * currentScroll;
-
-			// camera.position.x = (((-mouseX * 0.5)) * .5 * currentScroll)+590;
-			// camera.position.y = (((-mouseX * 0.5)) * .5 * currentScroll)-590;
-			// camera.position.z = (((-mouseY * 0.5)) * .5 * currentScroll)+590;
-
-			// console.log((((-mouseX * 0.5)) * .5 * currentScroll)+590)
-
-			// console.log(currentScroll)
+					// }
+				}
+				// }
+			}
+			}
+		}
 
 			function map_range(value, low1, high1, low2, high2) {
 				return low2 + (high2 - low2) * (value - low1) / (high1 - low1);

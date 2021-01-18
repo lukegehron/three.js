@@ -793,9 +793,9 @@ let mFrame = document.getElementById("frame")
 				directionalLight.intensity = 0.8;
 
 				
-			camera.position.x += ( 590 + (-mouseX*0.05) - camera.position.x ) * .2;
-			camera.position.y += ( -590 + (-mouseX*0.05) - camera.position.y ) * .2;
-			camera.position.z += ( 590 + (mouseY*0.1) - camera.position.z ) * .2;
+			camera.position.x += ( 590 + (-mouseX*0.25) - camera.position.x ) * .2;
+			camera.position.y += ( -590 + (-mouseX*0.25) - camera.position.y ) * .2;
+			camera.position.z += ( 590 + (mouseY*0.4) - camera.position.z ) * .2;
 
 			camera.lookAt( scene.position );
 
@@ -832,6 +832,7 @@ let mFrame = document.getElementById("frame")
 
 				if (treeObjects.length > 964) {
 				let currentScroll2 = currentScroll - 1.5
+				currentScroll2 = currentScroll2 * 2
 				if(currentScroll2 < 0){
 					currentScroll1 = 0
 				}
@@ -840,11 +841,22 @@ let mFrame = document.getElementById("frame")
 					// for (let j = 0; j < 4; j++) {
 
 						if(currentScroll2 <= 0.25){
-						treeObjects[i].material.opacity = currentScroll2 * 4
-						treeObjects[i].scale.x =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
-						treeObjects[i].scale.y =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
-						treeObjects[i].scale.z =  currentScroll2 * parseInt(window.innerWidth / 500 * 3)
+						treeObjects[i].material.opacity = 1 // currentScroll2 * 4
+						if(currentScroll2 > 1){
+							treeObjects[i].scale.x = parseInt((window.innerWidth + window.innerHeight) / 500)*2
+						treeObjects[i].scale.y = parseInt((window.innerWidth + window.innerHeight) / 500)*2
+						treeObjects[i].scale.z =  parseInt((window.innerWidth + window.innerHeight) / 500)*2
+						}else if(currentScroll2 < 0) {
+							treeObjects[i].scale.x = 0
+							treeObjects[i].scale.y = 0
+							treeObjects[i].scale.z = 0
+						} else{
+							treeObjects[i].scale.x =  currentScroll2 * parseInt((window.innerWidth + window.innerHeight) / 500)*2
+						treeObjects[i].scale.y =  currentScroll2 * parseInt((window.innerWidth + window.innerHeight) / 500)*2
+						treeObjects[i].scale.z =  currentScroll2 * parseInt((window.innerWidth + window.innerHeight) / 500)*2
 						// treeObjects[i].material.transparent = false
+						}
+						
 
 					// }
 				}
@@ -936,7 +948,7 @@ let mFrame = document.getElementById("frame")
 				}
 
 			if (lineObjects.length > 100) {
-				if (currentScroll1 > 0) {
+				if (currentScroll1 > 0.01) {
 					for (let i = 0; i < lineObjects.length; i++) {
 						// if (rhinoObject.children.type == "Line") {
 							// console.log("hello")
